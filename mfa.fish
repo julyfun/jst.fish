@@ -19,16 +19,21 @@ function mfa.paste
 end
 
 # [mfans function]
-set -g mfa_message_path ~/.mfa/tmp/message 
+set -g mfa_message_path .mfa/tmp/message 
+set -g mfa_user_host julyfun@mfans.fans
+
+function mfa.home
+    echo (ssh $mfa_user_host 'eval echo ~$USER')
+end
 
 function mfa.upload-a-message
-    mfa.paste > $mfa_message_path 
-    scp $mfa_message_path julyfun@mfans.fans:{$mfa_message_path}
+    mfa.paste > ~/$mfa_message_path 
+    scp ~/$mfa_message_path {$mfa_user_host}:(mfa.home)/{$mfa_message_path}
 end
 
 function mfa.download-a-message
-    scp julyfun@mfans.fans:{$mfa_message_path} $mfa_message_path
-    cat $mfa_message_path | mfa.copy
+    scp {$mfa_user_host}:(mfa.home)/{$mfa_message_path} ~/$mfa_message_path
+    cat ~/$mfa_message_path | mfa.copy
 end
 
 function mfa.init
