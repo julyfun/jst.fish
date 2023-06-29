@@ -17,11 +17,19 @@ function mfa.paste
     end
 end
 
+function mfa.stat-y
+    switch (uname)
+    case Linux
+        stat -c "%Y" $argv[1]
+    case Darwin
+        stat -f "%m" $argv[1]
+    end
+end
 
 function mfa.file-eq
     if test ! -e $argv[1] -o ! -e $argv[2]
         echo 0
-    else if test (stat -c "%Y" $argv[1]) -eq (stat -c "%Y" $argv[2])
+    else if test (mfa.stat-y $argv[1]) -eq (mfa.stat-y $argv[2])
         echo 1
     else
         echo 0
@@ -30,7 +38,7 @@ end
 
 # [mfans function]
 set -g mfa_message_path .mfa/tmp/message 
-set -g mfa_message_cmp_path .mfa/tmp/message_tmp
+set -g mfa_message_cmp_path .mfa/tmp/message_cmp
 set -g mfa_user_host julyfun@mfans.fans
 
 function mfa.home
@@ -45,7 +53,7 @@ end
 function mfa.download-a-message
     scp -p {$mfa_user_host}:(mfa.home)/{$mfa_message_path} ~/$mfa_message_cmp_path
     if test ! (mfa.file-eq ~/{$mfa_message_path} ~/$mfa_message_cmp_path ) -eq 1
-        mv ~/$mfa_message_cmp_path ~/$mfa_message_path
+        command mv ~/$mfa_message_cmp_path ~/$mfa_message_path
         cat ~/$mfa_message_path | mfa.copy
     else
         echo "No new message. Stop copying." >&2
@@ -53,8 +61,8 @@ function mfa.download-a-message
 end
 
 function mfa.init
-    mkdir -p $HOME/.mfa
-    mkdir -p $HOME/.mfa/tmp
+    command mkdir -p $HOME/.mfa
+    command mkdir -p $HOME/.mfa/tmp
 end
 
 function mfa
