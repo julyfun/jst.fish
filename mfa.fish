@@ -8,7 +8,6 @@ function mfa.copy
     end
 end
 
-
 function mfa.paste
     switch (uname)
     case Linux
@@ -18,8 +17,20 @@ function mfa.paste
     end
 end
 
+
+function mfa.file-eq
+    if test ! -e $argv[1] -o ! -e $argv[2]
+        echo 0
+    else if test (stat -c "%Y" $argv[1]) -eq (stat -c "%Y" $argv[2])
+        echo 1
+    else
+        echo 0
+    end
+end
+
 # [mfans function]
 set -g mfa_message_path .mfa/tmp/message 
+set -g mfa_message_cmp_path .mfa/tmp/message_tmp
 set -g mfa_user_host julyfun@mfans.fans
 
 function mfa.home
@@ -28,12 +39,17 @@ end
 
 function mfa.upload-a-message
     mfa.paste > ~/$mfa_message_path 
-    scp ~/$mfa_message_path {$mfa_user_host}:(mfa.home)/{$mfa_message_path}
+    scp -p ~/$mfa_message_path {$mfa_user_host}:(mfa.home)/{$mfa_message_path}
 end
 
 function mfa.download-a-message
-    scp {$mfa_user_host}:(mfa.home)/{$mfa_message_path} ~/$mfa_message_path
-    cat ~/$mfa_message_path | mfa.copy
+    scp -p {$mfa_user_host}:(mfa.home)/{$mfa_message_path} ~/$mfa_message_cmp_path
+    if test ! (mfa.file-eq ~/{$mfa_message_path} ~/$mfa_message_cmp_path ) -eq 1
+        mv ~/$mfa_message_cmp_path ~/$mfa_message_path
+        cat ~/$mfa_message_path | mfa.copy
+    else
+        echo "No new message. Stop copying." >&2
+    end
 end
 
 function mfa.init
