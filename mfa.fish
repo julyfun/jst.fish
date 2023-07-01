@@ -1,3 +1,9 @@
+# [constants]
+set -g mfa_dir_path .mfa/tmp
+set -g mfa_message_path .mfa/tmp/message 
+set -g mfa_message_cmp_path .mfa/tmp/message_cmp
+set -g mfa_user_host julyfun@mfans.fans
+
 # [utils function]
 function mfa.copy
     switch (uname)
@@ -36,13 +42,38 @@ function mfa.file-eq
     end
 end
 
+function mfa.get-latest-file
+    ls -t $argv[1] | head -n 2 | tail -n 1
+end
+
+function mfa.default-pic-dir
+    echo ~/Pictures
+end
+
 # [mfans function]
-set -g mfa_message_path .mfa/tmp/message 
-set -g mfa_message_cmp_path .mfa/tmp/message_cmp
-set -g mfa_user_host julyfun@mfans.fans
+function mfa.init
+    command mkdir -p $HOME/.mfa
+    command mkdir -p $HOME/.mfa/tmp
+end
+
+function mfa.cmd
+    echo (ssh $mfa_user_host "eval $argv")
+end
 
 function mfa.home
     echo (ssh $mfa_user_host 'eval echo ~$USER')
+end
+
+function mfa.path
+    echo {$mfa_user_host}:(mfa.home)/{$mfa_dir_path}/$argv[1]
+end
+
+function mfa.upload
+    scp -p $argv[1] (mfa.path $argv[2])
+end
+
+function mfa.download
+    scp -p (mfa.path $argv[1]) $argv[2]
 end
 
 function mfa.upload-a-message
@@ -60,9 +91,14 @@ function mfa.download-a-message
     end
 end
 
-function mfa.init
-    command mkdir -p $HOME/.mfa
-    command mkdir -p $HOME/.mfa/tmp
+function mfa.upload-screenshot
+    set latest_screenshot (mfa.get-lastest-file (mfa.default-pic-dir))
+    mfa.upload (mfa.default-pic-dir)/{$lastest_screenshot}
+end
+
+function mfa.download-latest
+    set latest_file (mfa.cmd 'mfa.get-latest-file $mfa_dir_path')
+    mfa.download (mfa.path latest_file) $argv[1] 
 end
 
 function mfa
@@ -73,6 +109,10 @@ function mfa
         mfa.download-a-message $argc[2..-1]
     case init
         mfa.init $argv[2..-1]
+    case ups
+        mfa.upload-screenshot
+    case dll
+        mfa.download-latest 
     end
 end
 
