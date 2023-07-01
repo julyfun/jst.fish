@@ -1,5 +1,5 @@
 # [constants]
-set -g mfa_dir_path .mfa/tmp
+set -g mfa_tmp_dir .mfa/tmp
 set -g mfa_message_path .mfa/tmp/message 
 set -g mfa_message_cmp_path .mfa/tmp/message_cmp
 set -g mfa_user_host julyfun@mfans.fans
@@ -65,7 +65,8 @@ function mfa.home
 end
 
 function mfa.path
-    echo {$mfa_user_host}:(mfa.home)/{$mfa_dir_path}/$argv[1]
+    set remote_path (string replace -a ' ' '\\ ' -- $mfa_tmp_dir/$argv[1])
+    echo {$mfa_user_host}:"$remote_path"
 end
 
 function mfa.upload
@@ -97,8 +98,8 @@ function mfa.upload-screenshot
 end
 
 function mfa.download-latest
-    set latest_file (mfa.cmd 'mfa.get-latest-file $mfa_dir_path')
-    mfa.download (mfa.path latest_file) $argv[1] 
+    set latest_file (mfa.cmd 'mfa.get-latest-file $mfa_tmp_dir')
+    mfa.download $latest_file $argv[1] 
 end
 
 function mfa
@@ -110,9 +111,9 @@ function mfa
     case init
         mfa.init $argv[2..-1]
     case ups
-        mfa.upload-screenshot
+        mfa.upload-screenshot $argv[2..-1]
     case dll
-        mfa.download-latest 
+        mfa.download-latest $argv[2..-1]
     end
 end
 
