@@ -92,8 +92,8 @@ function mfa.download-a-message
 end
 
 function mfa.upload-screenshot
-    set latest_screenshot (mfa.get-lastest-file (mfa.default-pic-dir))
-    mfa.upload (mfa.default-pic-dir)/{$lastest_screenshot}
+    set latest_screenshot (mfa.get-latest-file (mfa.default-pic-dir))
+    mfa.upload (mfa.default-pic-dir)/{$latest_screenshot} .
 end
 
 function mfa.download-latest
