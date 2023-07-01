@@ -43,7 +43,7 @@ function mfa.file-eq
 end
 
 function mfa.get-latest-file
-    ls -t $argv[1] | head -n 2 | tail -n 1
+    ls -t $argv[1] | head -n 1
 end
 
 function mfa.default-pic-dir
