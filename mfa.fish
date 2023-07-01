@@ -98,7 +98,7 @@ function mfa.upload-screenshot
 end
 
 function mfa.download-latest
-    set latest_file (mfa.cmd 'mfa.get-latest-file (mfa.home)/$mfa_tmp_dir')
+    set latest_file (mfa.cmd 'mfa.get-latest-file ~/$mfa_tmp_dir')
     mfa.download $latest_file $argv[1] 
 end
 
