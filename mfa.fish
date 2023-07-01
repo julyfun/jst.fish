@@ -65,7 +65,7 @@ function mfa.home
 end
 
 function mfa.path
-    set remote_path (string replace -a ' ' '\\ ' -- $mfa_tmp_dir/$argv[1])
+    set remote_path (string replace -a ' ' '\\ ' -- (mfa.home)/$mfa_tmp_dir/$argv[1])
     echo {$mfa_user_host}:"$remote_path"
 end
 
@@ -98,7 +98,7 @@ function mfa.upload-screenshot
 end
 
 function mfa.download-latest
-    set latest_file (mfa.cmd 'mfa.get-latest-file $mfa_tmp_dir')
+    set latest_file (mfa.cmd 'mfa.get-latest-file (mfa.home)/$mfa_tmp_dir')
     mfa.download $latest_file $argv[1] 
 end
 
@@ -114,6 +114,9 @@ function mfa
         mfa.upload-screenshot $argv[2..-1]
     case dll
         mfa.download-latest $argv[2..-1]
+    case '*'
+        echo mfa: \'$argv\' is not a mfa command.
+        functions mfa
     end
 end
 
