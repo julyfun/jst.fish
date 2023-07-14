@@ -47,7 +47,7 @@ function mfa.get-latest-file
 end
 
 function mfa.default-pic-dir
-    echo ~/Pictures
+    echo ~/Pictures/Screenshots
 end
 
 # [mfans function]
