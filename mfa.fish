@@ -70,7 +70,11 @@ function mfa.path
 end
 
 function mfa.upload
-    scp -p $argv[1] (mfa.path $argv[2])
+    if test -z $argv[2]
+        scp -p $argv[1] (mfa.path .) 
+    else
+        scp -p $argv[1] (mfa.path $argv[2])
+    end
 end
 
 function mfa.download
@@ -114,6 +118,10 @@ function mfa
         mfa.upload-screenshot $argv[2..-1]
     case dll
         mfa.download-latest $argv[2..-1]
+    case up
+        mfa.upload $argv[2..-1]
+    case dl
+        mfa.download $argv[2..-1]
     case '*'
         echo mfa: \'$argv\' is not a mfa command.
         functions mfa
