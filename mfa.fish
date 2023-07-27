@@ -78,7 +78,11 @@ function mfa.upload
 end
 
 function mfa.download
-    scp -p (mfa.path $argv[1]) $argv[2]
+    if test -z $argv[2]
+        scp -p (mfa.path $argv[1]) .
+    else
+        scp -p (mfa.path $argv[1]) $argv[2]
+    end
 end
 
 function mfa.upload-a-message
