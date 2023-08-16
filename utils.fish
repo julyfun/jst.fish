@@ -19,3 +19,13 @@ function jwhich
     cd (dirname (which $argv[1]))
 end
 
+function just.find
+    grep -r $argv[1] --include $argv[2]
+end
+
+function just
+    switch $argv[1]
+    case find
+        just.find $argv[2..-1]
+    end
+end
