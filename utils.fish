@@ -1,9 +1,15 @@
-function jp
+function jp --description 'just push'
     git pull \
     && git add . \
     && git commit -m "just push" \
     && git push
 end
+
+function jc --description 'just commit'
+    git add . && git commit -m $argv[1]
+end
+
+alias fn=functions
 
 # cmake make test
 function cmt --description 'cmake make test'
@@ -43,4 +49,7 @@ function hp.vim
     mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
 end
 
+function hp.git-commit
+    mfa.open-link 'https://developer.aliyun.com/article/770277'
+end
 
