@@ -53,3 +53,15 @@ function hp.git-commit
     mfa.open-link 'https://developer.aliyun.com/article/770277'
 end
 
+function hp.fr
+    mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
+end
+
+function baidu
+    mfa.open-link "https://www.baidu.com/s?wd=$argv"
+end
+
+function baidu.ip
+    baidu ip地址
+end
+
