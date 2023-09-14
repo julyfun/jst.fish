@@ -64,6 +64,6 @@ function baidu
 end
 
 function baidu.ip
-    baidu ip地址
+    baidu ip
 end
 
