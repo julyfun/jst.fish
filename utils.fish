@@ -1,6 +1,7 @@
 function jp --description 'just push'
+    set top_dir (git rev-parse --show-toplevel)
     git pull \
-    && git add . \
+    && git add $top_dir \
     && git commit -m "just push" \
     && git push
 end
@@ -42,6 +43,7 @@ function mfa.open-link
     case Darwin
         open -a "Google Chrome" $argv
     case Linux
+        open -a "Google Chrome" $argv
     end
 end
 
@@ -70,7 +72,7 @@ function baidu
 end
 
 function baidu.ip
-    baidu ip地址
+    baidu ip
 end
 
 
