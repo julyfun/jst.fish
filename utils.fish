@@ -57,11 +57,24 @@ function hp.fr
     mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
 end
 
+function hp.latex
+    mfa.open-link "https://latex.guide/"
+end
+
+function hp.latex.2
+    mfa.open-link "https://detexify.kirelabs.org/classify.html"
+end
+
 function baidu
     mfa.open-link "https://www.baidu.com/s?wd=$argv"
 end
 
 function baidu.ip
     baidu ip地址
+end
+
+
+function git-new
+    mfa.open-link "https://github.com/new" 
 end
 
