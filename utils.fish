@@ -9,7 +9,6 @@ end
 function jc --description 'just commit'
     git add . && git commit -m $argv[1]
 end
-
 alias fn=functions
 
 # cmake make test
@@ -28,7 +27,7 @@ function jwhich
 end
 
 function just.find
-    grep -r $argv[1] --include $argv[2]
+    find . -name "*"$argv"*"
 end
 
 function just
@@ -51,8 +50,20 @@ function hp.vim
     mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
 end
 
+function hp.re
+    mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
+end
+
+function hp.re.meta
+    mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
+end
+
 function hp.git-commit
     mfa.open-link 'https://developer.aliyun.com/article/770277'
+end
+
+function hp.en
+    mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
 end
 
 function hp.fr
