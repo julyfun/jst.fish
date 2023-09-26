@@ -2,3 +2,7 @@
 
 Mfans Fish-shell Assistant
 
+## 有待更新
+
+mfa upa 时自动 mfa init?
+

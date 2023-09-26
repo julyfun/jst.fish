@@ -116,7 +116,7 @@ function mfa.open-link
     case Darwin
         open -a "Google Chrome" $argv
     case Linux
-        open -a "Google Chrome" $argv
+        xdg-open $argv
     end
 end
 
