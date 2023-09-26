@@ -110,6 +110,21 @@ function mfa.download-latest
     mfa.download $latest_file $argv[1] 
 end
 
+# [network]
+function mfa.open-link
+    switch (uname)
+    case Darwin
+        open -a "Google Chrome" $argv
+    case Linux
+        open -a "Google Chrome" $argv
+    end
+end
+
+function mfa.github-link
+    git remote -v | string match -rq 'github\.com:(?<remote>[\S]+)\.git'
+    string join '' "https://github.com/" $remote
+end
+
 function mfa
     switch $argv[1]
     case upa

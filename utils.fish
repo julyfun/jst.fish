@@ -9,6 +9,7 @@ end
 function jc --description 'just commit'
     git add . && git commit -m $argv[1]
 end
+
 alias fn=functions
 
 # cmake make test
@@ -34,15 +35,6 @@ function just
     switch $argv[1]
     case find
         just.find $argv[2..-1]
-    end
-end
-
-function mfa.open-link
-    switch (uname)
-    case Darwin
-        open -a "Google Chrome" $argv
-    case Linux
-        open -a "Google Chrome" $argv
     end
 end
 
@@ -88,11 +80,6 @@ end
 
 function git-new
     mfa.open-link "https://github.com/new" 
-end
-
-function mfa.github-link
-    git remote -v | string match -rq 'github\.com:(?<remote>[\S]+)\.git'
-    string join '' "https://github.com/" $remote
 end
 
 function git.o
