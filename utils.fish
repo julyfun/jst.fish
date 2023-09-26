@@ -86,8 +86,15 @@ function baidu.ip
     baidu ip
 end
 
-
 function git-new
     mfa.open-link "https://github.com/new" 
 end
 
+function mfa.github-link
+    git remote -v | string match -rq 'github\.com:(?<remote>[\S]+)\.git'
+    string join '' "https://github.com/" $remote
+end
+
+function git.o
+    mfa.open-link (mfa.github-link)
+end
