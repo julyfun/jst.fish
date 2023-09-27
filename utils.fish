@@ -7,7 +7,10 @@ function jp --description 'just push'
 end
 
 function jc --description 'just commit'
-    git add . && git commit -m $argv[1]
+    set top_dir (git rev-parse --show-toplevel)
+    git pull \
+    && git add $top_dir \
+    && git commit -m $argv
 end
 
 alias fn=functions
