@@ -134,7 +134,7 @@ function mfa.github-link
         set remote_relative_arg "tree/$branch/$relative_arg"
     end
     git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\.git'
-    string join -n '/' "https://github.com" $user_repo $remote_relative_arg
+    echo (string join -n '/' "https://github.com" $user_repo $remote_relative_arg)
 end
 
 function mfa
