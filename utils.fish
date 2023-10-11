@@ -1,17 +1,17 @@
 function jc --description 'just commit'
     # non-empty
-    if test -z $argv
+    if test -z "$argv"
         set commit "just commit"
     else
-        set commit $argv
+        set commit "$argv"
     end
     set top_dir (git rev-parse --show-toplevel)
-    git add $top_dir \
-    && git commit -m $commit
+    git add "$top_dir" \
+    && git commit -m "$commit"
 end
 
 function jp --description 'just push'
-    git pull && jc $argv && git push
+    git pull && jc "$argv" && git push
 end
 
 alias fn=functions
@@ -87,5 +87,5 @@ function git-new
 end
 
 function git.o
-    mfa.open-link (mfa.github-link)
+    mfa.open-link (mfa.github-link "$argv")
 end
