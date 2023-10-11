@@ -1,6 +1,5 @@
 function jc --description 'just commit'
     # non-empty
-    echo $argv
     if test -z $argv
         set commit "just commit"
     else
