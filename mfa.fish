@@ -114,15 +114,21 @@ end
 function mfa.open-link
     switch (uname)
     case Darwin
-        open -a "Google Chrome" $argv
+        open -a "Google Chrome" $agv
     case Linux
         xdg-open $argv
     end
 end
 
 function mfa.github-link
+    # 都没空格
+    set pwd (pwd)
+    set root (git rev-parse --show-toplevel)
+    set branch (git rev-parse --abbrev-ref HEAD)
+    # 一个 +1 是 `/` 还有一个是因为 string sub -s 下标从 1 而不是 0 开始
+    set relative (string sub -s (math (string length $root) + 2) $pwd)
     git remote -v | string match -rq 'github\.com:(?<remote>[\S]+)\.git'
-    string join '' "https://github.com/" $remote
+    string join '' "https://github.com/" $remote "/" $relative
 end
 
 function mfa

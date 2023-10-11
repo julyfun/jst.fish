@@ -4,5 +4,6 @@ Mfans Fish-shell Assistant
 
 ## 有待更新
 
-mfa upa 时自动 mfa init?
+- mfa upa 时自动 mfa init?
+- just 系列命令整合？
 

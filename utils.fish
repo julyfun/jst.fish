@@ -1,16 +1,18 @@
-function jp --description 'just push'
+function jc --description 'just commit'
+    # non-empty
+    echo $argv
+    if test -z $argv
+        set commit "just commit"
+    else
+        set commit $argv
+    end
     set top_dir (git rev-parse --show-toplevel)
-    git pull \
-    && git add $top_dir \
-    && git commit -m "just push" \
-    && git push
+    git add $top_dir \
+    && git commit -m $commit
 end
 
-function jc --description 'just commit'
-    set top_dir (git rev-parse --show-toplevel)
-    git pull \
-    && git add $top_dir \
-    && git commit -m $argv
+function jp --description 'just push'
+    git pull && jc $argv && git push
 end
 
 alias fn=functions
