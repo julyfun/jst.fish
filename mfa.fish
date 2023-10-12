@@ -114,17 +114,17 @@ end
 function mfa.open-link
     switch (uname)
     case Darwin
-        open -a "Google Chrome" "$argv"
+        command open -a "Google Chrome" "$argv"
     case Linux
-        xdg-open "$argv"
+        command xdg-open "$argv"
     end
 end
 
 function mfa.github-link
     # 都没空格
     set pwd (pwd)
-    set root (git rev-parse --show-toplevel)
-    set branch (git rev-parse --abbrev-ref HEAD)
+    set root (command git rev-parse --show-toplevel)
+    set branch (command git rev-parse --abbrev-ref HEAD)
     # 一个 +1 是 `/` 还有一个是因为 string sub -s 下标从 1 而不是 0 开始
     set relative (string sub -s (math (string length $root) + 2) $pwd)
     set relative_arg (string join -n '/' $relative "$argv")
@@ -133,7 +133,8 @@ function mfa.github-link
     else
         set remote_relative_arg "tree/$branch/$relative_arg"
     end
-    git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\.git'
+    # 避免和 fish 内定义的临时 git 名冲突
+    command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\.git'
     echo (string join -n '/' "https://github.com" $user_repo $remote_relative_arg)
 end
 
