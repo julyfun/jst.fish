@@ -1,6 +1,8 @@
-这是一个神奇的快捷工具箱，只为 fish shell 提供。
+这是一个神奇的快捷工具箱，只为 fish shell 提供，因为 fish shell 的语法舒服。
 
-Mfans Fish-shell Assistant
+`mfa.fish`: Mfans Fish-shell Assistant
+
+`jst.fish`: Just a Shortcut Tool
 
 ## 有待更新
 
