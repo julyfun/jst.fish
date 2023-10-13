@@ -5,7 +5,7 @@ function jc --description 'just commit'
     else
         set commit "$argv"
     end
-    set top_dir (git rev-parse --show-toplevel)
+    set top_dir (command git rev-parse --show-toplevel)
     command git add "$top_dir" \
     && command git commit -m "$commit"
 end
