@@ -57,11 +57,11 @@ end
 function jst
     function commit
         set commit \
-"[<head>(, <options>)]<content>\n" \
-"example: [feat, run]添加核心模块\n" \
+"[<head>(, <options>)] <content>\n" \
+"example: [feat, run] 添加核心模块\n" \
 "<head>\n" \
 "feat      功能    添加 / 更改主要功能\n" \
-"fix       修复    修复运行的问题或BUG\n" \
+"fix       修复    修复运行的问题或 bug\n" \
 "comment   注释\n" \
 "doc       文档\n" \
 "test      测试    添加 / 更改测试行的功能\n" \
@@ -70,7 +70,7 @@ function jst
 "perf      优化    提升性能、体验等\n" \
 "config    配置    配置文件、资源文件相关的改动\n" \
 "tools     工具    构建过程或辅助工具的变动\n" \
-"revert    回滚    撤销 commit, 回滚版本等\n" \
+"revert    回滚    撤销 commit，回滚版本等\n" \
 "merge     合并    合并分支, 在两个分支都有修改时使用\n" \
 "sync      同步    同步分支, 在分支落后于另一分支时使用\n" \
 "others    其它    一般在测试仓库功能的时候使用, 正常写代码不建议使用\n" \
