@@ -1,3 +1,5 @@
+# 就不重构了，多重方式都尝试一下
+
 function jc --description 'just commit'
     # non-empty
     if test -z "$argv"
