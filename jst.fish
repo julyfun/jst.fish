@@ -133,7 +133,7 @@ function jst
             mfa.open-link (mfa.github-link "$argv")
         end
         function log
-            command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short -7  
+            command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short  
         end
         $argv
         functions -e o
