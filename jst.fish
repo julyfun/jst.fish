@@ -5,7 +5,7 @@ function jc --description 'just commit'
     if test -z "$argv"
         set commit "just commit"
     else
-        set commit "$argv"
+        set commit (mfa.git-rel-link "$argv")
     end
     set top_dir (command git rev-parse --show-toplevel)
     command git add "$top_dir" \
@@ -34,7 +34,7 @@ function jwhich
 end
 
 function just.find
-    find . -name "*"$argv"*"
+    command find . -name "*"$argv"*"
 end
 
 function just
@@ -146,9 +146,14 @@ function jst
         __jst.new-c $argv
     end
 
+    function find
+        just.find "$argv"
+    end
+
     $argv
     functions -e commit
     functions -e git
     functions -e new-c
+    functions -e find
 end
 

@@ -120,14 +120,24 @@ function mfa.open-link
     end
 end
 
-function mfa.github-link
-    # 都没空格
+function mfa.git-branch
+    echo (command git rev-parse --abbrev-ref HEAD)
+end
+
+function mfa.git-rel-link
     set pwd (pwd)
     set root (command git rev-parse --show-toplevel)
-    set branch (command git rev-parse --abbrev-ref HEAD)
+    set branch (mfa.git-branch) 
     # 一个 +1 是 `/` 还有一个是因为 string sub -s 下标从 1 而不是 0 开始
     set relative (string sub -s (math (string length $root) + 2) $pwd)
     set relative_arg (string join -n '/' $relative "$argv")
+    echo $relative_arg
+end
+
+function mfa.github-link
+    # 都没空格
+    set branch (mfa.git-branch) 
+    set relative_arg (mfa.git-rel-link "$argv") 
     if test -z $relative_arg
         set remote_relative_arg ""
     else
