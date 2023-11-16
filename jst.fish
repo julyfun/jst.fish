@@ -5,23 +5,31 @@ function jc --description 'just commit'
     if test -z "$argv"
         set commit "just commit"
     else
-        set commit (mfa.git-rel-link "$argv")
+        set commit "$argv"
     end
     set top_dir (command git rev-parse --show-toplevel)
     command git add "$top_dir" \
     && command git commit -m "$commit"
 end
 
+function jcf
+    jc (mfa.git-rel-link "$argv")
+end
+
 function jp --description 'just push'
     command git pull && jc "$argv" && command git push
+end
+
+function jpf
+    jp (mfa.git-rel-link "$argv")
 end
 
 alias fn=functions
 
 # cmake make test
 function cmt --description 'cmake make test'
-    cmake ..
-    make -j8
+    command cmake ..
+    command make -j8
     if test (count $argv) -ge 1
         ./$argv[1]
     else
@@ -30,7 +38,7 @@ function cmt --description 'cmake make test'
 end
 
 function jwhich
-    cd (dirname (which $argv[1]))
+    cd (command dirname (command which $argv[1]))
 end
 
 function just.find
