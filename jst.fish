@@ -158,10 +158,15 @@ function jst
         just.find "$argv"
     end
 
+    function grep
+        command grep -nr "$argv" --exclude-dir=".git"
+    end
+
     $argv
     functions -e commit
     functions -e git
     functions -e new-c
     functions -e find
+    functions -e grep
 end
 
