@@ -159,7 +159,10 @@ function jst
     end
 
     function grep
-        command grep -nr "$argv" --exclude-dir=".git"
+        # -r: 查找所有文件夹
+        # -i: 忽略大小写
+        # -n: 输出行号
+        command grep -nri "$argv" --exclude-dir=".git"
     end
 
     $argv
