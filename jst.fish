@@ -96,6 +96,15 @@ function git.o
     mfa.open-link (mfa.github-link "$argv")
 end
 
+function jst.battery
+    command system_profiler SPPowerDataType | command grep "State of Charge" | string trim -l
+end
+
+function jst.i
+    command date
+    jst.battery
+end
+
 function __jst.new-c
     touch .gitignore
     echo -e ".vscode\n.DS_Store\n" \
@@ -164,12 +173,16 @@ function jst
         # -n: 输出行号
         command grep -nri "$argv" --exclude-dir=".git"
     end
-
+    
     $argv
     functions -e commit
     functions -e git
     functions -e new-c
     functions -e find
     functions -e grep
+end
+
+function jst.resize-jpg
+    mfa.open-link https://www.iloveimg.com/zh-cn/resize-image/resize-jpg
 end
 
