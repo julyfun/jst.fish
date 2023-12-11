@@ -17,7 +17,7 @@ function jcf
 end
 
 function jp --description 'just push'
-    command git pull && jc "$argv" && command git push
+    command git pull && jc "$argv" && command git push -u
 end
 
 function jpf
@@ -173,6 +173,15 @@ function jst
         # -n: 输出行号
         command grep -nri "$argv" --exclude-dir=".git"
     end
+
+    function zhi
+        mfa.open-link "https://www.zhihu.com/search?type=content&q=$argv"
+    end
+
+    function gf
+        grep "$argv"
+        find "$argv"
+    end
     
     $argv
     functions -e commit
@@ -180,9 +189,15 @@ function jst
     functions -e new-c
     functions -e find
     functions -e grep
+    functions -e zhi
+    functions -e gf
 end
 
 function jst.resize-jpg
     mfa.open-link https://www.iloveimg.com/zh-cn/resize-image/resize-jpg
+end
+
+function jst.zhi
+    mfa.open-link https://www.zhihu.com/search?type=content&q="$argv"
 end
 
