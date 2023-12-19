@@ -123,7 +123,6 @@ end
 
 function jst
     function commit
-        functions -e commit
         set commit \
 "[<head>(, <options>)] <content>\n" \
 "example: [feat, run] 添加核心模块\n" \
@@ -153,17 +152,13 @@ function jst
     end
 
     function git
-        functions -e git
         function o
-            functions -e o
             mfa.open-link (mfa.github-link "$argv")
         end
         function log
-            functions -e log
             command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short  
         end
         function ig
-            functions -e ig
             command touch .gitignore
             set content \
 ".vscode\n" \
@@ -174,20 +169,21 @@ function jst
             echo -e $content
         end
         $argv
+        functions -e o
+        functions -e log
+        functions -e ig
+        functions -e ig
     end
 
     function new-c
-        functions -e new-c
         __jst.new-c $argv
     end
 
     function find
-        functions -e find
         just.find "$argv"
     end
 
     function grep
-        functions -e grep
         # -r: 查找所有文件夹
         # -i: 忽略大小写
         # -n: 输出行号
@@ -195,22 +191,27 @@ function jst
     end
 
     function zhi
-        functions -e zhi
         mfa.open-link "https://www.zhihu.com/search?type=content&q=$argv"
     end
 
     function gf
-        functions -e gf
         grep "$argv"
         find "$argv"
     end
 
     function ret
-        functions -e ret
         cd (command git rev-parse --show-toplevel)
     end
     
     $argv
+    functions -e commit
+    functions -e git
+    functions -e new-c
+    functions -e find
+    functions -e grep
+    functions -e zhi
+    functions -e gf
+    functions -e ret
 end
 
 function jst.resize-jpg
