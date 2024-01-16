@@ -25,6 +25,46 @@ function jpf
     jp (mfa.git-rel-link "$argv")
 end
 
+# Save this script in a file, e.g., jump.fish
+
+function jd
+    set search_string $argv[1]
+
+    # Use find to search for directories with similar names
+    set matching_directories (find . -type d -name "*$search_string*" 2>/dev/null)
+
+    # Check if any matching directories were found
+    if test (count $matching_directories) -eq 0
+        echo "No matching directories found."
+        return 1
+    else if test (count $matching_directories) -eq 1
+        # If only one match, jump to that directory
+        echo matching: $matching_directories
+        cd $matching_directories[1]
+        return 0
+    else
+        # If multiple matches, prompt the user to choose one
+        echo "Multiple matching directories found:"
+        for i in (seq (count $matching_directories))
+            echo " $i." (string sub -s 3 "$matching_directories[$i]")
+        end
+
+        set -l chosen_directory
+        read -P "Enter the number of the directory to jump to: " chosen_directory
+
+        # Validate user input
+        if test "$chosen_directory" -gt 0; and test "$chosen_directory" -le (count $matching_directories)
+            cd $matching_directories[$chosen_directory]
+            return 0
+        else
+            echo "Invalid selection."
+            return 1
+        end
+    end
+end
+
+# Call the function with the provided string parameter
+
 alias fn=functions
 function fns
     functions "$argv" | command tail -10
