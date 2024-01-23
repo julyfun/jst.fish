@@ -1,7 +1,7 @@
 ## Usage
 
-* step 1: `git@github.com:julyfun/mfa.fish.git`
-* step 2: In your `~/.config/fish/config.fish`, add `source <path-to-repo-in-step-1>/mfa.fish/mfa.fish` and optionally `source <path-to-repo-in-step-1>/Documents/Github/mfa.fish/jst.fish
+* Step 1: `git@github.com:julyfun/mfa.fish.git`
+* Step 2: In your `~/.config/fish/config.fish`, add `source <path-to-repo-in-step-1>/mfa.fish/mfa.fish` and optionally `source <path-to-repo-in-step-1>/Documents/Github/mfa.fish/jst.fish`
 
 ## Introduction
 
