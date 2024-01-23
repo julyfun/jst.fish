@@ -9,7 +9,7 @@
 
 `mfa.fish`: Mfans Fish-shell Assistant.
 
-`jst.fish`: Just.
+`jst.fish`: Just do something.
 
 ## Todo
 
