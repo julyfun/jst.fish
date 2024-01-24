@@ -63,6 +63,7 @@ function jd
     end
 end
 
+
 # Call the function with the provided string parameter
 
 alias fn=functions
@@ -242,6 +243,14 @@ function jst
     function ret
         cd (command git rev-parse --show-toplevel)
     end
+
+    function title
+        set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
+        string length -- $low
+        echo $low
+        echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1
+        # -c is complement 补集 
+    end
     
     $argv
     functions -e commit
@@ -252,6 +261,7 @@ function jst
     functions -e zhi
     functions -e gf
     functions -e ret
+    functions -e title
 end
 
 function jst.resize-jpg
