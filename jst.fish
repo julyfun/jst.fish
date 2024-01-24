@@ -27,7 +27,7 @@ end
 
 # Save this script in a file, e.g., jump.fish
 
-function jd
+function jd --description "just jump to directory"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
@@ -236,6 +236,7 @@ function jst
     end
 
     function gf
+        # 优先执行 fish 函数
         grep "$argv"
         find "$argv"
     end
