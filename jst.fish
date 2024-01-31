@@ -1,8 +1,10 @@
+# Todo: configuration file
+alias alias_editor=nvim
 # 就不重构了，多重方式都尝试一下
 
 function jc --description 'just commit'
     # non-empty
-    if test -z "$argv"
+    if test -z "$arg v"
         set commit "just commit"
     else
         set commit "$argv"
@@ -27,39 +29,60 @@ end
 
 # Save this script in a file, e.g., jump.fish
 
-function jd --description "just jump to directory"
+function jd --description "just jump to directory or edit file by name"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
-    set matching_directories (find . -type d -name "*$search_string*" 2>/dev/null)
+    set matching_directories (command find . -type d -name "*$search_string*" 2>/dev/null)
+    set matching_files (command find . -type f -name "*$search_string*" 2>/dev/null)
+    set dir_cnt (count $matching_directories)
+    set file_cnt (count $matching_files)
+    set tot_cnt (math $dir_cnt + $file_cnt)
 
     # Check if any matching directories were found
-    if test (count $matching_directories) -eq 0
-        echo "No matching directories found."
+    if test $tot_cnt -eq 0
+        echo "No matching directories or files found."
         return 1
-    else if test (count $matching_directories) -eq 1
-        # If only one match, jump to that directory
-        echo matching: $matching_directories
-        cd $matching_directories[1]
+    end
+    if test $tot_cnt -eq 1
+        if test $dir_cnt -eq 1
+            echo Matching directory: $matching_directories
+            cd $matching_directories[1]
+            return 0
+        end
+        echo Matching file: $matching_files
+        alias_editor $matching_files
         return 0
-    else
-        # If multiple matches, prompt the user to choose one
-        echo "Multiple matching directories found:"
+    end
+    # If multiple matches, prompt the user to choose one
+    echo "Multiple matching found:"
+    if test $dir_cnt -gt 0
+        echo "[Directories]"
         for i in (seq (count $matching_directories))
             echo " $i." (string sub -s 3 "$matching_directories[$i]")
         end
-
-        set -l chosen_directory
-        read -P "Enter the number of the directory to jump to: " chosen_directory
-
-        # Validate user input
-        if test "$chosen_directory" -gt 0; and test "$chosen_directory" -le (count $matching_directories)
-            cd $matching_directories[$chosen_directory]
-            return 0
-        else
-            echo "Invalid selection."
-            return 1
+        echo
+    end
+    if test $file_cnt -gt 0
+        echo "[Files]"
+        for i in (seq (count $matching_files))
+            set -l idx (math $i + $dir_cnt)
+            echo " $idx." (string sub -s 3 "$matching_files[$i]")
         end
+        echo
+    end
+    set -l chosen_number
+    read -P "Enter the number of the directory to jump to or file to edit: " chosen_number
+    if test "$chosen_number" -gt 0; and test "$chosen_number" -le $dir_cnt
+        cd $matching_directories[$chosen_number]
+        return 0
+    else if test "$chosen_number" -gt $dir_cnt; and test "$chosen_number" -le $tot_cnt  
+        set -l idx (math $chosen_number - $dir_cnt)
+        alias_editor $matching_files[$idx]
+        return 0
+    else
+        echo Invalid selection.
+        return 1
     end
 end
 
@@ -251,6 +274,12 @@ function jst
         echo $low
         echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1
         # -c is complement 补集 
+    function comp
+        command g++ $argv -o 1 -std=c++17 -Wall
+    end
+
+    function run
+        comp $argv && command echo "comp done." && ./1
     end
     
     $argv
@@ -263,6 +292,8 @@ function jst
     functions -e gf
     functions -e ret
     functions -e title
+    functions -e comp
+    functions -e run
 end
 
 function jst.resize-jpg
