@@ -274,6 +274,8 @@ function jst
         echo $low
         echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1
         # -c is complement 补集 
+    end
+
     function comp
         command g++ $argv -o 1 -std=c++17 -Wall
     end
