@@ -51,7 +51,8 @@ function jd --description "just jump to directory or edit file by name"
             return 0
         end
         echo Matching file: $matching_files
-        alias_editor $matching_files
+        cd (command dirname $matching_files)
+        alias_editor (command basename $matching_files)
         return 0
     end
     # If multiple matches, prompt the user to choose one
@@ -78,7 +79,9 @@ function jd --description "just jump to directory or edit file by name"
         return 0
     else if test "$chosen_number" -gt $dir_cnt; and test "$chosen_number" -le $tot_cnt  
         set -l idx (math $chosen_number - $dir_cnt)
-        alias_editor $matching_files[$idx]
+        set -l file_name $matching_files[$idx]
+        cd (command dirname $file_name)
+        alias_editor (command basename $file_name)
         return 0
     else
         echo Invalid selection.
