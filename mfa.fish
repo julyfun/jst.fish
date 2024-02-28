@@ -96,11 +96,16 @@ function mfa.download-a-message
     scp -p {$mfa_user_host}:(mfa.home)/{$mfa_message_path} ~/$mfa_message_cmp_path
     if test ! (mfa.file-eq ~/{$mfa_message_path} ~/$mfa_message_cmp_path ) -eq 1
         command mv ~/$mfa_message_cmp_path ~/$mfa_message_path
-        cat ~/$mfa_message_path | mfa.copy
+        mfa.copy-a-message
     else
         echo "No new message. Stop copying." >&2
     end
 end
+
+function mfa.copy-a-message
+    command cat ~/$mfa_message_path | mfa.copy
+end
+
 
 function mfa.upload-screenshot
     set latest_screenshot (mfa.get-latest-file (mfa.default-pic-dir))
@@ -156,6 +161,8 @@ function mfa
         mfa.upload-a-message $argv[2..-1]
     case dla
         mfa.download-a-message $argc[2..-1]
+    case cpa
+        mfa.copy-a-message $argc[2..-1]
     case init
         mfa.init $argv[2..-1]
     case ups
