@@ -1,8 +1,9 @@
+set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: configuration file
 alias alias_editor=nvim
 # 就不重构了，多重方式都尝试一下
 
-function jc --description 'just commit'
+function jm --description 'just commit'
     # non-empty
     if test -z "$arg v"
         set commit "just commit"
@@ -14,13 +15,13 @@ function jc --description 'just commit'
     && command git commit -m "$commit"
 end
 
-function jcf
-    jc (mfa.git-rel-link "$argv")
+function jmf
+    jm (mfa.git-rel-link "$argv")
 end
 
 function jp --description 'just push'
     command git pull # may fail
-    jc "$argv" && command git push -u
+    jm "$argv" && command git push -u
 end
 
 function jpf
@@ -185,6 +186,11 @@ end
 function jst.i
     command date
     jst.battery
+end
+
+function jst.dl.autojump
+    command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$mfa_downloads_dir/autojump
+    command echo "source $HOME/$mfa_downloads_dir/autojump/bin/autojump.fish" >> $fish_config_path
 end
 
 function __jst.new-c

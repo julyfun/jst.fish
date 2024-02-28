@@ -3,6 +3,7 @@ set -g mfa_tmp_dir .mfa/tmp
 set -g mfa_message_path .mfa/tmp/message 
 set -g mfa_message_cmp_path .mfa/tmp/message_cmp
 set -g mfa_user_host julyfun@mfans.fans
+set -g mfa_downloads_dir .mfa/downloads
 
 # [utils function]
 function mfa.copy
@@ -54,6 +55,7 @@ end
 function mfa.init
     command mkdir -p $HOME/.mfa
     command mkdir -p $HOME/.mfa/tmp
+    command mkdir -p $HOME/$mfa_downloads_dir
 end
 
 function mfa.cmd
