@@ -29,6 +29,17 @@ end
 
 # Save this script in a file, e.g., jump.fish
 
+function cpwd
+    if test -z "$argv"
+        set slash ""
+    else
+        set slash "/"
+    end
+    set output (string join '' (pwd) $slash "$argv")
+    echo $output | mfa.copy
+    echo $output
+end
+
 function jd --description "just jump to directory or edit file by name"
     set search_string $argv[1]
 
