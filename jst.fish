@@ -179,7 +179,7 @@ function __jst.dl -d "Download and configure tools auto"
     __jst.dl.$argv[1] $argv[2..-1]
 end
 
-function __jst.new-c
+function __jst.new-c -d "Initialize an empty c project"
     command touch .gitignore
     command echo -e ".vscode\n.DS_Store\n" \
 ".nvimlog\n*.swp\nbuild/\n" > .gitignore
