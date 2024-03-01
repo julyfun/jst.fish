@@ -1,7 +1,6 @@
 set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: configuration file
 alias alias_editor=nvim
-# 就不重构了，多重方式都尝试一下
 
 function jm --description 'just commit'
     # non-empty
@@ -94,63 +93,38 @@ end
 # Call the function with the provided string parameter
 
 alias fn=functions
-function fns
-    functions "$argv" | command tail -10
-end
-
-# cmake make test
-function cmt --description 'cmake make test'
-    command cmake ..
-    command make -j8
-    if test (count $argv) -ge 1
-        ./$argv[1]
-    else
-        ./demo
-    end
-end
 
 function jwhich
     cd (command dirname (command which $argv[1]))
 end
 
-function just.find
-    command find . -name "*"$argv"*"
-end
+# function hp.vim
+#     mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
+# end
 
-function just
-    switch $argv[1]
-    case find
-        just.find $argv[2..-1]
-    end
-end
+# function hp.re
+#     mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
+# end
 
-function hp.vim
-    mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
-end
+# function hp.re.meta
+#     mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
+# end
 
-function hp.re
-    mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
-end
+# function hp.en
+#     mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
+# end
 
-function hp.re.meta
-    mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
-end
+# function hp.fr
+#     mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
+# end
 
-function hp.en
-    mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
-end
+# function hp.latex
+#     mfa.open-link "https://latex.guide/"
+# end
 
-function hp.fr
-    mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
-end
-
-function hp.latex
-    mfa.open-link "https://latex.guide/"
-end
-
-function hp.latex.2
-    mfa.open-link "https://detexify.kirelabs.org/classify.html"
-end
+# function hp.latex.2
+#     mfa.open-link "https://detexify.kirelabs.org/classify.html"
+# end
 
 function baidu
     mfa.open-link "https://www.baidu.com/s?wd=$argv"
@@ -160,26 +134,33 @@ function baidu.ip
     baidu ip
 end
 
-function git-new
-    mfa.open-link "https://github.com/new" 
+# cmake make test
+function __jst.cmt --description 'cmake make test'
+    command cmake ..
+    command make -j8
+    if test (count $argv) -ge 1
+        ./$argv[1]
+    else
+        ./demo
+    end
 end
 
-function git.o
-    mfa.open-link (mfa.github-link "$argv")
-end
-
-function jst.battery
+function __jst.battery
     command system_profiler SPPowerDataType | command grep "State of Charge" | string trim -l
 end
 
-function jst.i
+function __jst.i
     command date
     jst.battery
 end
 
-function jst.dl.autojump
+function __jst.dl.autojump
     command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$mfa_downloads_dir/autojump
     command echo "source $HOME/$mfa_downloads_dir/autojump/bin/autojump.fish" >> $fish_config_path
+end
+
+function __jst.dl
+    __jst.dl.$argv[1] $argv[2..-1]
 end
 
 function __jst.new-c
@@ -194,9 +175,8 @@ function __jst.new-c
     touch include/lib.h
 end
 
-function jst
-    function commit
-        set commit \
+function __jst.commit
+    set commit \
 "[<head>(, <options>)] <content>\n" \
 "example: [feat, run] 添加核心模块\n" \
 "<head>\n" \
@@ -221,97 +201,68 @@ function jst
 "\n" \
 "<content>\n" \
 "书写 commit 的具体信息\n"
-        echo -e $commit
-    end
+    echo -e $commit
+end
 
-    function git
-        function o
-            mfa.open-link (mfa.github-link "$argv")
-        end
-        function log
-            command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short  
-        end
-        function ig
-            command touch .gitignore
-            set content \
+function __jst.git.o
+    mfa.open-link (mfa.github-link "$argv")
+end
+
+function __jst.git.log
+    command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short  
+end
+
+function __jst.git.ig
+    command touch .gitignore
+    set content \
 ".vscode\n" \
 ".DS_Store\n" \
 ".nvimlog\n" \
 "*.swp\n" \
 "\n"
-            echo -e $content
-        end
-        $argv
-        functions -e o
-        functions -e log
-        functions -e ig
-        functions -e ig
-    end
-
-    function new-c
-        __jst.new-c $argv
-    end
-
-    function find
-        just.find "$argv"
-    end
-
-    function grep
-        # -r: 查找所有文件夹
-        # -i: 忽略大小写
-        # -n: 输出行号
-        command grep -nri "$argv" --exclude-dir=".git"
-    end
-
-    function zhi
-        mfa.open-link "https://www.zhihu.com/search?type=content&q=$argv"
-    end
-
-    function gf
-        # 优先执行 fish 函数
-        grep "$argv"
-        find "$argv"
-    end
-
-    function ret
-        cd (command git rev-parse --show-toplevel)
-    end
-
-    function title
-        set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
-        string length -- $low
-        echo $low
-        echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1
-        # -c is complement 补集 
-    end
-
-    function comp
-        command g++ $argv -o 1 -std=c++17 -Wall
-    end
-
-    function run
-        comp $argv && command echo "comp done." && ./1
-    end
-    
-    $argv
-    functions -e commit
-    functions -e git
-    functions -e new-c
-    functions -e find
-    functions -e grep
-    functions -e zhi
-    functions -e gf
-    functions -e ret
-    functions -e title
-    functions -e comp
-    functions -e run
+    echo -e $content
 end
 
-function jst.resize-jpg
-    mfa.open-link https://www.iloveimg.com/zh-cn/resize-image/resize-jpg
+function __jst.git
+    __jst.git.$argv[1] $argv[2..-1]
 end
 
-function jst.zhi
-    mfa.open-link https://www.zhihu.com/search?type=content&q="$argv"
+function __jst.find
+    command find . -name "*"$argv"*"
 end
 
+function __jst.grep
+    # -r: 查找所有文件夹
+    # -i: 忽略大小写
+    # -n: 输出行号
+    command grep -nri "$argv" --exclude-dir=".git"
+end
+
+function __jst.gf
+    __jst.grep "$argv" 
+    __jst.find "$argv" 
+end
+
+function __jst.ret
+    cd (command git rev-parse --show-toplevel)
+end
+
+function __jst.title
+    set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
+    string length -- $low
+    echo $low
+    echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1
+    # -c is complement 补集 
+end
+
+function __jst.comp
+    command g++ $argv -o 1 -std=c++17 -Wall
+end
+
+function __jst.run 
+    __jst.comp $argv && command echo "comp done." && ./1
+end
+
+function jst
+    __jst.$argv[1] $argv[2..-1]
+end
