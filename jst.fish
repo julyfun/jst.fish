@@ -100,7 +100,7 @@ function __jst.dir -d "Jump to subdir or file. Use jd for short"
 
     # Check if any matching directories were found
     if test $tot_cnt -eq 0
-        echo "No matching directories or files found."
+        echo (__mfa.err)"No matching directories or files found."(__mfa.off)
         return 1
     end
     if test $tot_cnt -eq 1
@@ -143,7 +143,7 @@ function __jst.dir -d "Jump to subdir or file. Use jd for short"
         alias_editor (command basename $file_name)
         return 0
     else
-        echo Invalid selection.
+        echo (__mfa.err)Invalid selection.(__mfa.off)
         return 1
     end
 end

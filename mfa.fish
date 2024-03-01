@@ -5,6 +5,14 @@ set -g mfa_message_cmp_path .mfa/tmp/message_cmp
 set -g mfa_user_host julyfun@mfans.fans
 set -g mfa_downloads_dir .mfa/downloads
 
+function __mfa.err
+    set_color red --bold 2> /dev/null
+end
+
+function __mfa.off
+    set_color normal 2> /dev/null
+end
+
 # [utils function]
 function mfa.copy
     switch (uname)
