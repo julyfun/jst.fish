@@ -2,7 +2,7 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: configuration file
 alias alias_editor=nvim
 
-function __jst.commit -d "Simple git commit and simple message"
+function jm --description 'just commit'
     # non-empty
     if test -z "$arg v"
         set commit "just commit"
@@ -14,26 +14,20 @@ function __jst.commit -d "Simple git commit and simple message"
     && command git commit -m "$commit"
 end
 
-alias jm=__jst.commit
-
-function __jst.commit-file -d "Simple commit message for file"
+function jmf
     jm (mfa.git-rel-link "$argv")
 end
 
-alias jmf=__jst.commit-file
-
-function __jst.push -d "Pull, simple commit and push"
+function jp --description 'just push'
     command git pull # may fail
     jm "$argv" && command git push -u
 end
 
-alias jp=__jst.push
-
-function __jst.push-file -d "Pull, simple commit and push file"
+function jpf
     jp (mfa.git-rel-link "$argv")
 end
 
-alias jpf=__jst.push-file
+# Save this script in a file, e.g., jump.fish
 
 function cpwd
     if test -z "$argv"
@@ -46,49 +40,7 @@ function cpwd
     echo $output
 end
 
-function jwhich
-    cd (command dirname (command which $argv[1]))
-end
-
-alias fn=functions
-
-# function hp.vim
-#     mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
-# end
-
-# function hp.re
-#     mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
-# end
-
-# function hp.re.meta
-#     mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
-# end
-
-# function hp.en
-#     mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
-# end
-
-# function hp.fr
-#     mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
-# end
-
-# function hp.latex
-#     mfa.open-link "https://latex.guide/"
-# end
-
-# function hp.latex.2
-#     mfa.open-link "https://detexify.kirelabs.org/classify.html"
-# end
-
-function baidu
-    mfa.open-link "https://www.baidu.com/s?wd=$argv"
-end
-
-function baidu.ip
-    baidu ip
-end
-
-function __jst.dir -d "Jump to subdir or file. Use jd for short"
+function jd --description "just jump to directory or edit file by name"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
@@ -148,16 +100,59 @@ function __jst.dir -d "Jump to subdir or file. Use jd for short"
     end
 end
 
-alias jd=__jst.dir
+
+# Call the function with the provided string parameter
+
+alias fn=functions
+
+function jwhich
+    cd (command dirname (command which $argv[1]))
+end
+
+# function hp.vim
+#     mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
+# end
+
+# function hp.re
+#     mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
+# end
+
+# function hp.re.meta
+#     mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
+# end
+
+# function hp.en
+#     mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
+# end
+
+# function hp.fr
+#     mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
+# end
+
+# function hp.latex
+#     mfa.open-link "https://latex.guide/"
+# end
+
+# function hp.latex.2
+#     mfa.open-link "https://detexify.kirelabs.org/classify.html"
+# end
+
+function baidu
+    mfa.open-link "https://www.baidu.com/s?wd=$argv"
+end
+
+function baidu.ip
+    baidu ip
+end
 
 # cmake make test
-function __jst.cmt -d 'Cmake make test'
+function __jst.cmt --description 'cmake make test'
     command cmake ..
     command make -j8
     if test (count $argv) -ge 1
         ./$argv[1]
     else
-        ./1
+        ./demo
     end
 end
 
@@ -165,7 +160,7 @@ function __jst.battery
     command system_profiler SPPowerDataType | command grep "State of Charge" | string trim -l
 end
 
-function __jst.i -d "Useful information of your system"
+function __jst.i
     command date
     jst.battery
 end
@@ -175,23 +170,23 @@ function __jst.dl.autojump
     command echo "source $HOME/$mfa_downloads_dir/autojump/bin/autojump.fish" >> $fish_config_path
 end
 
-function __jst.dl -d "Download and configure tools auto"
+function __jst.dl
     __jst.dl.$argv[1] $argv[2..-1]
 end
 
 function __jst.new-c
-    command touch .gitignore
-    command echo -e ".vscode\n.DS_Store\n" \
+    touch .gitignore
+    echo -e ".vscode\n.DS_Store\n" \
 ".nvimlog\n*.swp\nbuild/\n" > .gitignore
-    command mkdir build
-    command mkdir src
-    command touch src/main.c
-    command touch src/lib.c
-    command mkdir include
-    command touch include/lib.h
+    mkdir build
+    mkdir src
+    touch src/main.c
+    touch src/lib.c
+    mkdir include
+    touch include/lib.h
 end
 
-function __jst.cmm -d "Git commit message help"
+function __jst.commit
     set commit \
 "[<head>(, <options>)] <content>\n" \
 "example: [feat, run] 添加核心模块\n" \
@@ -239,7 +234,7 @@ function __jst.git.ig
     echo -e $content
 end
 
-function __jst.git -d "Quick subcommands for git"
+function __jst.git
     __jst.git.$argv[1] $argv[2..-1]
 end
 
@@ -254,16 +249,16 @@ function __jst.grep
     command grep -nri "$argv" --exclude-dir=".git"
 end
 
-function __jst.gf -d "Search via title and contents"
+function __jst.gf
     __jst.grep "$argv" 
     __jst.find "$argv" 
 end
 
-function __jst.ret -d "Return to the root of current git repo"
+function __jst.ret -d "Return to the root of current git repo."
     cd (command git rev-parse --show-toplevel)
 end
 
-function __jst.title -d "Get a Stackoverflow-style title"
+function __jst.title
     set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
     string length -- $low
     echo $low
@@ -271,37 +266,18 @@ function __jst.title -d "Get a Stackoverflow-style title"
     # -c is complement 补集 
 end
 
-function __jst.comp -d "Compile a cpp file using c++17 standard"
+function __jst.comp
     command g++ $argv -o 1 -std=c++17 -Wall
 end
 
-function __jst.run -d "Compile and run a cpp file using c++17"
-    __jst.comp $argv && command echo "Comp done." && ./1
+function __jst.run 
+    __jst.comp $argv && command echo "comp done." && ./1
 end
 
-function __jst.get-func-desc -d "Get the description of a function"
-    string match -rq -- '--description [\'"](?<desc>[^\'"]+)' (functions $argv[1])
-    echo $desc
+function __jst.get-func-desc
 end
 
-function jst -d "Just do something"
+function jst
     __jst.$argv[1] $argv[2..-1]
-end
-
-# [automatically set jst subcommands completions]
-set -l jst_func (string match '__jst.*' (functions --all))
-for func in $jst_func
-    set -l remove_underscore (string sub -s 3 $func)
-    set -l splited (string split . -m1 $remove_underscore)
-    if string match -rq '\.' $splited[2] # 存在点，不是一个直接子命令
-        continue
-    end
-    set desc (__jst.get-func-desc $func)
-    # echo $func
-    # 字符串长度为 0
-    # if test -z $desc
-    #     continue
-    # end
-    complete -c jst -f -a $splited[2] -n "__fish_use_subcommand" -d $desc
 end
 
