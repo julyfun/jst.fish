@@ -17,7 +17,7 @@ end
 alias jm=__jst.commit
 
 function __jst.commit-file -d "Simple commit message for file"
-    jm (mfa.git-rel-link "$argv")
+    jm (__mfa.git-rel-link "$argv")
 end
 
 alias jmf=__jst.commit-file
@@ -30,7 +30,7 @@ end
 alias jp=__jst.push
 
 function __jst.push-file -d "Pull, simple commit and push file"
-    jp (mfa.git-rel-link "$argv")
+    jp (__mfa.git-rel-link "$argv")
 end
 
 alias jpf=__jst.push-file
@@ -42,7 +42,7 @@ function cpwd
         set slash "/"
     end
     set output (string join '' (pwd) $slash "$argv")
-    echo $output | mfa.copy
+    echo $output | __mfa.copy
     echo $output
 end
 
@@ -53,35 +53,35 @@ end
 alias fn=functions
 
 # function hp.vim
-#     mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
+#     __mfa.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
 # end
 
 # function hp.re
-#     mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
+#     __mfa.open-link "https://www.runoob.com/regexp/regexp-syntax.html"
 # end
 
 # function hp.re.meta
-#     mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
+#     __mfa.open-link "https://www.runoob.com/regexp/regexp-metachar.html"
 # end
 
 # function hp.en
-#     mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
+#     __mfa.open-link "https://www.youdao.com/result?word="$argv"&lang=en"
 # end
 
 # function hp.fr
-#     mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
+#     __mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
 # end
 
 # function hp.latex
-#     mfa.open-link "https://latex.guide/"
+#     __mfa.open-link "https://latex.guide/"
 # end
 
 # function hp.latex.2
-#     mfa.open-link "https://detexify.kirelabs.org/classify.html"
+#     __mfa.open-link "https://detexify.kirelabs.org/classify.html"
 # end
 
 function baidu
-    mfa.open-link "https://www.baidu.com/s?wd=$argv"
+    __mfa.open-link "https://www.baidu.com/s?wd=$argv"
 end
 
 function baidu.ip
@@ -171,8 +171,8 @@ function __jst.i -d "Useful information of your system"
 end
 
 function __jst.dl.autojump
-    command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$mfa_downloads_dir/autojump
-    command echo "source $HOME/$mfa_downloads_dir/autojump/bin/autojump.fish" >> $fish_config_path
+    command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$MFA_DOWNLOADS_DIR/autojump
+    command echo "source $HOME/$MFA_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $fish_config_path
 end
 
 function __jst.dl -d "Download and configure tools auto"
@@ -221,7 +221,7 @@ function __jst.cmm -d "Git commit message help"
 end
 
 function __jst.git.o
-    mfa.open-link (mfa.github-link "$argv")
+    __mfa.open-link (__mfa.github-link "$argv")
 end
 
 function __jst.git.log
@@ -279,24 +279,19 @@ function __jst.run -d "Compile and run a cpp file using c++17"
     __jst.comp $argv && command echo "Comp done." && ./1
 end
 
-function __jst.get-func-desc -d "Get the description of a function"
-    string match -rq -- '--description [\'"](?<desc>[^\'"]+)' (functions $argv[1])
-    echo $desc
-end
 
 function jst -d "Just do something"
     __jst.$argv[1] $argv[2..-1]
 end
 
 # [automatically set jst subcommands completions]
-set -l jst_func (string match '__jst.*' (functions --all))
-for func in $jst_func
+for func in (string match '__jst.*' (functions --all))
     set -l remove_underscore (string sub -s 3 $func)
     set -l splited (string split . -m1 $remove_underscore)
     if string match -rq '\.' $splited[2] # 存在点，不是一个直接子命令
         continue
     end
-    set desc (__jst.get-func-desc $func)
+    set desc (__mfa.get-func-desc $func)
     # echo $func
     # 字符串长度为 0
     # if test -z $desc
