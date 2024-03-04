@@ -266,8 +266,10 @@ end
 function __jst.title -d "Get a Stackoverflow-style title"
     set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
     string length -- $low
-    echo $low
-    echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1
+    set sub (echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1)
+    set rep (string replace -r -a -- '(-)+' '-' $sub)
+    set tri (string trim --chars='-' $rep)
+    echo $tri
     # -c is complement 补集 
 end
 
