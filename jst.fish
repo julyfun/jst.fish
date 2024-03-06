@@ -92,8 +92,8 @@ function __jst.dir -d "Jump to subdir or file. Use jd for short"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
-    set matching_directories (command find . -type d -name "*$search_string*" 2>/dev/null)
-    set matching_files (command find . -type f -name "*$search_string*" 2>/dev/null)
+    set matching_directories (command find . -type d -iname "*$search_string*" 2>/dev/null)
+    set matching_files (command find . -type f -iname "*$search_string*" 2>/dev/null)
     set dir_cnt (count $matching_directories)
     set file_cnt (count $matching_files)
     set tot_cnt (math $dir_cnt + $file_cnt)
@@ -265,11 +265,11 @@ end
 
 function __jst.title -d "Get a Stackoverflow-style title"
     set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
-    string length -- $low
     set sub (echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1)
     set rep (string replace -r -a -- '(-)+' '-' $sub)
     set tri (string trim --chars='-' $rep)
     echo $tri
+    echo $tri | __mfa.copy
     # -c is complement 补集 
 end
 
