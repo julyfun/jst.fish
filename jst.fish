@@ -92,8 +92,8 @@ function __jst.dir -d "Jump to subdir or file. Use jd for short"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
-    set matching_directories (command find . -type d -iname "*$search_string*" 2>/dev/null)
-    set matching_files (command find . -type f -iname "*$search_string*" 2>/dev/null)
+    set matching_directories (command find . -type d -iname "*$search_string*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    set matching_files (command find . -type f -iname "*$search_string*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
     set dir_cnt (count $matching_directories)
     set file_cnt (count $matching_files)
     set tot_cnt (math $dir_cnt + $file_cnt)
