@@ -159,7 +159,7 @@ function __mfa.github-link
         set remote_relative_arg "tree/$branch/$relative_arg"
     end
     # 避免和 fish 内定义的临时 git 名冲突
-    command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\.git'
+    command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)(\.git|\s)'
     echo (string join -n '/' "https://github.com" $user_repo $remote_relative_arg)
 end
 
