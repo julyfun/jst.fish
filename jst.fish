@@ -234,9 +234,8 @@ function __jst.git.ig
 ".vscode\n" \
 ".DS_Store\n" \
 ".nvimlog\n" \
-"*.swp\n" \
-"\n"
-    echo -e $content
+"*.swp\n"
+    echo -e "$content" > .gitignore
 end
 
 function __jst.git -d "Quick subcommands for git"
