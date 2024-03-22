@@ -181,7 +181,7 @@ end
 
 function __jst.i -d "Useful information of your system"
     command date
-    jst.battery
+    __jst.battery
 end
 
 function __jst.dl.autojump
