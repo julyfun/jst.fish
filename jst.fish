@@ -4,7 +4,7 @@ alias alias_editor=nvim
 
 function __jst.commit -d "Simple git commit and simple message"
     # non-empty
-    if test -z "$arg v"
+    if test -z "$argv"
         set commit "just commit"
     else
         set commit "$argv"
@@ -242,9 +242,8 @@ function __jst.git.ig
 ".vscode\n" \
 ".DS_Store\n" \
 ".nvimlog\n" \
-"*.swp\n" \
-"\n"
-    echo -e $content
+"*.swp\n"
+    echo -e "$content" > .gitignore
 end
 
 function __jst.git -d "Quick subcommands for git"

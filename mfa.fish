@@ -160,6 +160,9 @@ function __mfa.github-link
     end
     # 避免和 fish 内定义的临时 git 名冲突
     command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\.git'
+    if test -z $user_repo
+        command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\s'
+    end
     echo (string join -n '/' "https://github.com" $user_repo $remote_relative_arg)
 end
 
