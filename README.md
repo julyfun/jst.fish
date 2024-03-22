@@ -8,7 +8,7 @@ source <path-to-repo-in-step-1>/mfa.fish
 source <path-to-repo-in-step-1>/jst.fish # optional
 ```
 
-| Command       | Param (Example)                                        | Result                                                       |
+| Command       | Parameter (Example)                                    | Result                                                       |
 | ------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
 | `mfa upa`     | `mfa upa https://github.com/wangwc18/mygoFlaskProject` | Upload this address to Mfans server                          |
 | `jd`          | `jd python`                                            | Jump to subdirectory with similar name to `python`           |
@@ -38,7 +38,7 @@ source <path-to-repo-in-step-1>/jst.fish # optional
 - [ ] 用 toml 自定义短命令
 - [ ] 建立 jst dl 下载和配置的清单。需要考虑用什么形式实现。
 
-## Priciples
+## Principles
 
 - 避免敏感操作，如 `apt upgrade`
 
