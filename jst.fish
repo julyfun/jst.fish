@@ -89,7 +89,13 @@ function baidu.ip
 end
 
 function __jst.d.u
-    command du -h --max-depth=1 $argv[1] | sort -hr
+    # switch (uname)
+    # case Linux
+    #     command du -h --max-depth=1 * | sort -hr
+    # case Darwin
+    #     command du -h -d 0 * | sort -hr
+    # end
+    command du -d 0 -h * | sort -hr
 end
 
 function __jst.d
