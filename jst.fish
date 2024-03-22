@@ -88,6 +88,14 @@ function baidu.ip
     baidu ip
 end
 
+function __jst.d.u
+    command du -h --max-depth=1 $argv[1] | sort -hr
+end
+
+function __jst.d
+    __jst.d.$argv[1] $argv[2..-1]
+end
+
 function __jst.dir -d "Jump to subdir or file. Use jd for short"
     set search_string $argv[1]
 
