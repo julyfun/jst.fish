@@ -249,9 +249,9 @@ end
 function __jst.git.ig
     command touch .gitignore
     set content \
-".vscode\n" \
-".DS_Store\n" \
-".nvimlog\n" \
+".vscode\n"\
+".DS_Store\n"\
+".nvimlog\n"\
 "*.swp\n"
     echo -e "$content" > .gitignore
 end
