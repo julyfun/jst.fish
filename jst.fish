@@ -234,6 +234,10 @@ function __jst.cmm -d "Git commit message help"
     echo -e $commit
 end
 
+function __jst.git.c
+    command git clone git@github.com:"$argv".git
+end
+
 function __jst.git.o
     __mfa.open-link (__mfa.github-link "$argv")
 end
