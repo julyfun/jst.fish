@@ -235,7 +235,7 @@ function __jst.cmm -d "Git commit message help"
 end
 
 function __jst.git.c
-    command git clone git@github.com:"$argv".git
+    command git clone git@github.com:"$argv[1]".git $argv[2..-1]
 end
 
 function __jst.git.o
@@ -261,7 +261,7 @@ function __jst.git -d "Quick subcommands for git"
 end
 
 function __jst.find
-    command find . -name "*"$argv"*"
+    command find . -iname "*"$argv"*"
 end
 
 function __jst.grep
