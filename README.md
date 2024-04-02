@@ -23,6 +23,8 @@ source <path-to-repo-in-step-1>/jst.fish # optional
 | `jst git log` |                                                        | Show beautiful commit history of current repo                |
 | `jst git o`   | `jst git o README.md`                                  | Open the github page of `README.md` in current folder        |
 
+![](./example.jpg)
+
 ## Introduction
 
 这是一个神奇的快捷工具箱，只为 fish shell 提供，因为 fish shell 的语法舒服。分为两个部分：
