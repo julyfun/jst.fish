@@ -90,7 +90,38 @@ end
 
 # [jst]
 function __jst.how -d "Create a how-to article"
-    set begin
+    if test -z "$argv"
+        echo "Please provide a title for the article."
+        return 1
+    end
+    set title $argv
+    set link_title (jst title $title)
+    set date (date "+%Y-%m-%d")
+    set os (uname -a)
+    set git_config_user_name (command git config user.name)
+    # ref: https://stackoverflow.com/help/how-to-answer
+    # - question: asked how-to
+    # - draft: a brief answer without reliable reference or enough environment information
+    # - essay: a reliable answer, providing context for links and information for reproduction
+    #   but may be only useful for people familiar with the relevant fields
+    # - course: a detailed answer with step-by-step instructions, friendly to newcomers,
+    #   low threshold for reading and reproducing
+    # - Good Article - Featured Content
+    set type draft
+    set head \
+"---\n"\
+"type: $type\n"\
+"date: $date\n"\
+"os: \"$os\"\n"\
+"author: \"$git_config_user_name\"\n"\
+"suppose-you-know: [computer]\n"\
+"---\n"\
+"\n"\
+"# $title\n"\
+"\n"\
+"\n"
+    touch $link_title.md
+    echo -e $head > $link_title.md
 end
 
 function __jst.d.u
@@ -291,7 +322,7 @@ function __jst.title -d "Get a Stackoverflow-style title"
     set rep (string replace -r -a -- '(-)+' '-' $sub)
     set tri (string trim --chars='-' $rep)
     echo $tri
-    echo $tri | __mfa.copy
+    # echo $tri | __mfa.copy
     # -c is complement 补集 
 end
 
