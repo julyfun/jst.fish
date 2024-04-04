@@ -88,6 +88,11 @@ function baidu.ip
     baidu ip
 end
 
+# [jst]
+function __jst.how -d "Create a how-to article"
+    set begin
+end
+
 function __jst.d.u
     # switch (uname)
     # case Linux
@@ -207,30 +212,30 @@ end
 
 function __jst.cmm -d "Git commit message help"
     set commit \
-"[<head>(, <options>)] <content>\n" \
-"example: [feat, run] 添加核心模块\n" \
-"<head>\n" \
-"feat      功能    添加 / 更改主要功能\n" \
-"fix       修复    修复运行的问题或 bug\n" \
-"comment   注释\n" \
-"doc       文档\n" \
-"test      测试    添加 / 更改测试行的功能\n" \
-"style     格式    规范代码风格, 调整代码顺序, 修改变量名等提升可读性的修改\n" \
-"refactor  重构    不是新增功能、修改 bug 的代码变动\n" \
-"perf      优化    提升性能、体验等\n" \
-"config    配置    配置文件、资源文件相关的改动\n" \
-"tools     工具    构建过程或辅助工具的变动\n" \
-"revert    回滚    撤销 commit，回滚版本等\n" \
-"merge     合并    合并分支, 在两个分支都有修改时使用\n" \
-"sync      同步    同步分支, 在分支落后于另一分支时使用\n" \
-"others    其它    一般在测试仓库功能的时候使用, 正常写代码不建议使用\n" \
-"\n" \
-"<options>\n" \
-"run       在生产环境上运行代码\n" \
-"to        只产生 diff 而不保证可用性, 适合于多次提交, 最后完善时移除 option\n" \
-"\n" \
-"<content>\n" \
-"书写 commit 的具体信息\n"
+"<head>(, <options>): <content>\n"\
+"example: feat, run: 添加核心模块\n"\
+"<head>\n"\
+"  feat      功能    添加 / 更改主要功能\n"\
+"  fix       修复    修复运行的问题或 bug\n"\
+"  comment   注释\n"\
+"  doc       文档\n"\
+"  test      测试    添加 / 更改测试行的功能\n"\
+"  style     格式    规范代码风格, 调整代码顺序, 修改变量名等提升可读性的修改\n"\
+"  refactor  重构    不是新增功能、修改 bug 的代码变动\n"\
+"  perf      优化    提升性能、体验等\n"\
+"  config    配置    配置文件、资源文件相关的改动\n"\
+"  tools     工具    构建过程或辅助工具的变动\n"\
+"  revert    回滚    撤销 commit，回滚版本等\n"\
+"  merge     合并    合并分支, 在两个分支都有修改时使用\n"\
+"  sync      同步    同步分支, 在分支落后于另一分支时使用\n"\
+"  others    其它    一般在测试仓库功能的时候使用, 正常写代码不建议使用\n"\
+"\n"\
+"<options>\n"\
+"  run       在生产环境上运行代码\n"\
+"  to        只产生 diff 而不保证可用性, 适合于多次提交, 最后完善时移除 option\n"\
+"\n"\
+"<content>\n"\
+"  书写 commit 的具体信息"
     echo -e $commit
 end
 
