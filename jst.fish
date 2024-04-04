@@ -2,7 +2,7 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: configuration file
 alias alias_editor=nvim
 
-function __jst.commit -d "Simple git commit and simple message"
+function __jst.commit -d "Simple commit with simple message"
     # non-empty
     if test -z "$argv"
         set commit "just commit"
@@ -138,7 +138,7 @@ function __jst.d
     __jst.d.$argv[1] $argv[2..-1]
 end
 
-function __jst.dir -d "Jump to subdir or file. Use jd for short"
+function __jst.dir -d "Jump to subdir or file. Short: jd"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
@@ -312,7 +312,7 @@ function __jst.gf -d "Search via title and contents"
     __jst.find "$argv" 
 end
 
-function __jst.ret -d "Return to the root of current git repo"
+function __jst.ret -d "Return to git repo root"
     cd (command git rev-parse --show-toplevel)
 end
 
@@ -326,11 +326,11 @@ function __jst.title -d "Get a Stackoverflow-style title"
     # -c is complement 补集 
 end
 
-function __jst.comp -d "Compile a cpp file using c++17 standard"
+function __jst.comp -d "Compile a cpp file using c++17"
     command g++ $argv -o 1 -std=c++17 -Wall
 end
 
-function __jst.run -d "Compile and run a cpp file using c++17"
+function __jst.run -d "Comp & run a cpp file using c++17"
     __jst.comp $argv && command echo "Comp done." && ./1
 end
 
