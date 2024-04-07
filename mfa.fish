@@ -13,6 +13,19 @@ function __mfa.off
     set_color normal 2> /dev/null
 end
 
+function __mfa.under
+    set_color --underline 2> /dev/null
+end
+
+function __mfa.yellow
+    set_color yellow 2> /dev/null
+end
+
+function __mfa.no-subcommand
+    echo (__mfa.err)"error:"(__mfa.off)\
+        unrecognized subcommand \'(__mfa.yellow)$argv[1](__mfa.off)\'
+end
+
 # [utils function]
 function __mfa.copy
     switch (uname)

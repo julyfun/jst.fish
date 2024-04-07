@@ -97,6 +97,7 @@ function __jst.how -d "Create a how-to article"
     set title $argv
     set link_title (jst title $title)
     set date (date "+%Y-%m-%d")
+    set language Chinese
     set os (uname -a)
     set git_config_user_name (command git config user.name)
     # ref: https://stackoverflow.com/help/how-to-answer
@@ -112,6 +113,7 @@ function __jst.how -d "Create a how-to article"
 "---\n"\
 "type: $type\n"\
 "date: $date\n"\
+"language: \"$language\"\n"\
 "os: \"$os\"\n"\
 "author: \"$git_config_user_name\"\n"\
 "suppose-you-know: [computer]\n"\
@@ -293,7 +295,14 @@ function __jst.git.ig
 end
 
 function __jst.git -d "Quick subcommands for git"
+    if not type -q __jst.git.$argv[1] # 该函数是否存在
+        __mfa.no-subcommand $argv[1]
+        return 1
+    end
     __jst.git.$argv[1] $argv[2..-1]
+        # echo (__mfa.err)"error:"(__mfa.off)\
+        #     \'jst git (__mfa.yellow)(__mfa.under)$argv[1](__mfa.off)\'\
+        #     does not exist.
 end
 
 function __jst.find
