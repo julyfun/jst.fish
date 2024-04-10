@@ -94,13 +94,13 @@ function __jst.how -d "Create a how-to article"
         echo "Please provide a title for the article."
         return 1
     end
-    set title $argv
+    set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
     set link_title (jst title $title)
     set date (date "+%Y-%m-%d")
     set language Chinese
     set os (uname -a)
     set git_config_user_name (command git config user.name)
-    # ref: https://stackoverflow.com/help/how-to-answer
+    # see: https://stackoverflow.com/help/how-to-answer
     # - question: asked how-to
     # - draft: a brief answer without reliable reference or enough environment information
     # - essay: a reliable answer, providing context for links and information for reproduction
@@ -109,19 +109,20 @@ function __jst.how -d "Create a how-to article"
     #   low threshold for reading and reproducing
     # - Good Article - Featured Content
     set type draft
+    # yml format
     set head \
-"---\n"\
-"type: $type\n"\
-"date: $date\n"\
-"language: \"$language\"\n"\
-"os: \"$os\"\n"\
-"author: \"$git_config_user_name\"\n"\
-"suppose-you-know: [computer]\n"\
-"---\n"\
-"\n"\
-"# $title\n"\
-"\n"\
-"\n"
+---\n\
+type: $type\n\
+date: $date\n\
+language: \"$language\"\n\
+os: \"$os\"\n\
+author: \"$git_config_user_name\"\n\
+suppose-you-know: [computer]\n\
+---\n\
+\n\
+\# $title\n\
+\n\
+\n
     touch $link_title.md
     echo -e $head > $link_title.md
 end
