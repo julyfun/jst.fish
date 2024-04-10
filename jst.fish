@@ -14,26 +14,26 @@ function __jst.commit -d "Simple commit with simple message"
     && command git commit -m "$commit"
 end
 
-alias jm=__jst.commit
+alias jm="jst commit"
 
 function __jst.commit-file -d "Simple commit message for file"
     jm (__mfa.git-rel-link "$argv")
 end
 
-alias jmf=__jst.commit-file
+alias jmf="jst commit-file"
 
 function __jst.push -d "Pull, simple commit and push"
     command git pull # may fail
     jm "$argv" && command git push -u
 end
 
-alias jp=__jst.push
+alias jp="jst push"
 
 function __jst.push-file -d "Pull, simple commit and push file"
     jp (__mfa.git-rel-link "$argv")
 end
 
-alias jpf=__jst.push-file
+alias jpf="jst push-file"
 
 function cpwd
     if test -z "$argv"
@@ -123,7 +123,7 @@ suppose-you-know: [computer]\n\
 \# $title\n\
 \n\
 \n
-    touch $link_title.md
+    command touch $link_title.md
     echo -e $head > $link_title.md
 end
 
@@ -141,7 +141,7 @@ function __jst.d
     __jst.d.$argv[1] $argv[2..-1]
 end
 
-function __jst.dir -d "Jump to subdir or file. Short: jd"
+function __jst.dir -d "Jump to subdir or fil (jd)"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
@@ -201,7 +201,7 @@ function __jst.dir -d "Jump to subdir or file. Short: jd"
     end
 end
 
-alias jd=__jst.dir
+alias jd="jst dir"
 
 # cmake make test
 function __jst.cmt -d 'Cmake make test'
@@ -322,7 +322,11 @@ function __jst.gf -d "Search via title and contents"
     __jst.find "$argv" 
 end
 
-function __jst.ret -d "Return to git repo root"
+function __jst.r -d "alias: ret"
+    __jst.ret $argv[2..-1]
+end
+
+function __jst.ret -d "Return to git repo root (jst r)"
     cd (command git rev-parse --show-toplevel)
 end
 
