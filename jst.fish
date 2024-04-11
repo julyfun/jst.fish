@@ -90,12 +90,12 @@ end
 
 # [jst]
 function __jst.how -d "Create a how-to article"
-    if test -z "$argv"
-        echo "Please provide a title for the article."
+    set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
+    set link_title (jst title "$title")
+    if test -z "$link_title"
+        echo "Please provide a valid title for the article."
         return 1
     end
-    set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
-    set link_title (jst title $title)
     set date (date "+%Y-%m-%d")
     set language Chinese
     set os (uname -a)
@@ -331,10 +331,11 @@ function __jst.ret -d "Return to git repo root (jst r)"
 end
 
 function __jst.title -d "Get a Stackoverflow-style title"
-    set low (command echo $argv | command tr '[:upper:]' '[:lower:]')
-    set sub (echo $low | command tr -c '[:alnum:]' '-' | string sub -e -1)
-    set rep (string replace -r -a -- '(-)+' '-' $sub)
-    set tri (string trim --chars='-' $rep)
+    set low (command echo $argv | command tr '[:upper:]' '[:lower:]') # 小写
+    set no_single_quote (string replace -r -a -- "'" "" $low) # 删除单引号
+    set sub (command echo $no_single_quote | command tr -c '[:alnum:]' '-' | string sub -e -1) # 将所有符号换为 -
+    set rep (string replace -r -a -- '(-)+' '-' $sub) # 处理重复 -
+    set tri (string trim --chars='-' $rep) # 删两边
     echo $tri
     # echo $tri | __mfa.copy
     # -c is complement 补集 

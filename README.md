@@ -36,9 +36,10 @@ source <path-to-repo-in-step-1>/jst.fish # optional
 ## Todo
 
 - [ ] mfa upa 时自动 mfa init
-- [x] just 系列命令整合
+- [x] jst 系列命令整合
 - [ ] 用 toml 自定义短命令
 - [ ] 建立 jst dl 下载和配置的清单。需要考虑用什么形式实现。
+- [ ] jst title 支持汉字
 
 ## Principles
 
