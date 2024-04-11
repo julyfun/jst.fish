@@ -101,7 +101,8 @@ function __jst.how -d "Create a how-to article"
     set os (uname -a)
     set git_config_user_name (command git config user.name)
     # see: https://stackoverflow.com/help/how-to-answer
-    # - question: asked how-to
+    # - question: asking how
+    # - unfinished: answering
     # - draft: a brief answer without reliable reference or enough environment information
     # - essay: a reliable answer, providing context for links and information for reproduction
     #   but may be only useful for people familiar with the relevant fields
