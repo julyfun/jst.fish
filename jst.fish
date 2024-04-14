@@ -92,6 +92,7 @@ end
 function __jst.how -d "Create a how-to article"
     set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
     set link_title (jst title "$title")
+    set cut_title (string trim (string sub --end=80 "$link_title") --chars='-')
     if test -z "$link_title"
         echo "Please provide a valid title for the article."
         return 1
@@ -124,7 +125,7 @@ suppose-you-know: [computer]\n\
 \# $title\n\
 \n\
 \n
-    command touch $link_title.md
+    command touch $cut_title.md
     echo -e $head > $link_title.md
 end
 
