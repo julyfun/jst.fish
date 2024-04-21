@@ -89,6 +89,11 @@ function baidu.ip
 end
 
 # [jst]
+function __jst.tl -d "Translate"
+    set str (string replace -a '\n' ' ' "$argv")
+    __mfa.open-link "https://translate.google.com.hk/?sl=auto&tl=zh-CN&text=$str&op=translate"
+end
+
 function __jst.how -d "Create a how-to article"
     set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
     set link_title (jst title "$title")
@@ -102,8 +107,8 @@ function __jst.how -d "Create a how-to article"
     set os (uname -a)
     set git_config_user_name (command git config user.name)
     # see: https://stackoverflow.com/help/how-to-answer
-    # - question: asking how
-    # - unfinished: answering
+    # - question .1.md: asking how
+    # - unfinished .todo.md: answering
     # - draft: a brief answer without reliable reference or enough environment information
     # - essay: a reliable answer, providing context for links and information for reproduction
     #   but may be only useful for people familiar with the relevant fields
@@ -126,7 +131,7 @@ suppose-you-know: [computer]\n\
 \n\
 \n
     command touch $cut_title.md
-    echo -e $head > $link_title.md
+    command echo -e $head > $cut_title.md
 end
 
 function __jst.d.u
@@ -206,14 +211,14 @@ end
 alias jd="jst dir"
 
 # cmake make test
-function __jst.cmt -d 'Cmake make test'
-    command cmake ..
-    command make -j8
-    if test (count $argv) -ge 1
-        ./$argv[1]
-    else
-        ./1
-    end
+function __jst.crun -d 'CMake make run'
+    command cmake .. &&\
+        command make -j8 &&\
+        if test (count $argv) -ge 1
+            ./$argv[1]
+        else
+            ./1
+        end
 end
 
 function __jst.battery
@@ -284,6 +289,14 @@ function __jst.git.o
 end
 
 function __jst.git.log
+    command git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ad)%C(reset) - %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all --date=short
+end
+
+function __jst.git.log1
+    command git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+end
+
+function __jst.git.log2
     command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short  
 end
 
