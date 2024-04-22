@@ -14,17 +14,19 @@ function __jst.commit -d "Simple commit with simple message"
     && command git commit -m "$commit"
 end
 
-alias jm="jst commit"
+alias ja="jst commit" # atomic commit
 
 function __jst.commit-file -d "Simple commit message for file"
-    jm (__mfa.git-rel-link "$argv")
+    # 不要和 autojump 发生冲突
+    # https://github.com/wting/autojump
+    ja (__mfa.git-rel-link "$argv")
 end
 
-alias jmf="jst commit-file"
+alias jaf="jst commit-file"
 
 function __jst.push -d "Pull, simple commit and push"
     command git pull \
-    && jm "$argv" && command git push -u
+    && ja "$argv" && command git push -u
 end
 
 alias jp="jst push"
