@@ -338,11 +338,12 @@ function __jst.gf -d "Search via title and contents"
     __jst.find "$argv" 
 end
 
-function __jst.r -d "alias: ret"
+function __jst.y -d "alias: ret"
+    # yield
     __jst.ret $argv[2..-1]
 end
 
-function __jst.ret -d "Return to git repo root (jst r)"
+function __jst.ret -d "Return to git repo root (jst y)"
     cd (command git rev-parse --show-toplevel)
 end
 
