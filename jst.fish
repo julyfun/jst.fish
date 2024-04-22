@@ -295,7 +295,9 @@ function __jst.git.o
 end
 
 function __jst.git.log
-    command git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ad)%C(reset) - %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all --date=short
+    set layer (math (__mfa.git-log-graph-merge-layer-char))
+    set layer2 (math $layer + 50)
+    command git log --graph --abbrev-commit --decorate --date=format:"%y-%m-%d %H:%I" --format=format:"%<|($layer)%>|(1)%C(auto)%d%C(reset) %C(white)%<|($layer2,trunc)%s%C(reset) %C(bold green)%ad%C(reset) %C(bold blue)%h%C(reset) %C(dim white)%an%C(reset)" --all
 end
 
 function __jst.git.log1

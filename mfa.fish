@@ -26,6 +26,24 @@ function __mfa.no-subcommand
         unrecognized subcommand \'(__mfa.yellow)$argv[1](__mfa.off)\'
 end
 
+# [base and math]
+function __mfa.length-of-longest-line
+    set lines (string split \n $argv)
+    set len 0
+    for line in $lines
+        set str_len (string length $line)
+        if test $str_len -gt $len
+            set len $str_len
+        end
+    end
+    echo $len
+end
+
+function __mfa.git-log-graph-merge-layer-char
+    # [todo] limit depth to avoid too deep merge layer 
+    __mfa.length-of-longest-line (git --no-pager log --graph --format=format:'' --all)
+end
+
 # [utils function]
 function __mfa.copy
     switch (uname)
