@@ -303,10 +303,11 @@ end
 function __jst.git.ig
     command touch .gitignore
     set content \
-".vscode\n"\
-".DS_Store\n"\
-".nvimlog\n"\
-"*.swp\n"
+.vscode\n\
+.DS_Store\n\
+.nvimlog\n\
+"*.swp"\n\
+.zed
     echo -e "$content" > .gitignore
 end
 
