@@ -23,8 +23,8 @@ end
 alias jmf="jst commit-file"
 
 function __jst.push -d "Pull, simple commit and push"
-    command git pull # may fail
-    jm "$argv" && command git push -u
+    command git pull \
+    && jm "$argv" && command git push -u
 end
 
 alias jp="jst push"
