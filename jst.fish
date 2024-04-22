@@ -25,8 +25,11 @@ end
 alias jaf="jst commit-file"
 
 function __jst.push -d "Pull, simple commit and push"
-    command git pull \
-    && ja "$argv"; command git push -u
+    if not command git pull
+        return
+    end
+    ja "$argv"
+    command git push -u
     # jst push 的职责是同步更改
 end
 
