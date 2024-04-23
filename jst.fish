@@ -131,6 +131,7 @@ language: \"$language\"\n\
 os: \"$os\"\n\
 author: \"$git_config_user_name\"\n\
 suppose-you-know: [computer]\n\
+keywords: []\n\
 ---\n\
 \n\
 \# $title\n\
@@ -247,7 +248,7 @@ end
 
 function __jst.new-c -d "Initialize an empty c project"
     command touch .gitignore
-    command echo -e ".vscode\n.DS_Store\n" \
+    echo -e ".vscode\n.DS_Store\n" \
 ".nvimlog\n*.swp\nbuild/\n" > .gitignore
     command mkdir build
     command mkdir src
