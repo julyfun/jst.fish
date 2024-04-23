@@ -137,7 +137,7 @@ suppose-you-know: [computer]\n\
 \n\
 \n
     command touch $cut_title.md
-    command echo -e $head > $cut_title.md
+    echo -e "$head" > $cut_title.md # command echo 不行
 end
 
 function __jst.d.u
