@@ -134,9 +134,7 @@ suppose-you-know: [computer]\n\
 keywords: []\n\
 ---\n\
 \n\
-\# $title\n\
-\n\
-\n
+\# $title\n
     command touch $cut_title.md
     echo -e "$head" > $cut_title.md # command echo 不行
 end
@@ -203,7 +201,7 @@ function __jst.dir -d "Jump to subdir or fil (jd)"
     if test "$chosen_number" -gt 0; and test "$chosen_number" -le $dir_cnt
         cd $matching_directories[$chosen_number]
         return 0
-    else if test "$chosen_number" -gt $dir_cnt; and test "$chosen_number" -le $tot_cnt  
+    else if test "$chosen_number" -gt $dir_cnt; and test "$chosen_number" -le $tot_cnt
         set -l idx (math $chosen_number - $dir_cnt)
         set -l file_name $matching_files[$idx]
         cd (command dirname $file_name)
@@ -283,7 +281,7 @@ function __jst.cmm -d "Git commit message help"
 "  to        只产生 diff 而不保证可用性, 适合于多次提交, 最后完善时移除 option\n"\
 "\n"\
 "<content>\n"\
-"  书写 commit 的具体信息"
+"  书写 commit 的具体信息，应在 50 字符以内，并使用一般时态动词 + 宾语进行描述"
     echo -e $commit
 end
 
@@ -306,7 +304,7 @@ function __jst.git.log1
 end
 
 function __jst.git.log2
-    command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short  
+    command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short
 end
 
 function __jst.git.ig
@@ -343,8 +341,8 @@ function __jst.grep
 end
 
 function __jst.gf -d "Search via title and contents"
-    __jst.grep "$argv" 
-    __jst.find "$argv" 
+    __jst.grep "$argv"
+    __jst.find "$argv"
 end
 
 function __jst.y -d "alias: ret"
@@ -364,7 +362,7 @@ function __jst.title -d "Get a Stackoverflow-style title"
     set tri (string trim --chars='-' $rep) # 删两边
     echo $tri
     # echo $tri | __mfa.copy
-    # -c is complement 补集 
+    # -c is complement 补集
 end
 
 function __jst.comp -d "Compile a cpp file using c++17"
@@ -395,4 +393,3 @@ for func in (string match '__jst.*' (functions --all))
     # end
     complete -c jst -f -a $splited[2] -n "__fish_use_subcommand" -d $desc
 end
-
