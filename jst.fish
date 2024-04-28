@@ -115,13 +115,14 @@ function __jst.how -d "Create a how-to article"
     # see: https://stackoverflow.com/help/how-to-answer
     # - question .1.md: asking how
     # - unfinished .todo.md: answering
-    # - draft: a brief answer without reliable reference or enough environment information
+    # - guess: not verified answer
+    # - verified(default): a brief answer without reliable reference or enough environment information, but somehow verified
     # - essay: a reliable answer, providing context for links and information for reproduction
     #   but may be only useful for people familiar with the relevant fields
     # - course: a detailed answer with step-by-step instructions, friendly to newcomers,
     #   low threshold for reading and reproducing
     # - Good Article - Featured Content
-    set type draft
+    set type verified
     # yml format
     set head \
 ---\n\
