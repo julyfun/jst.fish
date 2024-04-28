@@ -2,7 +2,7 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: configuration file
 alias alias_editor=nvim
 
-function __jst.commit -d "Simple commit with simple message"
+function __jst.commit -d "Atomic commit simple message (ja)"
     # non-empty
     if test -z "$argv"
         set commit "just commit"
