@@ -122,11 +122,14 @@ function __jst.how -d "Create a how-to article"
     # - course: a detailed answer with step-by-step instructions, friendly to newcomers,
     #   low threshold for reading and reproducing
     # - Good Article - Featured Content
-    set type verified
+    # set type verified
+    # 搜索该问题的随机访客复现成功的概率
+    set reliability "20% estimated by the author"
+    set 
     # yml format
     set head \
 ---\n\
-type: $type\n\
+reliability: $reliability\n\
 date: $date\n\
 language: \"$language\"\n\
 os: \"$os\"\n\
