@@ -129,7 +129,7 @@ function __jst.how -d "Create a how-to article"
     # yml format
     set head \
 ---\n\
-reliability: $reliability\n\
+reliability: \"$reliability\"\n\
 date: $date\n\
 language: \"$language\"\n\
 os: \"$os\"\n\
