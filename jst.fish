@@ -125,7 +125,6 @@ function __jst.how -d "Create a how-to article"
     # set type verified
     # 搜索该问题的随机访客复现成功的概率
     set reliability "20% estimated by the author"
-    set 
     # yml format
     set head \
 ---\n\
@@ -140,7 +139,7 @@ keywords: []\n\
 \n\
 \# $title\n
     command touch $cut_title.md
-    echo -e "$head" > $cut_title.md # command echo 不行
+    echo "$head" > $cut_title.md # command echo 不行
 end
 
 function __jst.d.u
