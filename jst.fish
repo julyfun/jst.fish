@@ -348,14 +348,16 @@ function __jst.gf -d "Search via title and contents"
     __jst.find "$argv"
 end
 
-function __jst.y -d "alias: ret"
+function __jst.y -d "Return to git repo root"
     # yield
-    __jst.ret $argv[2..-1]
-end
-
-function __jst.ret -d "Return to git repo root (jst y)"
     cd (command git rev-parse --show-toplevel)
 end
+
+function __jst.repod -d "Subdir in the repo (jdr)"
+    jst y && jd $argv
+end
+
+alias jdr="jst repod"
 
 function __jst.title -d "Get a Stackoverflow-style title"
     set low (command echo $argv | command tr '[:upper:]' '[:lower:]') # 小写
