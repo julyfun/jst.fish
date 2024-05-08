@@ -1,6 +1,30 @@
 set -g fish_config_path $HOME/.config/fish/config.fish
-# Todo: configuration file
+# Todo: jst configuration file in ~/.mfa
 alias alias_editor=nvim
+
+function __jst.c -d "Change common directories"
+    switch $argv[1]
+    case fish
+        cd ~/.config/fish
+    case nvim
+        cd ~/.config/nvim
+    case ssh
+        cd ~/.ssh
+    end
+end
+
+function __jst.e -d "Edit common config files"
+    switch $argv[1]
+    case fish
+        alias_editor ~/.config/fish/config.fish
+    case nvim
+        alias_editor ~/.config/nvim/init.vim
+    case nvimlua
+        alias_editor ~/.config/nvim/init.lua
+    case bash
+        alias_editor ~/.bashrc
+    end
+end
 
 function __jst.commit -d "Atomic commit simple message (ja)"
     # non-empty
