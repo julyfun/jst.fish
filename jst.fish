@@ -2,6 +2,10 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
+function __jst.rn -d "Replace newline"
+    echo (__mfa.paste) | tr '\n' ' ' | __mfa.copy
+end
+
 alias jcp="__mfa.copy"
 alias jps="__mfa.paste"
 
