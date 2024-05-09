@@ -1,8 +1,11 @@
+set config_file "$HOME/.config/jst/config.fish"
+if test -e "$config_file"
+    source "$config_file"
+end
 # [constants]
 set -g MFA_TMP_DIR .mfa/tmp
 set -g MFA_MESSAGE_PATH .mfa/tmp/message 
 set -g MFA_MESSAGE_CMP_PATH .mfa/tmp/message_cmp
-set -g MFA_USER_HOST julyfun@mfans.fans
 set -g MFA_DOWNLOADS_DIR .mfa/dl
 
 function __mfa.err
@@ -95,6 +98,10 @@ function __mfa.init
     command mkdir -p $HOME/.mfa
     command mkdir -p $HOME/.mfa/tmp
     command mkdir -p $HOME/$MFA_DOWNLOADS_DIR
+    command mkdir -p $HOME/.config/jst
+    set config_path $HOME/.config/jst/config.fish
+    command touch $config_path
+    echo "set -g MFA_USER_HOST julyfun@mfans.fans" >> $config_path
 end
 
 function __mfa.cmd
