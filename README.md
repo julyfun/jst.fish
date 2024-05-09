@@ -15,6 +15,8 @@ mfa init
 # reload fish
 
 ssh-copy-id $MFA_USER_HOST
+
+# now init server mfa
 ```
 
 * Now, you can use commands including:
