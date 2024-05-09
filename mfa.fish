@@ -12,6 +12,8 @@ function __mfa.try-load-config
     end
 end
 
+__mfa.try-load-config
+
 function __mfa.err
     set_color red --bold 2> /dev/null
 end
