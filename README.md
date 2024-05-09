@@ -8,6 +8,17 @@ source <path-to-repo-in-step-1>/mfa.fish
 source <path-to-repo-in-step-1>/jst.fish # optional
 ```
 
+* Step 3 (Optional): link mfa
+
+```
+mfa init
+# reload fish
+
+ssh-copy-id $MFA_USER_HOST
+```
+
+* Now, you can use commands including:
+
 | Command       | Parameter (Example)                                    | Result                                                       |
 | ------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
 | `mfa upa`     | `mfa upa https://github.com/wangwc18/mygoFlaskProject` | Upload this address to Mfans server                          |
