@@ -1,5 +1,5 @@
 set -g fish_config_path $HOME/.config/fish/config.fish
-# Todo: jst configuration file in ~/.mfa
+# Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
 alias jcp="__mfa.copy"
