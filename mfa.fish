@@ -101,7 +101,7 @@ function __mfa.init
     command mkdir -p $HOME/.config/jst
     set config_path $HOME/.config/jst/config.fish
     command touch $config_path
-    echo "set -g MFA_USER_HOST julyfun@mfans.fans" >> $config_path
+    echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $config_path
 end
 
 function __mfa.cmd
