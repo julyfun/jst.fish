@@ -2,6 +2,9 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: jst configuration file in ~/.mfa
 alias alias_editor=nvim
 
+alias jcp="__mfa.copy"
+alias jps="__mfa.paste"
+
 function __jst.c -d "Change common directories"
     switch $argv[1]
     case fish
