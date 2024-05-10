@@ -51,14 +51,8 @@ ssh-copy-id $MFA_USER_HOST
 ### Linux
 
 ```
-sudo apt install xclip
 ```
 
-### Macos
-
-```
-no
-```
 
 ## Todo
 
