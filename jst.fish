@@ -9,7 +9,7 @@ end
 alias jcp="__mfa.copy"
 alias jps="__mfa.paste"
 
-function __jst.c -d "Change common directories"
+function __jst.c -d "Change directories by alias"
     switch $argv[1]
     case fish
         cd ~/.config/fish
@@ -79,7 +79,7 @@ function cpwd
         set slash "/"
     end
     set output (string join '' (pwd) $slash "$argv")
-    echo $output | __mfa.copy
+    echo -n $output | __mfa.copy
     echo $output
 end
 
