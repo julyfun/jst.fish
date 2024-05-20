@@ -173,6 +173,10 @@ keywords: []\n\
     echo "$head" > $cut_title.md # command echo 不行
 end
 
+function __jst.d.f
+    watch -n 0.5 df -h
+end
+
 function __jst.d.u
     # switch (uname)
     # case Linux
