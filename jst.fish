@@ -30,6 +30,8 @@ function __jst.e -d "Edit common config files"
         alias_editor ~/.config/nvim/init.lua
     case bash
         alias_editor ~/.bashrc
+    case ssh
+        alias_editor ~/.ssh/config
     end
 end
 

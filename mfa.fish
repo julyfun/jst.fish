@@ -146,12 +146,14 @@ end
 
 function __mfa.download-a-message
     scp -p {$MFA_USER_HOST}:(__mfa.home)/{$MFA_MESSAGE_PATH} ~/$MFA_MESSAGE_CMP_PATH
-    if test ! (__mfa.file-eq ~/{$MFA_MESSAGE_PATH} ~/$MFA_MESSAGE_CMP_PATH ) -eq 1
-        command mv ~/$MFA_MESSAGE_CMP_PATH ~/$MFA_MESSAGE_PATH
-        __mfa.copy-a-message
-    else
-        echo "No new message. Stop copying." >&2
-    end
+     command mv ~/$MFA_MESSAGE_CMP_PATH ~/$MFA_MESSAGE_PATH
+     __mfa.copy-a-message
+    # if test ! (__mfa.file-eq ~/{$MFA_MESSAGE_PATH} ~/$MFA_MESSAGE_CMP_PATH ) -eq 1
+    #     command mv ~/$MFA_MESSAGE_CMP_PATH ~/$MFA_MESSAGE_PATH
+    #     __mfa.copy-a-message
+    # else
+    #     echo "No new message. Stop copying." >&2
+    # end
 end
 
 function __mfa.copy-a-message
