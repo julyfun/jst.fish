@@ -325,6 +325,10 @@ function __jst.cmm -d "Git commit message help"
     echo -e $commit
 end
 
+function __jst.git.dl -d "Download from github mirror ghps.cc"
+    wget https://mirror.ghproxy.com/ $argv
+end
+
 function __jst.git.c
     command git clone git@github.com:"$argv[1]".git $argv[2..-1]
 end
