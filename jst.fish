@@ -3,7 +3,14 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
-function __jst.py.mat
+function __jst.py -d "Python with conda env"
+    if test -z $argv[1]
+        python3
+    end
+    conda activate $argv[1] && python3
+end
+
+function __jst.pyc.mat
     set cmd \
 import numpy as np\n\
 'def mat(*arg):'\n\
@@ -11,12 +18,12 @@ import numpy as np\n\
     echo $cmd | jcp
 end
 
-function __jst.py -d "Quick python commands"
-    if not type -q __jst.py.$argv[1] # 该函数是否存在
+function __jst.pyc -d "Quick python commands"
+    if not type -q __jst.pyc.$argv[1] # 该函数是否存在
         __mfa.no-subcommand $argv[1]
         return 1
     end
-    __jst.py.$argv[1] $argv[2..-1]
+    __jst.pyc.$argv[1] $argv[2..-1]
 end
 
 function __jst.rn -d "Replace newline"
