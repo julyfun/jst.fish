@@ -2,6 +2,23 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
+# [config end]
+function __jst.py.mat
+    set cmd \
+import numpy as np\n\
+'def mat(*arg):'\n\
+    'return np.array(arg)'
+    echo $cmd | jcp
+end
+
+function __jst.py -d "Quick python commands"
+    if not type -q __jst.py.$argv[1] # 该函数是否存在
+        __mfa.no-subcommand $argv[1]
+        return 1
+    end
+    __jst.py.$argv[1] $argv[2..-1]
+end
+
 function __jst.rn -d "Replace newline"
     echo (__mfa.paste) | tr '\n' ' ' | __mfa.copy
 end
@@ -63,7 +80,6 @@ function __jst.push -d "Pull, simple commit and push"
     end
     ja "$argv"
     command git push -u
-    # jst push 的职责是同步更改
 end
 
 alias jp="jst push"
