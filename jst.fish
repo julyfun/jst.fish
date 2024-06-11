@@ -3,11 +3,28 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
+function __jst.shs -d "Turn string into shell string"
+    set str (jps)
+    set res ""
+    for i in $str
+        set res "$res'$i'\\n\\"\n
+    end
+    echo $res | jcp
+end
+
 function __jst.py -d "Python with conda env"
     if test -z $argv[1]
         python3
     end
     conda activate $argv[1] && python3
+end
+
+function __jst.pyc.frac -d "Fraction"
+    set cmd \
+'from fractions import Fraction'\n\
+'import numpy as np'\n\
+'np.set_printoptions(formatter={'all':lambda x: str(Fraction(x).limit_denominator())})'\n
+    echo $cmd | jcp
 end
 
 function __jst.pyc.mat
