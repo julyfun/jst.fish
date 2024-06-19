@@ -3,6 +3,13 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
+function __jst.sc -d  "Just source"
+    switch $argv[1]
+    case fish
+        source ~/.config/fish/config.fish
+    end
+end
+
 function __jst.his -d "Copy last history"
     history --max 1 | jcp
 end
