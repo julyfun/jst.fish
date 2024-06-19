@@ -10,7 +10,31 @@ function __jst.sc -d  "Just source"
     end
 end
 
-function __jst.his -d "Copy last history"
+function __jst.his -d "Copy recent history"
+    if test -z $argv[1]
+        set num 10
+    else
+        set num $argv[1]
+    end
+    set his (history --max $num)
+    set cnt (count $his)
+
+    echo "[History]"
+    for i in (seq (count $his))
+        echo " $i." "$his[$i]"
+    end
+    set -l chosen_number
+    read -P "Enter the history to copy: " chosen_number
+    if test "$chosen_number" -gt 0; and test "$chosen_number" -le $cnt
+        echo $his[$chosen_number] | jcp
+        return 0
+    else
+        echo (__mfa.err)Invalid selection.(__mfa.off)
+        return 1
+    end
+end
+
+function __jst.his1 -d "Copy last history"
     history --max 1 | jcp
 end
 
