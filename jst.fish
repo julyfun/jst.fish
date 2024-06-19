@@ -3,6 +3,14 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
+function __jst.his -d "Copy last history"
+    history --max 1 | jcp
+end
+
+function __jst.fr -d "Translate french word"
+    __mfa.open-link "https://www.frdic.com/dicts/fr/$argv"
+end
+
 function __jst.shs -d "Turn string into shell string"
     set str (jps)
     set res ""
