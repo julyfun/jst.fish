@@ -3,6 +3,11 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
+function __jst.path -d "Add current dir to path"
+    set where (pwd)
+    echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
+end
+
 function __jst.sc -d  "Just source"
     switch $argv[1]
     case fish
