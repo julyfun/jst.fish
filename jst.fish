@@ -120,6 +120,8 @@ function __jst.e -d "Edit common config files"
         alias_editor ~/.bashrc
     case ssh
         alias_editor ~/.ssh/config
+    case tmux
+        alias_editor ~/.tmux.conf 
     end
 end
 
