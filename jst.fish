@@ -3,6 +3,11 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
+function __jst.m -d "mkdir and cd"
+    mkdir $argv 
+    cd $argv
+end
+
 function __jst.path -d "Add current dir to path"
     set where (pwd)
     echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
@@ -231,7 +236,7 @@ function __jst.how -d "Create a how-to article"
         return 1
     end
     set date (date "+%Y-%m-%d")
-    set language Chinese
+    set language zh-hans
     set os (uname -a)
     set git_config_user_name (command git config user.name)
     # see: https://stackoverflow.com/help/how-to-answer
@@ -262,6 +267,7 @@ keywords: []\n\
 \# $title\n
     command touch $cut_title.md
     echo "$head" > $cut_title.md # command echo 不行
+    alias_editor $cut_title.md
 end
 
 function __jst.d.f
@@ -381,8 +387,8 @@ function __jst.new-c -d "Initialize an empty c project"
     command mkdir src
     command touch src/main.c
     command touch src/lib.c
-    command mkdir include
-    command touch include/lib.h
+    command touch src/lib.h
+    touch CMakeLists.txt
 end
 
 function __jst.cmm -d "Git commit message help"
