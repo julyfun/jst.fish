@@ -3,6 +3,22 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end]
+function __jst.fmt.cpp
+    set dst "$HOME/.mfa/dl/fmt/cpp"
+    if not test -e "$dst"
+        git clone --depth=1 git@github.com:SJTU-RoboMaster-Team/style-team.git "$dst"
+    end
+    cp "$dst/.clang-format" "$dst/.clang-tidy" .
+end
+
+function __jst.fmt -d "Add fmt file here"
+    if not type -q __jst.fmt.$argv[1] # 该函数是否存在
+        __mfa.no-subcommand $argv[1]
+        return 1
+    end
+    __jst.fmt.$argv[1] $argv[2..-1]
+end
+
 function __jst.m -d "mkdir and cd"
     mkdir $argv 
     cd $argv
