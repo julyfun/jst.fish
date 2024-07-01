@@ -11,6 +11,7 @@ end
 function __jst.path -d "Add current dir to path"
     set where (pwd)
     echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
+    echo "export PATH=\"\$PATH:$where\"" >> ~/.bashrc
 end
 
 function __jst.sc -d  "Just source"
