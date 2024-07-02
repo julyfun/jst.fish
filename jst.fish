@@ -515,7 +515,8 @@ alias jdr="jst repod"
 function __jst.title -d "Get a Stackoverflow-style title"
     set low (command echo $argv | command tr '[:upper:]' '[:lower:]') # 小写
     set no_single_quote (string replace -r -a -- "'" "" $low) # 删除单引号
-    set sub (command echo $no_single_quote | command tr -c '[:alnum:]' '-' | string sub -e -1) # 将所有符号换为 -
+    # set sub (command echo $no_single_quote | command tr -c '[:alnum:]' '-' | string sub -e -1) # 将所有符号换为 -
+    set sub (string replace -r -a -- '[\x00-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F]' '-' $no_single_quote)
     set rep (string replace -r -a -- '(-)+' '-' $sub) # 处理重复 -
     set tri (string trim --chars='-' $rep) # 删两边
     echo $tri
