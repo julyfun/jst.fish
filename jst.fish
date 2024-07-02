@@ -1,9 +1,22 @@
+set -g MFA_JST_PATH "$(status dirname)"
 source "$(status dirname)/mfa.fish"
 set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.t.cpp
+    cp "$MFA_JST_PATH/assets/t/1.cpp" .
+end
+
+function __jst.t -d "Template files"
+    if not type -q __jst.t.$argv[1] # 该函数是否存在
+        __mfa.no-subcommand $argv[1]
+        return 1
+    end
+    __jst.t.$argv[1] $argv[2..-1]
+end
+
 function __mfa.cargo-run-compiling
     echo (__mfa.pad-to-terminal-width (__mfa.ok)(__mfa.cargo-run-left "Compiling")(__mfa.off) $argv)
 end
