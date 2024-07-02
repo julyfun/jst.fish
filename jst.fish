@@ -2,7 +2,26 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
-# [config end]
+# [config end, func start]
+function __mfa.cargo-run-compiling
+    echo (__mfa.pad-to-terminal-width (__mfa.ok)(__mfa.cargo-run-left "Compiling")(__mfa.off) $argv)
+end
+
+function __mfa.cargo-run-finished
+    echo (__mfa.pad-to-terminal-width (__mfa.ok)(__mfa.cargo-run-left "Finished")(__mfa.off) $argv)
+end
+
+function __mfa.cargo-run-left
+    set input_string "$argv"
+    string pad -w 12 $input_string
+end
+
+function __mfa.pad-to-terminal-width
+    set -l input_string "$argv"
+    set -l terminal_width $COLUMNS
+    string pad --right --char=' ' --width=$terminal_width "$input_string"
+end
+
 function __jst.fmt.cpp
     set dst "$HOME/.mfa/dl/fmt/cpp"
     if not test -e "$dst"
@@ -20,7 +39,7 @@ function __jst.fmt -d "Add fmt file here"
 end
 
 function __jst.m -d "mkdir and cd"
-    mkdir $argv 
+    mkdir $argv
     cd $argv
 end
 
@@ -46,6 +65,11 @@ function __jst.his -d "Copy recent history"
     set his (history --max $num)
     set cnt (count $his)
 
+    if test $num -eq 1
+        echo $his[1] | jcp
+        return 0
+    end
+
     echo "[History]"
     for i in (seq (count $his))
         echo " $i." "$his[$i]"
@@ -59,10 +83,6 @@ function __jst.his -d "Copy recent history"
         echo (__mfa.err)Invalid selection.(__mfa.off)
         return 1
     end
-end
-
-function __jst.his1 -d "Copy last history"
-    history --max 1 | jcp
 end
 
 function __jst.fr -d "Translate french word"
@@ -112,7 +132,7 @@ function __jst.pyc -d "Quick python commands"
     __jst.pyc.$argv[1] $argv[2..-1]
 end
 
-function __jst.rn -d "Replace newline"
+function __jst.rn -d "Replace newline, for PDF copy"
     echo (__mfa.paste) | tr '\n' ' ' | __mfa.copy
 end
 
@@ -143,7 +163,7 @@ function __jst.e -d "Edit common config files"
     case ssh
         alias_editor ~/.ssh/config
     case tmux
-        alias_editor ~/.tmux.conf 
+        alias_editor ~/.tmux.conf
     end
 end
 
@@ -529,7 +549,12 @@ function __jst.comp -d "Compile a cpp file using c++17"
 end
 
 function __jst.run -d "Comp & run a cpp file using c++17"
-    __jst.comp $argv && command echo "Comp done." && ./1
+    echo -ne (__mfa.cargo-run-compiling $argv)
+    __jst.comp $argv
+    if test $status -ne 0
+        return
+    end
+    echo -ne \r(__mfa.cargo-run-finished $argv)
 end
 
 

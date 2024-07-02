@@ -2,7 +2,7 @@
 # [constants]
 set -g MFA_CONFIG_PATH "$HOME/.config/mfa/config.fish"
 set -g MFA_TMP_DIR .mfa/tmp # maybe used for remote
-set -g MFA_MESSAGE_PATH .mfa/tmp/message 
+set -g MFA_MESSAGE_PATH .mfa/tmp/message
 set -g MFA_MESSAGE_CMP_PATH .mfa/tmp/message_cmp
 set -g MFA_DOWNLOADS_DIR .mfa/dl
 
@@ -13,6 +13,11 @@ function __mfa.try-load-config
 end
 
 __mfa.try-load-config
+
+# usage: echo (__mfa.err)"error:"(__mfa.off)
+function __mfa.ok
+    set_color green --bold 2> /dev/null
+end
 
 function __mfa.err
     set_color red --bold 2> /dev/null
@@ -49,7 +54,7 @@ function __mfa.length-of-longest-line
 end
 
 function __mfa.git-log-graph-merge-layer-char
-    # [todo] limit depth to avoid too deep merge layer 
+    # [todo] limit depth to avoid too deep merge layer
     __mfa.length-of-longest-line (git --no-pager log --graph --format=format:'' --all)
 end
 
@@ -125,7 +130,7 @@ end
 
 function __mfa.upload
     if test -z $argv[2]
-        scp -p $argv[1] (__mfa.path .) 
+        scp -p $argv[1] (__mfa.path .)
     else
         scp -p $argv[1] (__mfa.path $argv[2])
     end
@@ -140,7 +145,7 @@ function __mfa.download
 end
 
 function __mfa.upload-a-message
-    __mfa.paste > ~/$MFA_MESSAGE_PATH 
+    __mfa.paste > ~/$MFA_MESSAGE_PATH
     scp -p ~/$MFA_MESSAGE_PATH {$MFA_USER_HOST}:(__mfa.home)/{$MFA_MESSAGE_PATH}
 end
 
@@ -168,7 +173,7 @@ end
 
 function __mfa.download-latest
     set latest_file (__mfa.cmd '__mfa.get-latest-file ~/$MFA_TMP_DIR')
-    __mfa.download $latest_file $argv[1] 
+    __mfa.download $latest_file $argv[1]
 end
 
 # [network]
@@ -188,7 +193,7 @@ end
 function __mfa.git-rel-link
     set pwd (pwd)
     set root (command git rev-parse --show-toplevel)
-    set branch (__mfa.git-branch) 
+    set branch (__mfa.git-branch)
     # 一个 +1 是 `/` 还有一个是因为 string sub -s 下标从 1 而不是 0 开始
     set relative (string sub -s (math (string length $root) + 2) $pwd)
     set relative_arg (string join -n '/' $relative "$argv")
@@ -197,8 +202,8 @@ end
 
 function __mfa.github-link
     # 都没空格
-    set branch (__mfa.git-branch) 
-    set relative_arg (__mfa.git-rel-link "$argv") 
+    set branch (__mfa.git-branch)
+    set relative_arg (__mfa.git-rel-link "$argv")
     if test -z $relative_arg
         set remote_relative_arg ""
     else
@@ -240,4 +245,3 @@ function mfa
         functions mfa
     end
 end
-
