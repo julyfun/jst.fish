@@ -484,9 +484,7 @@ function __jst.git.o
 end
 
 function __jst.git.log
-    set layer (math (__mfa.git-log-graph-merge-layer-char))
-    set layer2 (math $layer + 50)
-    command git log --graph --abbrev-commit --decorate --date=format:"%y-%m-%d %H:%I" --format=format:"%<|($layer)%>|(1)%C(auto)%d%C(reset) %C(white)%<|($layer2,trunc)%s%C(reset) %C(bold green)%ad%C(reset) %C(bold blue)%h%C(reset) %C(dim white)%an%C(reset)" --all
+    command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short
 end
 
 function __jst.git.log1
@@ -494,7 +492,9 @@ function __jst.git.log1
 end
 
 function __jst.git.log2
-    command git log --pretty="%C(Yellow)%h  %C(reset)%ad (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s" --date=short
+    set layer (math (__mfa.git-log-graph-merge-layer-char))
+    set layer2 (math $layer + 50)
+    command git log --graph --abbrev-commit --decorate --date=format:"%y-%m-%d %H:%I" --format=format:"%<|($layer)%>|(1)%C(auto)%d%C(reset) %C(white)%<|($layer2,trunc)%s%C(reset) %C(bold green)%ad%C(reset) %C(bold blue)%h%C(reset) %C(dim white)%an%C(reset)" --all
 end
 
 function __jst.git.ig
