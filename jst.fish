@@ -157,7 +157,7 @@ end
 alias jcp="__mfa.copy"
 alias jps="__mfa.paste"
 
-function __jst.c -d "Change directories by alias"
+function __jst.c -d "cd to common dir like .ssh"
     switch $argv[1]
     case fish
         cd ~/.config/fish
@@ -406,7 +406,7 @@ end
 alias jd="jst dir"
 
 # cmake make test
-function __jst.crun -d 'CMake make run'
+function __jst.crun -d 'cmake make run'
     command cmake .. &&\
         command make -j8 &&\
         if test (count $argv) -ge 1
