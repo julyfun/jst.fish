@@ -19,14 +19,13 @@
 namespace vr_track_tcp {
 
 class VrTrackTcp: public rclcpp::Node {
+private:
 public:
     explicit VrTrackTcp(const rclcpp::NodeOptions& options): Node("vr_track_tcp", options) {
         RCLCPP_INFO(this->get_logger(), "hello");
     };
 
     ~VrTrackTcp() override = default;
-
-private:
 };
 
 } // namespace vr_track_tcp
