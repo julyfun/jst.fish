@@ -5,6 +5,10 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.t.ros2
+    cp -r "$MFA_JST_PATH/assets/t/ros2" .
+end
+
 function __jst.t.cpp
     cp "$MFA_JST_PATH/assets/t/1.cpp" .
 end
