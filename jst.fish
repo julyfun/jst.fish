@@ -5,7 +5,15 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.bs -d "bash source"
+    exec bash -c "source $argv; exec fish"
+end
+
 function __jst.t.ros2
+    if test -d "ros2"
+	echo "The folder `ros2` exists"
+	return 1
+    end
     cp -r "$MFA_JST_PATH/assets/t/ros2" .
 end
 
