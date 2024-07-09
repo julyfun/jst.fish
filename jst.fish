@@ -37,6 +37,10 @@ function __mfa.cargo-run-finished
     echo (__mfa.pad-to-terminal-width (__mfa.ok)(__mfa.cargo-run-left "Finished")(__mfa.off) $argv)
 end
 
+function __mfa.cargo-run-running
+    echo (__mfa.pad-to-terminal-width (__mfa.ok)(__mfa.cargo-run-left "Running")(__mfa.off) $argv)
+end
+
 function __mfa.cargo-run-left
     set input_string "$argv"
     string pad -w 12 $input_string
@@ -580,7 +584,9 @@ function __jst.run -d "Comp & run a cpp file using c++17"
     if test $status -ne 0
         return
     end
-    echo -ne \r(__mfa.cargo-run-finished $argv)
+    echo -e \r(__mfa.cargo-run-finished $argv)
+    echo -e (__mfa.cargo-run-running $argv)
+    ./1
 end
 
 
