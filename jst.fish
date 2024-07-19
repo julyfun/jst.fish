@@ -5,6 +5,20 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.git.rcn
+    if test -z $argv[1]
+        set num 30
+    else
+        set num $argv[1]
+    end
+    for i in (seq $num)
+        git diff --name-only HEAD~$i..HEAD~(math $i - 1)
+    end
+end
+
+function __mfa.tqdm-test
+end
+
 function __jst.bs -d "bash source"
     exec bash -c "source $argv; exec fish"
 end
