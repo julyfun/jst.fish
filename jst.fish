@@ -213,6 +213,9 @@ end
 
 function __jst.commit -d "Atomic commit simple message (ja)"
     # non-empty
+    # show diff
+    command git status
+    read
     if test -z "$argv"
         set commit "just commit"
     else
