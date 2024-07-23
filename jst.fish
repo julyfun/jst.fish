@@ -214,8 +214,10 @@ end
 function __jst.commit -d "Atomic commit simple message (ja)"
     # non-empty
     # show diff
-    command git status
-    read
+    # command git status
+    # read -P "Are you sure to commit? " p
+    # if test $p -eq "y"
+    # return
     if test -z "$argv"
         set commit "just commit"
     else
