@@ -6,6 +6,14 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.mi.pip
+    cpit "pip install -i https://pypi.tuna.tsinghua.edu.cn/simple"
+end
+
+function __jst.mi -d "Mirrors command prefix"
+    __mfa.sub __jst.mi $argv
+end
+
 function __mfa.git-pull-check-ver
     set -l before_pull (git rev-parse HEAD)
     command git pull
@@ -106,12 +114,16 @@ function __jst.fmt.cpp
     cp "$dst/.clang-format" "$dst/.clang-tidy" .
 end
 
-function __jst.fmt -d "Add fmt file here"
-    if not type -q __jst.fmt.$argv[1] # 该函数是否存在
-        __mfa.no-subcommand $argv[1]
+function __mfa.sub -d "Subcommands"
+    if not type -q $argv[1].$argv[2] # 该函数是否存在
+        __mfa.no-subcommand $argv[2]
         return 1
     end
-    __jst.fmt.$argv[1] $argv[2..-1]
+    $argv[1].$argv[2] $argv[3..-1]
+end
+
+function __jst.fmt -d "Add fmt file here"
+    __mfa.sub __jst.fmt $argv
 end
 
 function __jst.m -d "mkdir and cd"
@@ -200,12 +212,8 @@ function __jst.pyc.mat
     echo $cmd | jcp
 end
 
-function __jst.pyc -d "Quick python commands"
-    if not type -q __jst.pyc.$argv[1] # 该函数是否存在
-        __mfa.no-subcommand $argv[1]
-        return 1
-    end
-    __jst.pyc.$argv[1] $argv[2..-1]
+function __jst.pyc -d "Quick python code"
+    __mfa.sub __jst.pyc $argv
 end
 
 function __jst.rn -d "Replace newline, for PDF copy"
@@ -300,12 +308,12 @@ function cpwd
 end
 
 function cpit
-    echo $argv | jcp
+    echo -n "$argv" | jcp
 end
 
-function jwhich
-    cd (command dirname (command which $argv[1]))
-end
+# function jwhich
+# cd (command dirname (command which $argv[1]))
+# end
 
 alias fn=functions
 
