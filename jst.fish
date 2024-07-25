@@ -60,24 +60,19 @@ function __jst.bs -d "bash source"
     exec bash -c "source $argv; exec fish"
 end
 
-function __jst.t.ros2
-    if test -d "ros2"
-	echo "The folder `ros2` exists"
-	return 1
-    end
-    cp -r "$MFA_JST_PATH/assets/t/ros2" .
-end
-
-function __jst.t.cpp
-    cp "$MFA_JST_PATH/assets/t/1.cpp" .
+function __jst.tp -d "Personalized templates"
 end
 
 function __jst.t -d "Template files"
-    if not type -q __jst.t.$argv[1] # 该函数是否存在
-        __mfa.no-subcommand $argv[1]
+    if not test -e "$MFA_JST_PATH/assets/t/$argv"
+        echo "No template called `$argv`"
         return 1
     end
-    __jst.t.$argv[1] $argv[2..-1]
+    if test -e "$argv"
+        echo "Error! `$argv` already exists"
+        return 1
+    end
+    cp -r "$MFA_JST_PATH/assets/t/$argv" .
 end
 
 function __mfa.cargo-run-compiling
