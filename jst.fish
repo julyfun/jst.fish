@@ -1,3 +1,4 @@
+set -g MFA_JST_VER "0.1.0"
 set -g MFA_JST_PATH "$(status dirname)"
 source "$(status dirname)/mfa.fish"
 set -g fish_config_path $HOME/.config/fish/config.fish
@@ -5,6 +6,28 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end, func start]
+function __mfa.check-pull
+    set -l before_pull (git rev-parse HEAD)
+    command git pull
+    set -l after_pull (git rev-parse HEAD)
+    if test "$before_pull" != "$after_pull"
+        echo "1"
+    else
+        echo "0"
+    end
+end
+
+function __jst.upgrade
+    set -l here (pwd)
+    cd "$MFA_JST_PATH"
+    if test "$(__mfa.check-pull)" = "1"
+        exec fish
+    else
+        echo (__mfa.green)Congrats!(__mfa.off) "You're already on the latest version of Jst" (__mfa.dim)"(which is v$MFA_JST_VER)"(__mfa.off)
+    end
+    cd "$here"
+end
+
 function __jst.git.rcn
     if test -z $argv[1]
         set num 30

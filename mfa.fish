@@ -35,6 +35,18 @@ function __mfa.yellow
     set_color yellow 2> /dev/null
 end
 
+function __mfa.green
+    set_color green 2> /dev/null
+end
+
+function __mfa.gray
+    set_color brwhite 2> /dev/null
+end
+
+function __mfa.dim
+    set_color -d 2> /dev/null
+end
+
 function __mfa.no-subcommand
     echo (__mfa.err)"error:"(__mfa.off)\
         unrecognized subcommand \'(__mfa.yellow)$argv[1](__mfa.off)\'
