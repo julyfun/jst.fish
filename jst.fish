@@ -282,7 +282,8 @@ alias jaf="jst commit-file"
 
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
-    command git diff --stat
+    # command git diff --stat
+    command git status # show unstaged too.
     if not command git pull
         return
     end
