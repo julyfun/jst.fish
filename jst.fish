@@ -43,6 +43,13 @@ function __mfa.tqdm-test
 end
 
 function __jst.bs -d "bash source"
+    #     set cmd \
+        # source $argv\n\
+        # 'if [ $? -eq 0 ]; then'\n\
+        # exec fish\n\
+        # else\n\
+        # exit\n\
+        # fi
     exec bash -c "source $argv; exec fish"
 end
 
@@ -657,3 +664,4 @@ for func in (string match '__jst.*' (functions --all))
     # end
     complete -c jst -f -a $splited[2] -n "__fish_use_subcommand" -d $desc
 end
+
