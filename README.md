@@ -7,7 +7,7 @@
 source <path_to_repo>/jst.fish
 ```
 
-- Step 3 (Under internal testing): link your mfa server
+- Step 3 (still under internal test): link your mfa server
 
 ```
 mfa init # and make sure server does this
