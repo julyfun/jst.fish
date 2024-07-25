@@ -74,4 +74,6 @@ end
 # [Example]
 # __mfa.complete "jst complete" add1 "Add a template file"
 # __mfa.complete "jst complete" add2 "Add a template file"
-# __mfa.complete-r __jst jst # complete all functions that start with __jst (and rename completion to jst)
+
+# complete all functions that start with __jst with their `-d` option, and rename completions to jst
+# __mfa.complete-r __jst jst
