@@ -694,36 +694,32 @@ function __mfa.complete
 end
 
 # [automatically set jst subcommands completions]
-# this has no subcommand
-# -r means rename, recursively, regex...
-function __mfa.complete-r
-    set -l start $argv[1]
-    set -l renamed_start $argv[2]
-    if test -z $argv[2]
-        set -l renamed_start $start
-    end
+function __mfa.complete-start-with
     # argv should be in format ^__(.*\.)+$ like
     # 从原始名词映射到目标名字
     # argv: __jst.git.add.
     # __jst.git.add.a => jst git add a (and continue with __jst.git.add.a)
     # __jst.git.add.b => jst git add b
-    set match (string match -r "^$start\..*\$" (functions --all))
+    set match (string match '$argv[1].'* $argv[2..-1])
     for func in $match
+        # $argv = __jst.git.add
+        # __jst.git.add.a => jst.git.add.a
+        # __jst.git.add.a.x ?
+        # set -l 
+
+        # __a.b.c.d => "a b c" "d" "$desc"
         set -l desc (__mfa.get-func-desc $func)
-        # __jst.a.b.c => jst.a.b.c
-        set -l renamed (string join '' $renamed_start (string sub -s (math (string length $start) + 1) $func))
-        # => [jst a b c]
-        set -l split (string split . $renamed)
-        # => [jst a b]
+        set -l remove_pre_underscore (string trim --left --chars '_' "$func")
+        set -l split (string split . $remove_pre_underscorej)
         set -l parent (string join ' ' $split[1..-2])
-        # => [c]
         set -l me $split[-1]
         __mfa.complete "$parent" "$me" "$desc"
     end
 end
 
-__mfa.complete-r __jst jst
-__mfa.complete-r __mfa
+__mfa.complete-start-with __jst
+
+# for func in (string match '__jst.*' (functions --all))
 # # __jst.git => jst.git
 # set -l remove_underscore (string sub -s 3 $func)
 # # jst git.xx => jst git.xx
