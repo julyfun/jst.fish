@@ -6,22 +6,29 @@ set -g fish_config_path $HOME/.config/fish/config.fish
 alias alias_editor=nvim
 
 # [config end, func start]
-function __mfa.check-pull
+function __mfa.git-pull-check-ver
     set -l before_pull (git rev-parse HEAD)
     command git pull
+    if test $status -ne 0
+        return 128
+    end
     set -l after_pull (git rev-parse HEAD)
     if test "$before_pull" != "$after_pull"
-        echo "1"
+        return 0
     else
-        echo "0"
+        return 1
     end
 end
 
 function __jst.upgrade
     set -l here (pwd)
     cd "$MFA_JST_PATH"
-    if test "$(__mfa.check-pull)" = "1"
+    __mfa.git-pull-check-ver
+    set st $status
+    if test $st -eq 0
         exec fish
+    else if test $st -eq 128
+        echo git pull failed
     else
         echo (__mfa.green)Congrats!(__mfa.off) "You're already on the latest version of Jst" (__mfa.dim)"(which is v$MFA_JST_VER)"(__mfa.off)
     end
