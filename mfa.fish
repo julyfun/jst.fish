@@ -212,14 +212,26 @@ function __mfa.git-rel-link
     echo $relative_arg
 end
 
+function __mfa.get-last-word
+    set -l input_str $argv
+    set -l last_word (string match -ra '[a-zA-Z]+' -- $input_str)[-1]
+    echo $last_word
+end
+
+# too slow
+function __mfa.git-remote-default-branch
+    set show (git remote show origin)
+    __mfa.get-last-word $show[4]
+end
+
 function __mfa.github-link
     # 都没空格
     set branch (__mfa.git-branch)
     set relative_arg (__mfa.git-rel-link "$argv")
-    if test -z $relative_arg
+    if test \( -z $relative_arg \) -a \( $branch = main -o $branch = master \)
         set remote_relative_arg ""
     else
-        set remote_relative_arg "tree/$branch/$relative_arg"
+        set remote_relative_arg (string join -n '/' tree "$branch" "$relative_arg")
     end
     # 避免和 fish 内定义的临时 git 名冲突
     command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\.git'
