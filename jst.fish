@@ -267,6 +267,10 @@ function cpwd
     echo $output
 end
 
+function cpit
+    echo $argv | jcp
+end
+
 function jwhich
     cd (command dirname (command which $argv[1]))
 end
@@ -487,7 +491,7 @@ function __jst.cmm -d "Git commit message help"
 "  feat      功能    添加 / 更改主要功能\n"\
 "  fix       修复    修复运行的问题或 bug\n"\
 "  comment   注释\n"\
-"  doc       文档\n"\
+"  docs      文档\n"\
 "  test      测试    添加 / 更改测试行的功能\n"\
 "  style     格式    规范代码风格, 调整代码顺序, 修改变量名等提升可读性的修改\n"\
 "  refactor  重构    不是新增功能、修改 bug 的代码变动\n"\
