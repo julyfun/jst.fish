@@ -20,7 +20,7 @@ ssh-copy-id $MFA_USER_HOST
 | ------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
 | `mfa upa`     | `mfa upa https://github.com/wangwc18/mygoFlaskProject` | Upload this address to Mfans server                          |
 | `jd`          | `jd python`                                            | Jump to subdirectory with similar name to `python`           |
-| `jm`          | `jm fix typo`                                          | Commit all changes with message `fix typo`                   |
+| `ja`          | `ja fix typo`                                          | Commit all changes with message `fix typo`                   |
 | `jp`          | `jp update README.md`                                  | Commit all changes and push with message `update README.md`  |
 | `jst cmm`     |                                                        | Show git commit message help                                 |
 | `jst dl`      | `jst dl autojump`                                      | Download and configure `autojump` automatically              |
@@ -57,7 +57,7 @@ no
 - [x] jst 系列命令整合
 - [ ] 用 toml 自定义短命令
 - [ ] 建立 jst dl 下载和配置的清单。需要考虑用什么形式实现。
-- [ ] jst title 支持汉字
+- [x] jst title 支持汉字
 
 ## Principles
 

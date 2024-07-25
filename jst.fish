@@ -1,7 +1,9 @@
 set -g MFA_JST_VER "0.1.0"
 set -g MFA_JST_PATH "$(status dirname)"
+set -g MFA_FISH_CONFIG_PATH $HOME/.config/fish/config.fish
+
 source "$(status dirname)/mfa.fish"
-set -g fish_config_path $HOME/.config/fish/config.fish
+source "$(status dirname)/complete.fish"
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
@@ -504,7 +506,7 @@ end
 
 function __jst.dl.autojump
     command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$MFA_DOWNLOADS_DIR/autojump
-    command echo "source $HOME/$MFA_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $fish_config_path
+    command echo "source $HOME/$MFA_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $MFA_FISH_CONFIG_PATH
 end
 
 function __jst.dl -d "Download and configure tools auto"
@@ -647,104 +649,10 @@ function __jst.run -d "Comp & run a cpp file using c++17"
     ./1
 end
 
-
 function jst -d "Just do something"
     # __jst.$argv[1] $argv[2..-1]
     __mfa.sub __jst $argv # this should be in comptime, in fact
 end
 
-function __mfa.subcommand-chain-string
-    # set -l cmd (commandline -poc)
-    set -l cmd (string split " " -- $argv) # don't pass -* to split!
-    if test (count $cmd) -le 1
-        echo $cmd
-        return 0
-    end
-    set -l res $cmd[1]
-    for c in $cmd[2..-1]
-        switch $c
-            case '*=*'
-                continue
-            case '-*' # do not try to complete options as commands
-                continue
-            case '*'
-                set res $res $c
-        end
-    end
-    echo $res
-end
-
-function __mfa.cur-command-chain-is
-    set -l cmd_chain (string split ' ' (__mfa.subcommand-chain-string (commandline -poc)))
-    if test (count $cmd_chain) -ne (count $argv)
-        return 1
-    end
-    for i in (seq (count $cmd_chain))
-        if test $cmd_chain[$i] != $argv[$i]
-            return 1
-        end
-    end
-    return 0
-end
-
-function __mfa.complete
-    # __mfa.complete "jst git add" "template" "Add a template file"
-    set -l cmd (string split ' ' $argv[1])
-    complete -c $cmd[1] -n "__mfa.cur-command-chain-is $cmd" -f -a "$argv[2]"  -d "$argv[3]"
-end
-
-# [automatically set jst subcommands completions]
-# this has no subcommand
-# -r means rename, recursively, regex...
-function __mfa.complete-r
-    set -l start $argv[1]
-    set -l renamed_start $argv[2]
-    if test -z $argv[2]
-        set -l renamed_start $start
-    end
-    # argv should be in format ^__(.*\.)+$ like
-    # 从原始名词映射到目标名字
-    # argv: __jst.git.add.
-    # __jst.git.add.a => jst git add a (and continue with __jst.git.add.a)
-    # __jst.git.add.b => jst git add b
-    set match (string match -r "^$start\..*\$" (functions --all))
-    for func in $match
-        set -l desc (__mfa.get-func-desc $func)
-        # __jst.a.b.c => jst.a.b.c
-        set -l renamed (string join '' $renamed_start (string sub -s (math (string length $start) + 1) $func))
-        # => [jst a b c]
-        set -l split (string split . $renamed)
-        # => [jst a b]
-        set -l parent (string join ' ' $split[1..-2])
-        # => [c]
-        set -l me $split[-1]
-        __mfa.complete "$parent" "$me" "$desc"
-    end
-end
-
 __mfa.complete-r __jst jst
 __mfa.complete-r __mfa
-# # __jst.git => jst.git
-# set -l remove_underscore (string sub -s 3 $func)
-# # jst git.xx => jst git.xx
-# # jst.git => jst git
-#    # -m means max
-# set -l split (string split . -m1 $remove_underscore)
-# if string match -rq '\.' $split[2] # 存在点，不是一个直接子命令
-# continue
-# end
-# set desc (__mfa.get-func-desc $func)
-# # complete -c jst -f -a $split[2] -n "__fish_use_subcommand" -d $desc
-# __mfa.complete "jst" "$split[2]" "$desc"
-# end
-
-# __mfa.complete "jst git add" "template" "Add a template file"
-# __mfa.complete "jst git add" "t" "Add a template file"
-
-# complete -c add -n "__mfa.cur-command-chain-is add jst" -f -a "ano" -d "just add that"
-
-# complete -c jst -n "__mfa.fish-seen-subcommand-from-with-depth 2 git" -f -a "aaa" -d "this is aaa"
-# complete -c jst -n "__mfa.subcommand-in-depth 2 git" -f -a "add" -d "this is aaa"
-# complete -c jst -n "__mfa.subcommand-in-depth 2 git" -f -a "add2" -d "this is aaa"
-# complete -c jst -n "__fish_seen_subcommand_from git" -f -a "bb" -d "this is aaa"
-

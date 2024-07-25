@@ -241,11 +241,6 @@ function __mfa.github-link
     echo (string join -n '/' "https://github.com" $user_repo $remote_relative_arg)
 end
 
-function __mfa.get-func-desc -d "Get the description of a function"
-    string match -rq -- '--description [\'"](?<desc>[^\'"]+)' (functions $argv[1])
-    echo $desc
-end
-
 function mfa
     switch $argv[1]
     case upa
