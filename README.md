@@ -37,7 +37,9 @@ ssh-copy-id $MFA_USER_HOST
 
 这是一个神奇的快捷工具箱，只为 fish shell 提供，因为 fish shell 的语法舒服。
 
-## Dependencies (ok to run with only fish)
+## Extensions
+
+Some `jst` command would require these:
 
 ### Linux
 
