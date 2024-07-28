@@ -71,6 +71,14 @@ function __mfa.complete-r
     end
 end
 
+function __mfa.complete-d
+    set -l cmd $argv[1]
+    set -l dir $argv[2]
+    for f in (ls $dir)
+        __mfa.complete "$cmd" "$f" ""
+    end
+end
+
 # [Example]
 # __mfa.complete "jst complete" add1 "Add a template file"
 # __mfa.complete "jst complete" add2 "Add a template file"
