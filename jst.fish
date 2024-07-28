@@ -363,7 +363,7 @@ function __jst.tl -d "Translate"
     __mfa.open-link "https://translate.google.com.hk/?sl=auto&tl=zh-CN&text=$str&op=translate"
 end
 
-function __jst.how -d "Create a how-to article"
+function __jst.doc -d "Create a mkdocs article"
     set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
     set link_title (jst title "$title")
     set cut_title (string trim (string sub --end=80 "$link_title") --chars='-')
@@ -389,18 +389,24 @@ function __jst.how -d "Create a how-to article"
     # 搜索该问题的随机访客复现成功的概率
     set reliability "[20% (author), 0 / 0 (visitor)]"
     # yml format
+    #     set head \
+    # ---\n\
+    # reliability: \"$reliability\"\n\
+    # date: $date\n\
+    # language: \"$language\"\n\
+    # os: \"$os\"\n\
+    # author: \"$git_config_user_name\"\n\
+    # suppose-you-know: [computer]\n\
+    # keywords: []\n\
+    # ---\n\
+    # \n\
+    # \# $title\n
     set head \
----\n\
-reliability: \"$reliability\"\n\
-date: $date\n\
-language: \"$language\"\n\
-os: \"$os\"\n\
-author: \"$git_config_user_name\"\n\
-suppose-you-know: [computer]\n\
-keywords: []\n\
----\n\
-\n\
-\# $title\n
+\# $title\n\
+- date: $date\n\
+- os: $os\n\
+- author: $git_config_user_name\n\
+- suppose-you-know: nothing\n
     command touch $cut_title.md
     echo "$head" > $cut_title.md # command echo 不行
     alias_editor $cut_title.md
