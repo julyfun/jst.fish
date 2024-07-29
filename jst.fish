@@ -8,6 +8,12 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.f -d "Create file with standard title"
+    set -l suf $argv[1]
+    set -l name $argv[2..-1]
+    command touch (jst title "$name").$suf
+end
+
 function __jst.mi.pip
     cpit "pip install -i https://pypi.tuna.tsinghua.edu.cn/simple"
 end
@@ -631,7 +637,7 @@ end
 alias jdr="jst repod"
 
 function __jst.title -d "Get a Stackoverflow-style title"
-    set low (command echo $argv | command tr '[:upper:]' '[:lower:]') # 小写
+    set low (echo -- $argv | command tr '[:upper:]' '[:lower:]') # 小写
     set no_single_quote (string replace -r -a -- "'" "" $low) # 删除单引号
     # set sub (command echo $no_single_quote | command tr -c '[:alnum:]' '-' | string sub -e -1) # 将所有符号换为 -
     set sub (string replace -r -a -- '[\x00-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F]' '-' $no_single_quote)
