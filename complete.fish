@@ -39,8 +39,12 @@ end
 
 function __mfa.complete
     # __mfa.complete "jst git add" "template" "Add a template file"
-    set -l cmd (string split ' ' $argv[1])
-    complete -c $cmd[1] -n "__mfa.cur-command-chain-is $cmd" -f -a "$argv[2]"  -d "$argv[3]"
+    set -l cmd_arr (string split ' ' -- $argv[1])
+    # can be subcommand or param
+    set -l sub_arr (string split ' ' -- $argv[2])
+    for sub in $sub_arr
+        complete -c $cmd_arr[1] -n "__mfa.cur-command-chain-is $cmd_arr" -f -a "$sub" -d "$argv[3]"
+    end
 end
 
 # [automatically set jst subcommands completions]
