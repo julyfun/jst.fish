@@ -42,7 +42,7 @@ function __jst.how -d "(title)"
         set git_config_user_name (command git config user.name)
         set -l rep (__mfa.how.rep.arrow "$rep" "author" "$git_config_user_name")
         set content $content$rep\n
-    end < "$MFA_JST_PATH/how-to/template.md"
+    end < "$MFA_JST_PATH/how-to/template.md" # "
     command touch "$cut_title.md"
     echo -- $content > "$cut_title.md"
     alias_editor "$cut_title.md"
