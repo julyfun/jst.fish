@@ -8,6 +8,46 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __mfa.how.rep.t -d "(origin, remap)"
+    if echo -- $argv | grep -q '#.*>>>'
+        echo -- "# $argv[2]"
+    else
+        echo -- $argv[1]
+    end
+end
+
+# [config end, func start]
+function __mfa.how.rep.arrow -d "(origin, key, remap)"
+    if echo -- $argv[1] | grep -q "$argv[2]"'.*>>>'
+        string replace -- '>>>' "$argv[3]" "$argv[1]"
+    else
+        echo -- $argv[1]
+    end
+end
+
+function __jst.how -d "(title)"
+    set link_title (jst title "$argv")
+    set cut_title (string trim (string sub --end=80 "$link_title") --chars='-')
+    if test -z "$cut_title"
+        echo "Please provide a valid title for the article."
+        return 1
+    end
+    set -l content ""
+    while read -l line
+        set -l rep (__mfa.how.rep.t "$line" "$argv")
+        set date (date "+%Y-%m-%d")
+        set -l rep (__mfa.how.rep.arrow "$rep" "date" "$date")
+        set os (uname -a)
+        set -l rep (__mfa.how.rep.arrow "$rep" "environment" "$os")
+        set git_config_user_name (command git config user.name)
+        set -l rep (__mfa.how.rep.arrow "$rep" "author" "$git_config_user_name")
+        set content $content$rep\n
+    end < "$MFA_JST_PATH/how-to/template.md"
+    command touch "$cut_title.md"
+    echo -- $content > "$cut_title.md"
+    alias_editor "$cut_title.md"
+end
+
 function __jst.cprt -d "Copy root file (template) here"
     set -l root (command git rev-parse --show-toplevel)
     if test -z $argv
@@ -174,7 +214,7 @@ function __jst.his -d "Copy recent history"
     set cnt (count $his)
 
     if test $num -eq 1
-        echo $his[1] | jcp
+        echo -n $his[1] | jcp
         return 0
     end
 
@@ -185,7 +225,7 @@ function __jst.his -d "Copy recent history"
     set -l chosen_number
     read -P "Enter the history to copy: " chosen_number
     if test "$chosen_number" -gt 0; and test "$chosen_number" -le $cnt
-        echo $his[$chosen_number] | jcp
+        echo -n $his[$chosen_number] | jcp
         return 0
     else
         echo (__mfa.err)Invalid selection.(__mfa.off)
@@ -206,7 +246,7 @@ function __jst.shs -d "Turn string into shell string"
         echo $s2
         set res "$res'$s2'\\n\\"\n
     end
-    echo $res | jcp
+    echo -n $res | jcp
 end
 
 function __jst.py -d "Python with conda env"
