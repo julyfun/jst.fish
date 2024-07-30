@@ -50,12 +50,12 @@ end
 
 function __jst.cprt -d "Copy root file (template) here"
     set -l root (command git rev-parse --show-toplevel)
-    if test -z $argv
+    if test -z "$argv"
         echo (__mfa.ok)Repo root files loaded.(__mfa.off)
         __mfa.complete-d "jst cprt" "$root"
         return 1
     end
-    cp -r "$root/$argv" .
+    cp -r "$root/$argv[1]" "./$argv[2]"
 end
 
 # __mfa.complete-runtime "jst cprt" "__mfa.complete-d \"jst cprt\" \"\$(command git rev-parse --show-toplevel)\""
