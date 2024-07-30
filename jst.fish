@@ -8,6 +8,18 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.cprt -d "Copy root file (template) here"
+    set -l root (command git rev-parse --show-toplevel)
+    if test -z $argv
+        echo (__mfa.ok)Repo root files loaded.(__mfa.off)
+        __mfa.complete-d "jst cprt" "$root"
+        return 1
+    end
+    cp -r "$root/$argv" .
+end
+
+# __mfa.complete-runtime "jst cprt" "__mfa.complete-d \"jst cprt\" \"\$(command git rev-parse --show-toplevel)\""
+
 function __jst.f -d "Create file with standard title"
     set -l suf $argv[1]
     set -l name $argv[2..-1]
@@ -671,4 +683,3 @@ end
 __mfa.complete-r __jst jst
 __mfa.complete-r __mfa
 __mfa.complete-d "jst t" "$MFA_JST_PATH/t"
-

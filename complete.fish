@@ -24,26 +24,27 @@ function __mfa.subcommand-chain-string
     echo $res
 end
 
-function __mfa.cur-command-chain-is
-    set -l cmd_chain (string split ' ' (__mfa.subcommand-chain-string (commandline -poc)))
-    if test (count $cmd_chain) -ne (count $argv)
+function __mfa.cur-command-chain-is -d "(cmd_str)"
+    set -l real_cmd_chain (string split ' ' -- (__mfa.subcommand-chain-string (commandline -poc)))
+    set -l expected_cmd_chain (string split ' ' -- $argv)
+    if test (count $real_cmd_chain) -ne (count $expected_cmd_chain)
         return 1
     end
-    for i in (seq (count $cmd_chain))
-        if test $cmd_chain[$i] != $argv[$i]
+    for i in (seq (count $real_cmd_chain))
+        if test $real_cmd_chain[$i] != $expected_cmd_chain[$i]
             return 1
         end
     end
     return 0
 end
 
-function __mfa.complete
+function __mfa.complete -d "(cur_cmd_str, subcmds, desc)"
     # __mfa.complete "jst git add" "template" "Add a template file"
     set -l cmd_arr (string split ' ' -- $argv[1])
     # can be subcommand or param
     set -l sub_arr (string split ' ' -- $argv[2])
     for sub in $sub_arr
-        complete -c $cmd_arr[1] -n "__mfa.cur-command-chain-is $cmd_arr" -f -a "$sub" -d "$argv[3]"
+        complete -c $cmd_arr[1] -n "__mfa.cur-command-chain-is $argv[1]" -f -a "$sub" -d "$argv[3]"
     end
 end
 
@@ -75,13 +76,21 @@ function __mfa.complete-r
     end
 end
 
-function __mfa.complete-d
+function __mfa.complete-d -d "(cur_cmd_str, dir_to_complete)"
     set -l cmd $argv[1]
     set -l dir $argv[2]
     for f in (ls $dir)
         __mfa.complete "$cmd" "$f" ""
     end
 end
+
+# 目前无法 late-run
+# function __mfa.complete-runtime -d "(cur_cmd_str, execution)"
+#     set -l cur_cmd -- "$argv[1]"
+#     # can be subcommand or param
+#     set -l execution "$argv[2]"
+#     complete -c $cur_cmd[1] -n "__mfa.cur-command-chain-is $cur_cmd; and $execution" -f
+# end
 
 # [Example]
 # __mfa.complete "jst complete" add1 "Add a template file"
