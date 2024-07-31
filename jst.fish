@@ -572,7 +572,7 @@ function __jst.cmm -d "Git commit message help"
 end
 
 function __jst.git.dl -d "Download from github mirror ghps.cc"
-    wget https://mirror.ghproxy.com/ $argv
+    wget https://mirror.ghproxy.com/$argv
 end
 
 function __jst.git.c
