@@ -41,12 +41,14 @@ function __mfa.md.tb -d "Generate markdown table"
     echo $separator
 
     # Generate and Print Body
-    for row in (seq $n)
-        set -l body "|"
-        for col in (seq $m)
-            set body "$body      |"
+    if test $n -ge 2
+        for row in (seq 1 1 (math $n - 1))
+            set -l body "|"
+            for col in (seq $m)
+                set body "$body      |"
+            end
+            echo $body
         end
-        echo $body
     end
 end
 
