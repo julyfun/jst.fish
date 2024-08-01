@@ -31,7 +31,7 @@ function __mfa.md.tb -d "Generate markdown table"
     # Generate Header
     set -l header "|"
     set -l separator "|"
-    for i in (seq $n)
+    for i in (seq $m)
         set header "$header      |"
         set separator "$separator ---- |"
     end
@@ -41,9 +41,9 @@ function __mfa.md.tb -d "Generate markdown table"
     echo $separator
 
     # Generate and Print Body
-    for row in (seq $m)
+    for row in (seq $n)
         set -l body "|"
-        for col in (seq $n)
+        for col in (seq $m)
             set body "$body      |"
         end
         echo $body
