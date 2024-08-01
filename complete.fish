@@ -38,6 +38,7 @@ function __mfa.cur-command-chain-is -d "(cmd_str)"
     return 0
 end
 
+# append completion
 function __mfa.complete -d "(cur_cmd_str, subcmds, desc)"
     # __mfa.complete "jst git add" "template" "Add a template file"
     set -l cmd_arr (string split ' ' -- $argv[1])
@@ -84,13 +85,36 @@ function __mfa.complete-d -d "(cur_cmd_str, dir_to_complete)"
     end
 end
 
-# 目前无法 late-run
 # function __mfa.complete-runtime -d "(cur_cmd_str, execution)"
-#     set -l cur_cmd -- "$argv[1]"
+#     # never `set -l -- a`
+#     set -l cur_cmd_arr (string split ' ' -- "$argv[1]")
 #     # can be subcommand or param
 #     set -l execution "$argv[2]"
-#     complete -c $cur_cmd[1] -n "__mfa.cur-command-chain-is $cur_cmd; and $execution" -f
+#     # echo "__mfa.cur-command-chain-is $cur_cmd_arr; and eval $execution"
+#     # don't forget eval and single quotes
+#     complete -c $cur_cmd_arr[1] -n "__mfa.cur-command-chain-is $cur_cmd_arr; and eval '$execution'" -f
 # end
+
+function __mfa.complete-list -d "(cur_cmd_str, x1, x2...)"
+    set -l cur_cmd_str $argv[1]
+    for x in $argv[2..-1]
+        __mfa.complete "$cur_cmd_str" "$x" ""
+    end
+end
+
+function __mfa.complete-runtime-list-cmd -d "(cur_cmd_str, list_cmd)"
+    # Be sure that the list_cmd works iff the cur_cmd works!
+    set -l cur_cmd_str $argv[1]
+    set -l cur_cmd_arr (string split ' ' -- "$argv[1]")
+    set -l list_cmd "$argv[2]" # later eval
+    # [todo] remove previous completions
+    complete -c $cur_cmd_arr[1] -n "__mfa.cur-command-chain-is \"$cur_cmd_str\"; and __mfa.complete-list \"$cur_cmd_str\" (eval $list_cmd); and commandline -f complete" -f
+end
+
+# __mfa.complete-runtime "jst cprt" '__mfa.complete-d "jst cprt" "$(command git rev-parse --show-toplevel)"'
+# __mfa.complete-runtime-list-cmd "jst cprt" 'ls ..'
+__mfa.complete-runtime-list-cmd "docker attach" 'docker ps -aq'
+# __mfa.complete-runtime "docker attach" '__mfa.complete-d "jst cprt" "$(command git rev-parse --show-toplevel)"'
 
 # [Example]
 # __mfa.complete "jst complete" add1 "Add a template file"

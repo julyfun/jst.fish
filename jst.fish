@@ -114,7 +114,9 @@ function __jst.cprt -d "Copy root file (template) here"
     cp -r "$root/$argv[1]" "./$argv[2]"
 end
 
-# __mfa.complete-runtime "jst cprt" "__mfa.complete-d \"jst cprt\" \"\$(command git rev-parse --show-toplevel)\""
+# finally works!
+# __mfa.complete-runtime "jst cprt" '__mfa.complete-d "jst cprt" "$(command git rev-parse --show-toplevel)"'
+__mfa.complete-runtime-list-cmd "jst cprt" 'ls (git rev-parse --show-toplevel)'
 
 function __jst.f -d "Create file with standard title"
     set -l suf $argv[1]
@@ -631,7 +633,15 @@ function __jst.git.dl -d "Download from github mirror ghps.cc"
     wget https://mirror.ghproxy.com/$argv
 end
 
-function __jst.git.c
+function __jst.git.c1 -d "git clone --depth=1"
+    command git clone --depth=1 git@github.com:"$argv[1]".git $argv[2..-1]
+end
+
+function __jst.git.c10 -d "git clone --depth=10"
+    command git clone --depth=10 git@github.com:"$argv[1]".git $argv[2..-1]
+end
+
+function __jst.git.c -d "Clone from github with ssh"
     command git clone git@github.com:"$argv[1]".git $argv[2..-1]
 end
 
