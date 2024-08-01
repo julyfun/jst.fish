@@ -8,6 +8,60 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.md.tb -d "Generate markdown table"
+    __mfa.md.tb $argv | jcp
+end
+
+function __mfa.md.tb -d "Generate markdown table"
+    # by gpt-4o
+    if test (count $argv) -ne 2
+        echo "Usage: generate_md_table n m"
+        return 1
+    end
+
+    set -l n $argv[1]
+    set -l m $argv[2]
+
+    # Validate input
+    if not string match -qr '^\d+$' -- $n $m
+        echo "Error: Both arguments must be positive integers."
+        return 1
+    end
+
+    # Generate Header
+    set -l header "|"
+    set -l separator "|"
+    for i in (seq $n)
+        set header "$header      |"
+        set separator "$separator ---- |"
+    end
+
+    # Print Header and Separator
+    echo $header
+    echo $separator
+
+    # Generate and Print Body
+    for row in (seq $m)
+        set -l body "|"
+        for col in (seq $n)
+            set body "$body      |"
+        end
+        echo $body
+    end
+end
+
+function __jst.md.tb1 -d "Markdown table template"
+    set tb \
+'|      |      |      |'\n\
+'| ---- | ---- | ---- |'\n\
+'|      |      |      |'\n
+    echo -n $tb | jcp
+end
+
+function __jst.md
+    __mfa.sub __jst.md $argv
+end
+
 function __mfa.how.rep.t -d "(origin, remap)"
     if echo -- $argv | grep -q '#.*>>>'
         echo -- "# $argv[2]"
