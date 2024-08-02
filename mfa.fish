@@ -1,14 +1,37 @@
-
 # [constants]
-set -g MFA_CONFIG_PATH "$HOME/.config/mfa/config.fish"
-set -g MFA_TMP_DIR .mfa/tmp # maybe used for remote
-set -g MFA_MESSAGE_PATH .mfa/tmp/message
-set -g MFA_MESSAGE_CMP_PATH .mfa/tmp/message_cmp
-set -g MFA_DOWNLOADS_DIR .mfa/dl
+set -gx MFA_DATA_HOME "$HOME/.local/share/mfa"
+set -gx MFA_CACHE_HOME "$HOME/.cache/mfa"
+set -gx MFA_CONFIG_HOME "$HOME/.config/mfa"
+set -g MFA_CONFIG_FILE "$HOME/.config/mfa/config.fish"
+set -g MFA_TMP_DIR .cache/mfa # maybe used for remote
+set -g MFA_MESSAGE_FILE .cache/mfa/__m.txt
+set -g MFA_MESSAGE_CMP_FILE .cache/mfa/__m_cmp.txt
+set -g MFA_DOWNLOADS_DIR .local/share/mfa/dl
+
+set -g MFA_JST_VER "0.1.0"
+set -g MFA_JST_PATH "$(status dirname)"
+set -g MFA_FISH_CONFIG_PATH "$HOME/.config/fish/config.fish"
+
+function __mfa.try-mkdir
+    if test ! -e "$argv"; command mkdir -p "$argv"; end
+end
+
+function __mfa.init-homes
+    __mfa.try-mkdir $MFA_DATA_HOME
+    __mfa.try-mkdir $MFA_CACHE_HOME
+    __mfa.try-mkdir $MFA_CONFIG_HOME
+    __mfa.try-mkdir $HOME/$MFA_DOWNLOADS_DIR
+    if test ! -e "MFA_CONFIG_FILE"
+        command touch "$MFA_CONFIG_FILE"
+        echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $MFA_CONFIG_FILE
+    end
+end
+
+__mfa.init-homes
 
 function __mfa.try-load-config
-    if test -e "$MFA_CONFIG_PATH"
-        source "$MFA_CONFIG_PATH"
+    if test -e "$MFA_CONFIG_FILE"
+        source "$MFA_CONFIG_FILE"
     end
 end
 
@@ -50,6 +73,11 @@ end
 function __mfa.no-subcommand
     echo (__mfa.err)"error:"(__mfa.off)\
         unrecognized subcommand \'(__mfa.yellow)$argv[1](__mfa.off)\'
+end
+
+function __mfa.parent-no-sub
+    echo (__mfa.err)"error:"(__mfa.off)\
+        unrecognized subcommand \'(__mfa.yellow)$argv[2](__mfa.off)\'
 end
 
 # [base and math]
@@ -117,16 +145,6 @@ function __mfa.default-pic-dir
 end
 
 # [mfans function]
-function __mfa.init
-    command mkdir -p $HOME/.mfa
-    command mkdir -p $HOME/.mfa/tmp
-    command mkdir -p $HOME/$MFA_DOWNLOADS_DIR
-    command mkdir -p $HOME/.config/mfa
-    command touch "$MFA_CONFIG_PATH"
-    echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $MFA_CONFIG_PATH
-    __mfa.try-load-config
-end
-
 function __mfa.cmd
     echo (ssh $MFA_USER_HOST "eval $argv")
 end
@@ -157,16 +175,16 @@ function __mfa.download
 end
 
 function __mfa.upload-a-message
-    __mfa.paste > ~/$MFA_MESSAGE_PATH
-    scp -p ~/$MFA_MESSAGE_PATH {$MFA_USER_HOST}:(__mfa.home)/{$MFA_MESSAGE_PATH}
+    __mfa.paste > ~/$MFA_MESSAGE_FILE
+    scp -p ~/$MFA_MESSAGE_FILE {$MFA_USER_HOST}:(__mfa.home)/{$MFA_MESSAGE_FILE}
 end
 
 function __mfa.download-a-message
-    scp -p {$MFA_USER_HOST}:(__mfa.home)/{$MFA_MESSAGE_PATH} ~/$MFA_MESSAGE_CMP_PATH
-     command mv ~/$MFA_MESSAGE_CMP_PATH ~/$MFA_MESSAGE_PATH
+    scp -p {$MFA_USER_HOST}:(__mfa.home)/{$MFA_MESSAGE_FILE} ~/$MFA_MESSAGE_CMP_FILE
+     command mv ~/$MFA_MESSAGE_CMP_FILE ~/$MFA_MESSAGE_FILE
      __mfa.copy-a-message
-    # if test ! (__mfa.file-eq ~/{$MFA_MESSAGE_PATH} ~/$MFA_MESSAGE_CMP_PATH ) -eq 1
-    #     command mv ~/$MFA_MESSAGE_CMP_PATH ~/$MFA_MESSAGE_PATH
+    # if test ! (__mfa.file-eq ~/{$MFA_MESSAGE_FILE} ~/$MFA_MESSAGE_CMP_FILE ) -eq 1
+    #     command mv ~/$MFA_MESSAGE_CMP_FILE ~/$MFA_MESSAGE_FILE
     #     __mfa.copy-a-message
     # else
     #     echo "No new message. Stop copying." >&2
@@ -174,7 +192,7 @@ function __mfa.download-a-message
 end
 
 function __mfa.copy-a-message
-    command cat ~/$MFA_MESSAGE_PATH | __mfa.copy
+    command cat ~/$MFA_MESSAGE_FILE | __mfa.copy
 end
 
 
@@ -239,28 +257,4 @@ function __mfa.github-link
         command git remote -v | string match -rq 'github\.com:(?<user_repo>[\S]+)\s'
     end
     echo (string join -n '/' "https://github.com" $user_repo $remote_relative_arg)
-end
-
-function mfa
-    switch $argv[1]
-    case upa
-        __mfa.upload-a-message $argv[2..-1]
-    case dla
-        __mfa.download-a-message $argv[2..-1]
-    case cpa
-        __mfa.copy-a-message $argv[2..-1]
-    case init
-        __mfa.init $argv[2..-1]
-    case ups
-        __mfa.upload-screenshot $argv[2..-1]
-    case dll
-        __mfa.download-latest $argv[2..-1]
-    case up
-        __mfa.upload $argv[2..-1]
-    case dl
-        __mfa.download $argv[2..-1]
-    case '*'
-        echo mfa: \'$argv\' is not a mfa command.
-        functions mfa
-    end
 end

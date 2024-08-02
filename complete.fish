@@ -55,13 +55,9 @@ end
 function __mfa.complete-r
     set -l start $argv[1]
     set -l renamed_start $argv[2]
-    if test -z $argv[2]
-        set -l renamed_start $start
-    end
     # 从原始名词映射到目标名字
     # argv: __jst.git.add.
     # __jst.git.add.a => jst git add a (and continue with __jst.git.add.a)
-    # __jst.git.add.b => jst git add b
     set match (string match -r "^$start\..*\$" (functions --all))
     for func in $match
         set -l desc (__mfa.get-func-desc $func)

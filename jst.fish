@@ -1,13 +1,37 @@
-set -g MFA_JST_VER "0.1.0"
-set -g MFA_JST_PATH "$(status dirname)"
-set -g MFA_FISH_CONFIG_PATH $HOME/.config/fish/config.fish
-
 source "$(status dirname)/mfa.fish"
 source "$(status dirname)/complete.fish"
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.upa
+    __mfa.upload-a-message $argv[2..-1]
+end
+
+function __jst.dla
+    __mfa.download-a-message $argv[2..-1]
+end
+
+function __jst.cpa
+    __mfa.copy-a-message $argv[2..-1]
+end
+
+function __jst.ups
+    __mfa.upload-screenshot $argv[2..-1]
+end
+
+function __jst.up
+    __mfa.upload $argv[2..-1]
+end
+
+function __jst.dl
+    __mfa.download $argv[2..-1]
+end
+
+function __jst.dll
+    __mfa.download-latest $argv[2..-1]
+end
+
 function __jst.md.tb -d "Generate markdown table"
     __mfa.md.tb $argv | jcp
 end
@@ -225,19 +249,22 @@ function __mfa.pad-to-terminal-width
 end
 
 function __jst.fmt.cpp
-    set dst "$HOME/.mfa/dl/fmt/cpp"
+    set dst "$MFA_CACHE_HOME/fmt/cpp"
     if not test -e "$dst"
         git clone --depth=1 git@github.com:SJTU-RoboMaster-Team/style-team.git "$dst"
     end
     cp "$dst/.clang-format" "$dst/.clang-tidy" .
 end
 
-function __mfa.sub -d "Subcommands"
+function __mfa.sub -d "(parent, sub)"
+    if test -z $argv[2]
+        return 1
+    end
     if not type -q $argv[1].$argv[2] # 该函数是否存在
         __mfa.no-subcommand $argv[2]
         return 1
     end
-    $argv[1].$argv[2] $argv[3..-1]
+    $argv[1].$argv[2] $argv[3..-1] # don't know whether return 0
 end
 
 function __jst.fmt -d "Add fmt file here"
@@ -318,7 +345,7 @@ function __jst.pyc.frac -d "Fraction"
     set cmd \
 'from fractions import Fraction'\n\
 'import numpy as np'\n\
-'np.set_printoptions(formatter={\'all\':lambda x: str(Fraction(x).limit_denominator())})'\n
+'np.set_printoptions(formatter={\'all\':lambda x: str(Fraction(x).limit_denominator())})'\n # ' comment
     echo $cmd | jcp
 end
 
@@ -465,11 +492,11 @@ alias fn=functions
 #     __mfa.open-link "https://detexify.kirelabs.org/classify.html"
 # end
 
-function baidu
+function __jst.baidu
     __mfa.open-link "https://www.baidu.com/s?wd=$argv"
 end
 
-function baidu.ip
+function __jst.baidu.ip
     baidu ip
 end
 
@@ -732,11 +759,42 @@ function __jst.run -d "Comp & run a cpp file using c++17"
     ./1
 end
 
+function __mfa.get-hide-chain-from-func -d "(func_name) -> chain: []"
+    string split '.' (string sub -s 3 $argv)
+end
+
+function __mfa.get-hide-chain-from-cmd -d "(cmd_chain..) -> chain: []"
+    # jst -h git c --depth=10 julyfun/assd
+    # __jst => ignore -h => __jst.git? =yes=> __jst.git.c? =yes=> ignore -- => ..
+    set func_name __$argv[1]
+    for a in $argv[2..-1]
+        switch $a
+            case '*=*'
+                continue
+            case '-*' # do not try to complete options as commands
+                continue
+            case '*'
+                if functions -q $func_name.$a
+                    set func_name $func_name.$a
+                end
+        end
+    end
+    __mfa.get-hide-chain-from-func $func_name
+end
+
+function __jst.usage-count
+    cat $MFA_DATA_HOME/usage_count.json
+end
+
 function jst -d "Just do something"
     # __jst.$argv[1] $argv[2..-1]
     __mfa.sub __jst $argv # this should be in comptime, in fact
+    # count the time it is used
+    if test $status -eq 0
+        /usr/bin/env python3 "$MFA_JST_PATH/usage_count.py" (__mfa.get-hide-chain-from-cmd jst $argv)
+    end
 end
 
 __mfa.complete-r __jst jst
-__mfa.complete-r __mfa
+# __mfa.complete-r __mfa
 __mfa.complete-d "jst t" "$MFA_JST_PATH/t"
