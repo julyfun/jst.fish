@@ -14,24 +14,37 @@ mfa init # and make sure server does this
 ssh-copy-id $MFA_USER_HOST
 ```
 
-- Now, you can use commands including:
+- Now, you can use commands, for example:
 
-| Command       | Parameter (Example)                                    | Result                                                       |
-| ------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-| `mfa upa`     | `mfa upa https://github.com/wangwc18/mygoFlaskProject` | Upload this address to Mfans server                          |
-| `jd`          | `jd python`                                            | Jump to subdirectory with similar name to `python`           |
-| `ja`          | `ja fix typo`                                          | Commit all changes with message `fix typo`                   |
-| `jp`          | `jp update README.md`                                  | Commit all changes and push with message `update README.md`  |
-| `jst cmm`     |                                                        | Show git commit message help                                 |
-| `jst dl`      | `jst dl autojump`                                      | Download and configure `autojump` automatically              |
-| `jst gf`      | `jst gf iostream`                                      | Search `iostream` in current directory by title and contents |
-| `jst run`     | `jst run 1.cpp`                                        | Compile `1.cpp` with c++17 standard and run it               |
-| `jst ret`     |                                                        | Return to the root folder of current repo                    |
-| `jst git ig`  |                                                        | Generate a useful default `.gitignore` file                  |
-| `jst git log` |                                                        | Show beautiful commit history of current repo                |
-| `jst git o`   | `jst git o README.md`                                  | Open the github page of `README.md` in current folder        |
+| Command example    | Result                                                   |
+| ------------------ | -------------------------------------------------------- |
+| `jp`               | Show and commit all changes, then push to remote         |
+| `jst t ros2`       | Get a ros2 template project of best practice             |
+| `jst git log`      | Show beautiful git log                                   |
+| `cpwd`             | Copy current dir path                                    |
+| `jst fmt cpp`      | Add cpp format config here                               |
+| `jd vim / jdr vim` | Jump to file named like `vim` in current dir / workspace |
+| `jst run 1.cpp`    | Compile and run `1.cpp`                                  |
+| `jst gf include`   | Search all `include` keyword under the dir               |
+| `jst cmm`          | Remind you of a standard commit message form             |
+| `jst find *.cpp`   | Find cpp file under the dir                              |
+| `jst git ig`       | Generate a default `.gitignore` file                     |
+| `jst git dl`       | Download github file with lightning speed                |
+| `jst git o`        | Open this repo / repofile in github.com instantly        |
+| `jst crun demo`    | Build the cmake project and run the executable `demo`    |
+| `jst how`          | Create a template file with title and url filename       |
+| `jcp`              | pipeline to this command to copy text to clipboard       |
+| `jst his`          | Show and select command history to copy to clipboard     |
+| `jst sc`           | In fish shell, source a bash file                        |
+| `jst upgrade`      | Upgrade `jst.fish`                                       |
+| `jst mi pip`       | Copy a pip mirror command to clipboard                   |
+| `jst md tb 5 7`    | Copy a 5 \* 7 markdown table code to clipboard           |
+| `jst up main.cpp`  | Upload `main.cpp` to server (Specify server first)       |
+| `jst dl main.cpp`  | Download the file from server                            |
+| `jst upa Hello!`   | Upload `Hello!` message to server on any OS              |
+| `jst dla`          | Copy the just uploaded message                           |
 
-![](./example.jpg)
+![](https://telegraph-image-bhi.pages.dev/file/5793b27ff193a9afbbcb8.png)
 
 ## Introduction
 
@@ -39,7 +52,7 @@ ssh-copy-id $MFA_USER_HOST
 
 ## Extensions
 
-Some `jst` command would require these:
+Some `jst` command would require these, but it's ok not to download them if you don't use the command:
 
 ### Linux
 
