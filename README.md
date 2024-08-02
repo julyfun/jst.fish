@@ -1,6 +1,9 @@
-## Usage
+## Install `jst.fish`
 
-- Step 1: `git clone git@github.com:julyfun/jst.fish.git`
+```
+git clone git@github.com:julyfun/jst.fish.git
+```
+
 - Step 2: In your `~/.config/fish/config.fish`, add:
 
 ```

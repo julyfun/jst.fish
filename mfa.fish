@@ -13,7 +13,7 @@ set -g MFA_JST_PATH "$(status dirname)"
 set -g MFA_FISH_CONFIG_PATH "$HOME/.config/fish/config.fish"
 
 function __mfa.try-mkdir
-    if test ! -e "$argv"; command mkdir -p "$argv"; end
+    if not test -e "$argv"; command mkdir -p "$argv"; end
 end
 
 function __mfa.init-homes
@@ -21,7 +21,7 @@ function __mfa.init-homes
     __mfa.try-mkdir $MFA_CACHE_HOME
     __mfa.try-mkdir $MFA_CONFIG_HOME
     __mfa.try-mkdir $HOME/$MFA_DOWNLOADS_DIR
-    if test ! -e "MFA_CONFIG_FILE"
+    if not test -e "$MFA_CONFIG_FILE"
         command touch "$MFA_CONFIG_FILE"
         echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $MFA_CONFIG_FILE
     end

@@ -368,7 +368,7 @@ end
 alias jcp="__mfa.copy"
 alias jps="__mfa.paste"
 
-function __jst.c -d "cd to common dir like .ssh"
+function __jst.cd -d "cd to common dir like .ssh"
     switch $argv[1]
     case fish
         cd ~/.config/fish
