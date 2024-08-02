@@ -300,7 +300,7 @@ function __jst.his -d "Copy recent history"
 
     if test $num -eq 1
         echo -n $his[1] | jcp
-        return 0
+        return
     end
 
     echo "[History]"
@@ -311,7 +311,7 @@ function __jst.his -d "Copy recent history"
     read -P "Enter the history to copy: " chosen_number
     if test "$chosen_number" -gt 0; and test "$chosen_number" -le $cnt
         echo -n $his[$chosen_number] | jcp
-        return 0
+        return
     else
         echo (__mfa.err)Invalid selection.(__mfa.off)
         return 1
@@ -543,12 +543,12 @@ function __jst.dir -d "Jump to subdir or fil (jd)"
         if test $dir_cnt -eq 1
             echo Matching directory: $matching_directories
             cd $matching_directories[1]
-            return 0
+            return
         end
         echo Matching file: $matching_files
         cd (command dirname $matching_files)
         alias_editor (command basename $matching_files)
-        return 0
+        return
     end
     # If multiple matches, prompt the user to choose one
     echo "Multiple matching found:"
@@ -571,13 +571,13 @@ function __jst.dir -d "Jump to subdir or fil (jd)"
     read -P "Enter the number of the directory to jump to or file to edit: " chosen_number
     if test "$chosen_number" -gt 0; and test "$chosen_number" -le $dir_cnt
         cd $matching_directories[$chosen_number]
-        return 0
+        return
     else if test "$chosen_number" -gt $dir_cnt; and test "$chosen_number" -le $tot_cnt
         set -l idx (math $chosen_number - $dir_cnt)
         set -l file_name $matching_files[$idx]
         cd (command dirname $file_name)
         alias_editor (command basename $file_name)
-        return 0
+        return
     else
         echo (__mfa.err)Invalid selection.(__mfa.off)
         return 1
