@@ -145,6 +145,7 @@ __mfa.complete-runtime-list-cmd "jst cprt" 'ls (git rev-parse --show-toplevel)'
 function __jst.f -d "Create file with standard title"
     set -l suf $argv[1]
     set -l name $argv[2..-1]
+    echo $name | jcp
     command touch (jst title "$name").$suf
 end
 
