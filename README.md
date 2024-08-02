@@ -2,22 +2,17 @@
 
 ```
 git clone git@github.com:julyfun/jst.fish.git
-```
-
-- Step 2: In your `~/.config/fish/config.fish`, add:
-
-```
+# In your `~/.config/fish/config.fish`, add:
 source <path_to_repo>/jst.fish
 ```
 
-- Step 3 (still under internal test): link your mfa server
+**Extension:** If you want to setup your remote server, edit `$MFA_USER_HOST` in `~/.config/mfa/config.fish`, and then:
 
 ```
-mfa init # and make sure server does this
 ssh-copy-id $MFA_USER_HOST
 ```
 
-- Now, you can use commands, for example:
+## Exapmle usage
 
 | Command example    | Result                                                   |
 | ------------------ | -------------------------------------------------------- |
