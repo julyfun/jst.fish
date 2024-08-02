@@ -5,31 +5,31 @@ alias alias_editor=nvim
 
 # [config end, func start]
 function __jst.upa
-    __mfa.upload-a-message $argv[2..-1]
+    __mfa.upload-a-message $argv
 end
 
 function __jst.dla
-    __mfa.download-a-message $argv[2..-1]
+    __mfa.download-a-message $argv
 end
 
 function __jst.cpa
-    __mfa.copy-a-message $argv[2..-1]
+    __mfa.copy-a-message $argv
 end
 
 function __jst.ups
-    __mfa.upload-screenshot $argv[2..-1]
+    __mfa.upload-screenshot $argv
 end
 
 function __jst.up
-    __mfa.upload $argv[2..-1]
+    __mfa.upload $argv
 end
 
 function __jst.dl
-    __mfa.download $argv[2..-1]
+    __mfa.download $argv
 end
 
 function __jst.dll
-    __mfa.download-latest $argv[2..-1]
+    __mfa.download-latest $argv
 end
 
 function __jst.md.tb -d "Generate markdown table"

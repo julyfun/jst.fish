@@ -153,24 +153,24 @@ function __mfa.home
     echo (ssh $MFA_USER_HOST 'eval echo ~$USER')
 end
 
-function __mfa.path
+function __mfa.tmp-path
     set remote_path (string replace -a ' ' '\\ ' -- (__mfa.home)/$MFA_TMP_DIR/$argv[1])
     echo {$MFA_USER_HOST}:"$remote_path"
 end
 
 function __mfa.upload
     if test -z $argv[2]
-        scp -p $argv[1] (__mfa.path .)
+        scp -p $argv[1] (__mfa.tmp-path .)
     else
-        scp -p $argv[1] (__mfa.path $argv[2])
+        scp -p $argv[1] (__mfa.tmp-path $argv[2])
     end
 end
 
 function __mfa.download
     if test -z $argv[2]
-        scp -p (__mfa.path $argv[1]) .
+        scp -p (__mfa.tmp-path $argv[1]) .
     else
-        scp -p (__mfa.path $argv[1]) $argv[2]
+        scp -p (__mfa.tmp-path $argv[1]) $argv[2]
     end
 end
 
