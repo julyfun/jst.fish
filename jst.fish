@@ -88,23 +88,6 @@ function __jst.md
     __mfa.sub __jst.md $argv
 end
 
-function __mfa.how.rep.t -d "(origin, remap)"
-    if echo -- $argv | grep -q '#.*>>>'
-        echo -- "# $argv[2]"
-    else
-        echo -- $argv[1]
-    end
-end
-
-# [config end, func start]
-function __mfa.how.rep.arrow -d "(origin, key, remap)"
-    if echo -- $argv[1] | grep -q "$argv[2]"'.*>>>'
-        string replace -- '>>>' "$argv[3]" "$argv[1]"
-    else
-        echo -- $argv[1]
-    end
-end
-
 function __jst.how -d "Create a how-to article"
     set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
     set link_title (jst title "$title")
@@ -117,18 +100,6 @@ function __jst.how -d "Create a how-to article"
     set language zh-hans
     set os (uname -a)
     set git_config_user_name (command git config user.name)
-    # see: https://stackoverflow.com/help/how-to-answer
-    # - question .1.md: asking how
-    # - unfinished .todo.md: answering
-    # - guess: not verified answer
-    # - verified(default): a brief answer without reliable reference or enough environment information, but somehow verified
-    # - essay: a reliable answer, providing context for links and information for reproduction
-    #   but may be only useful for people familiar with the relevant fields
-    # - course: a detailed answer with step-by-step instructions, friendly to newcomers,
-    #   low threshold for reading and reproducing
-    # - Good Article - Featured Content
-    # set type verified
-    # 搜索该问题的随机访客复现成功的概率
     set reliability "20% (author)"
     # yml format
     set head \
@@ -143,29 +114,6 @@ function __jst.how -d "Create a how-to article"
     command touch $cut_title.md
     echo "$head" > $cut_title.md # command echo 不行
     alias_editor $cut_title.md
-end
-
-function __jst.how.template -d "(title)"
-    set link_title (jst title "$argv")
-    set cut_title (string trim (string sub --end=80 "$link_title") --chars='-')
-    if test -z "$cut_title"
-        echo "Please provide a valid title for the article."
-        return 1
-    end
-    set -l content ""
-    while read -l line
-        set -l rep (__mfa.how.rep.t "$line" "$argv")
-        set date (date "+%Y-%m-%d")
-        set -l rep (__mfa.how.rep.arrow "$rep" "date" "$date")
-        set os (uname -a)
-        set -l rep (__mfa.how.rep.arrow "$rep" "environment" "$os")
-        set git_config_user_name (command git config user.name)
-        set -l rep (__mfa.how.rep.arrow "$rep" "author" "$git_config_user_name")
-        set content $content$rep\n
-    end < "$MFA_JST_PATH/how-to/template.md" # " for highlight
-    command touch "$cut_title.md"
-    echo -- $content > "$cut_title.md"
-    alias_editor "$cut_title.md"
 end
 
 function __jst.cprt -d "Copy root file (template) here"
