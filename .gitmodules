@@ -1,4 +1,0 @@
-[submodule "how-to"]
-	path = how-to
-	url = git@github.com:julyfun/how-to.git
-	shallow = true
