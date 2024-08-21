@@ -595,13 +595,13 @@ function __jst.i -d "Useful information of your system"
     __jst.battery
 end
 
-function __jst.dl.autojump
+function __jst.install.autojump
     command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$MFA_DOWNLOADS_DIR/autojump
     command echo "source $HOME/$MFA_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $MFA_FISH_CONFIG_PATH
 end
 
-function __jst.dl -d "Download and configure tools auto"
-    __jst.dl.$argv[1] $argv[2..-1]
+function __jst.install -d "Download and configure tools auto"
+    __jst.install.$argv[1] $argv[2..-1]
 end
 
 function __jst.new-c -d "Initialize an empty c project"

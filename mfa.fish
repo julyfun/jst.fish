@@ -160,6 +160,7 @@ end
 
 function __mfa.upload
     if test -z $argv[2]
+        # -p to preserve time
         scp -p $argv[1] (__mfa.tmp-path .)
     else
         scp -p $argv[1] (__mfa.tmp-path $argv[2])
