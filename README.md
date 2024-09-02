@@ -2,8 +2,13 @@
 
 ```
 git clone git@github.com:julyfun/jst.fish.git
-# In your `~/.config/fish/config.fish`, add:
+```
+
+In your `~/.config/fish/config.fish`, add:
+
+```
 source <path_to_repo>/jst.fish
+source <path_to_repo>/kickstart.fish # optional
 ```
 
 **Extension:** If you want to setup your remote server, edit `$MFA_USER_HOST` in `~/.config/mfa/config.fish`, and then:
