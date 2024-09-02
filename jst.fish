@@ -4,6 +4,11 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.hows -d "How-to website"
+    set link (string split . -r -m1 (__mfa.git-rel-link $argv[1]))[1]
+    __mfa.open-link "https://how-to.fun/$link"
+end
+
 function __jst.upa
     __mfa.upload-a-message $argv
 end
