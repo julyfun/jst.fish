@@ -4,6 +4,12 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.ltr
+    # use tac to reverse
+    set ltr (ls -ltr | awk '{print $9}' | tail -$argv | tac)
+    __mfa.cp-one-from-list $ltr
+end
+
 function __jst.hows -d "How-to website"
     set link (string split . -r -m1 (__mfa.git-rel-link $argv[1]))[1]
     __mfa.open-link "https://how-to.fun/$link"
@@ -283,6 +289,30 @@ function __jst.sc -d  "Just source"
     end
 end
 
+function __mfa.show-and-cp
+    echo $argv && echo $argv | jcp
+end
+
+function __mfa.cp-one-from-list
+    set cnt (count $argv)
+    if test $cnt -eq 1
+        __mfa.show-and-cp $argv[1]
+        return
+    end
+    for i in (seq (count $argv))
+        echo " $i." "$argv[$i]"
+    end
+    set -l chosen_number
+    read -P "Enter the number to copy: " chosen_number
+    if test "$chosen_number" -gt 0; and test "$chosen_number" -le $cnt
+        __mfa.show-and-cp $argv[$chosen_number]
+        return
+    else
+        echo (__mfa.err)Invalid selection.(__mfa.off)
+        return 1
+    end
+end
+
 function __jst.his -d "Copy recent history"
     if test -z $argv[1]
         set num 10
@@ -290,26 +320,7 @@ function __jst.his -d "Copy recent history"
         set num $argv[1]
     end
     set his (history --max $num)
-    set cnt (count $his)
-
-    if test $num -eq 1
-        echo -n $his[1] | jcp
-        return
-    end
-
-    echo "[History]"
-    for i in (seq (count $his))
-        echo " $i." "$his[$i]"
-    end
-    set -l chosen_number
-    read -P "Enter the history to copy: " chosen_number
-    if test "$chosen_number" -gt 0; and test "$chosen_number" -le $cnt
-        echo -n $his[$chosen_number] | jcp
-        return
-    else
-        echo (__mfa.err)Invalid selection.(__mfa.off)
-        return 1
-    end
+    __mfa.cp-one-from-list $his
 end
 
 function __jst.fr -d "Translate french word"
