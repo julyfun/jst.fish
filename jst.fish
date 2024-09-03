@@ -116,7 +116,6 @@ function __jst.how -d "Create a how-to article"
     set head \
 - reliability: \"$reliability\"\n\
 - date: $date\n\
-- language: \"$language\"\n\
 - os: \"$os\"\n\
 - author: \"$git_config_user_name\"\n\
 - assume-you-know: [computer]\n\
