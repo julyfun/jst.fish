@@ -281,7 +281,11 @@ function __jst.m -d "mkdir and cd"
 end
 
 function __jst.path -d "Add current dir to path"
-    set where (pwd)
+    if test -z $argv[1]
+        set where (pwd)
+    else
+        set where $argv[1]
+    end
     echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
     echo "export PATH=\"\$PATH:$where\"" >> ~/.bashrc
 end
@@ -613,6 +617,14 @@ end
 function __jst.i -d "Useful information of your system"
     command date
     __jst.battery
+end
+
+function __jst.install.neovim
+    set where $HOME/$MFA_DOWNLOADS_DIR/neovim
+    __mfa.try-mkdir $where
+    curl -o $where/nvim https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+    chmod +x $where/nvim
+    jst path $where
 end
 
 function __jst.install.autojump
