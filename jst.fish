@@ -213,15 +213,20 @@ function __jst.tp -d "Personalized templates"
 end
 
 function __jst.t -d "Template files"
-    if not test -e "$MFA_JST_PATH/t/$argv"
-        echo "No template called `$argv`"
+    if not test -e "$MFA_JST_PATH/t/$argv[1]"
+        echo "No template called `$argv[1]`"
         return 1
     end
-    if test -e "$argv"
-        echo "Error! `$argv` already exists"
+    if test -z $argv[2]
+        set name $argv[1]
+    else
+        set name $argv[2]
+    end
+    if test -e "$name"
+        echo "Error! `$name` already exists"
         return 1
     end
-    cp -r "$MFA_JST_PATH/t/$argv" .
+    cp -r "$MFA_JST_PATH/t/$argv[1]" "./$name"
 end
 
 function __mfa.cargo-run-compiling
