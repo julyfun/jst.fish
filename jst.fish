@@ -4,6 +4,14 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.ls
+    __mfa.sub __jst.ls $argv
+end
+
+function __jst.ls.dl
+    __mfa.cmd "ls \$HOME/$MFA_CACHE_DIR"
+end
+
 function __jst.ltr
     # use tac to reverse
     set ltr (ls -ltr | awk '{print $9}' | tail -$argv | tac)
