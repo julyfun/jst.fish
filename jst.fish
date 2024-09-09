@@ -281,7 +281,12 @@ function __jst.m -d "mkdir and cd"
 end
 
 function __jst.path -d "Add current dir to path"
-    set where (realpath $argv[1]) # can be empty
+    if test -z $argv[1]
+        set where .
+    else
+        set where $argv[1]
+    end
+    set where (realpath $where) # can't be empty on linux
     echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
     echo "export PATH=\"\$PATH:$where\"" >> ~/.bashrc
 end
