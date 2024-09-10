@@ -1,8 +1,9 @@
 # [constants]
-set -g MFA_DATA_HOME "$HOME/.local/share/mfa"
-set -g MFA_CACHE_HOME "$HOME/.cache/mfa"
-set -g MFA_CONFIG_HOME "$HOME/.config/mfa"
-set -g MFA_CONFIG_FILE "$HOME/.config/mfa/config.fish"
+# maybe used by python env, so use -gx
+set -gx MFA_DATA_HOME "$HOME/.local/share/mfa"
+set -gx MFA_CACHE_HOME "$HOME/.cache/mfa"
+set -gx MFA_CONFIG_HOME "$HOME/.config/mfa"
+set -gx MFA_CONFIG_FILE "$HOME/.config/mfa/config.fish"
 
 set -g MFA_CACHE_DIR .cache/mfa # maybe used for remote
 set -g MFA_MESSAGE_FILE .cache/mfa/__m.txt
