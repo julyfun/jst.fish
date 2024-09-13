@@ -178,6 +178,7 @@ function __mfa.download
 end
 
 function __mfa.upload-a-message
+    __mfa.paste
     __mfa.paste > ~/$MFA_MESSAGE_FILE
     scp -p ~/$MFA_MESSAGE_FILE {$MFA_USER_HOST}:(__mfa.remote-home)/{$MFA_MESSAGE_FILE}
 end
@@ -195,7 +196,8 @@ function __mfa.download-a-message
 end
 
 function __mfa.copy-a-message
-    command cat ~/$MFA_MESSAGE_FILE | __mfa.copy
+    cat ~/$MFA_MESSAGE_FILE 
+    cat ~/$MFA_MESSAGE_FILE | __mfa.copy
 end
 
 
