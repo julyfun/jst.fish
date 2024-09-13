@@ -178,8 +178,13 @@ function __mfa.download
 end
 
 function __mfa.upload-a-message
-    __mfa.paste
-    __mfa.paste > ~/$MFA_MESSAGE_FILE
+    if test -z $argv
+        set msg (__mfa.paste)
+    else
+        set msg $argv
+    end
+    echo $msg
+    echo $msg > ~/$MFA_MESSAGE_FILE
     scp -p ~/$MFA_MESSAGE_FILE {$MFA_USER_HOST}:(__mfa.remote-home)/{$MFA_MESSAGE_FILE}
 end
 
