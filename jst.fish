@@ -4,18 +4,25 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.haya
+    jps > $MFA_CACHE_HOME/__disk.bib
+    hayagriva $MFA_CACHE_HOME/__disk.bib >> $argv
+end
+
+function __jst.ls.dl
+    __mfa.cmd "ls \$HOME/$MFA_CACHE_DIR/$argv"
+end
+
 function __jst.ls
     __mfa.sub __jst.ls $argv
 end
 
-function __jst.ls.dl
-    __mfa.cmd "ls \$HOME/$MFA_CACHE_DIR"
-end
-
+# (-i --inter 1) (-O 2) (-r) # (*=*)
 function __jst.ltr
     # use tac to reverse
     set ltr (ls -ltr | awk '{print $9}' | tail -$argv | tac)
-    __mfa.cp-one-from-list $ltr
+    # no!
+    __mfa.one-from-list $ltr
 end
 
 function __jst.hows -d "How-to website"
@@ -43,7 +50,24 @@ function __jst.up
     __mfa.upload $argv
 end
 
+function __mfa.contains-options -d "(option, params..)"
+    set option $argv[1]
+    for p in $argv[2..-1]
+        if test $p = -$option
+            echo 1
+            return
+        end
+    end
+    echo 0
+end
+
 function __jst.dl
+    if test (__mfa.contains-options i $argv) -eq 1
+        set yours (__mfa.one-from-list (jst ls dl))
+        if test $status -eq 0
+            jst dl $yours
+        end
+    end
     __mfa.download $argv
 end
 
@@ -310,23 +334,31 @@ function __mfa.show-and-cp
     echo $argv && echo $argv | jcp
 end
 
-function __mfa.cp-one-from-list
+function __mfa.one-from-list
     set cnt (count $argv)
     if test $cnt -eq 1
-        __mfa.show-and-cp $argv[1]
-        return
+        echo $argv[1]
+        return 0
     end
     for i in (seq (count $argv))
-        echo " $i." "$argv[$i]"
+        echo " $i." "$argv[$i]" >&2
     end
     set -l chosen_number
-    read -P "Enter the number to copy: " chosen_number
+    # 这 read 看起来是 stderr 的
+    read -P "Enter the number to select: " chosen_number
     if test "$chosen_number" -gt 0; and test "$chosen_number" -le $cnt
-        __mfa.show-and-cp $argv[$chosen_number]
-        return
+        echo $argv[$chosen_number]
+        return 0
     else
         echo (__mfa.err)Invalid selection.(__mfa.off)
         return 1
+    end
+end
+
+function __mfa.cp-one-from-list
+    set out (__mfa.one-from-list $argv)
+    if test $status -eq 0
+        __mfa.show-and-cp $out
     end
 end
 

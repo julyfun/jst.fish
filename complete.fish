@@ -5,7 +5,7 @@ end
 
 function __mfa.subcommand-chain-string
     # set -l cmd (commandline -poc)
-    set -l cmd (string split " " -- $argv) # don't pass -* to split!
+    set -l cmd (string split " " -- $argv) # `--` is to not pass -* to split
     if test (count $cmd) -le 1
         echo $cmd
         return 0
