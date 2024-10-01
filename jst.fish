@@ -776,7 +776,8 @@ function __jst.git.ig
 .DS_Store\n\
 .nvimlog\n\
 "*.swp"\n\
-.zed
+.zed\n\
+__pycache__
     echo -e "$content" > .gitignore
 end
 
