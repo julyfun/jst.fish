@@ -13,6 +13,10 @@ set -g MFA_JST_VER "0.2.0"
 set -g MFA_JST_PATH "$(status dirname)"
 set -g MFA_FISH_CONFIG_PATH "$HOME/.config/fish/config.fish"
 
+function __mfa.user-rel
+    string replace -- "$HOME/" "" $argv
+end
+
 function __mfa.try-mkdir
     if not test -e "$argv"; command mkdir -p "$argv"; end
 end
@@ -153,17 +157,17 @@ end
 function __mfa.upload
     if test -z $argv[2]
         # -p to preserve time
-        scp -p $argv[1] $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")"
+        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)"
     else
-        scp -p $argv[1] $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")/$argv[2]"
+        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)/$argv[2]"
     end
 end
 
 function __mfa.download
     if test -z $argv[2]
-        scp -p $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")/$argv[1]" .
+        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)/$argv[1]" .
     else
-        scp -p $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")/$argv[1]" $argv[2]
+        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)/$argv[1]" $argv[2]
     end
 end
 
@@ -182,12 +186,12 @@ function __mfa.upload-a-message
     end
     __mfa.echo-list-as-file $msg
     __mfa.echo-list-as-file $msg > $MFA_MESSAGE_FILE
-    scp -p $MFA_MESSAGE_FILE {$MFA_USER_HOST}:"$(__mfa.eval "echo \$MFA_MESSAGE_FILE")"
+    scp -p $MFA_MESSAGE_FILE {$MFA_USER_HOST}:"~/$(__mfa.user-rel $MFA_MESSAGE_FILE)"
 end
 
 function __mfa.download-a-message
-    scp -p {$MFA_USER_HOST}:"$(__mfa.eval "echo \$MFA_MESSAGE_FILE")" $MFA_MESSAGE_CMP_FILE
-     command mv $MFA_MESSAGE_CMP_FILE $MFA_MESSAGE_FILE
+    scp -p {$MFA_USER_HOST}:"~/$(__mfa.user-rel $MFA_MESSAGE_FILE)" $MFA_MESSAGE_CMP_FILE
+     command mv "$MFA_MESSAGE_CMP_FILE" "$MFA_MESSAGE_FILE"
      __mfa.copy-a-message
     # if test ! (__mfa.file-eq ~/{$MFA_MESSAGE_FILE} ~/$MFA_MESSAGE_CMP_FILE ) -eq 1
     #     command mv ~/$MFA_MESSAGE_CMP_FILE ~/$MFA_MESSAGE_FILE
