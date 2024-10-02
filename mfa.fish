@@ -157,17 +157,17 @@ end
 function __mfa.upload
     if test -z $argv[2]
         # -p to preserve time
-        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)"
+        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)"
     else
-        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)/$argv[2]"
+        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[2]"
     end
 end
 
 function __mfa.download
     if test -z $argv[2]
-        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)/$argv[1]" .
+        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[1]" .
     else
-        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_DIR)/$argv[1]" $argv[2]
+        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[1]" $argv[2]
     end
 end
 
@@ -213,7 +213,7 @@ function __mfa.upload-screenshot
 end
 
 function __mfa.download-latest
-    set latest_file (__mfa.eval '__mfa.get-latest-file \$MFA_CACHE_DIR')
+    set latest_file (__mfa.eval '__mfa.get-latest-file \$MFA_CACHE_HOME')
     __mfa.download $latest_file $argv[1]
 end
 
