@@ -10,7 +10,7 @@ function __jst.haya
 end
 
 function __jst.ls.dl
-    __mfa.cmd "ls \$HOME/$MFA_CACHE_DIR/$argv"
+    __mfa.eval "ls \$HOME/$MFA_CACHE_DIR/$argv"
 end
 
 function __jst.ls

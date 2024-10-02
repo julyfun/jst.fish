@@ -5,12 +5,11 @@ set -gx MFA_CACHE_HOME "$HOME/.cache/mfa"
 set -gx MFA_CONFIG_HOME "$HOME/.config/mfa"
 set -gx MFA_CONFIG_FILE "$HOME/.config/mfa/config.fish"
 
-set -g MFA_CACHE_DIR .cache/mfa # maybe used for remote
-set -g MFA_MESSAGE_FILE .cache/mfa/__m.txt
-set -g MFA_MESSAGE_CMP_FILE .cache/mfa/__m_cmp.txt
-set -g MFA_DOWNLOADS_DIR .local/share/mfa/dl
+set -g MFA_MESSAGE_FILE "$MFA_CACHE_HOME/__m.txt"
+set -g MFA_MESSAGE_CMP_FILE "$MFA_CACHE_HOME/__m_cmp.txt"
+set -g MFA_DOWNLOADS_DIR "$MFA_DATA_HOME/dl"
 
-set -g MFA_JST_VER "0.1.0"
+set -g MFA_JST_VER "0.2.0"
 set -g MFA_JST_PATH "$(status dirname)"
 set -g MFA_FISH_CONFIG_PATH "$HOME/.config/fish/config.fish"
 
@@ -147,50 +146,48 @@ function __mfa.default-pic-dir
 end
 
 # [mfans function]
-function __mfa.cmd
+function __mfa.eval
     ssh $MFA_USER_HOST "eval $argv"
-end
-
-function __mfa.remote-home
-    ssh $MFA_USER_HOST 'eval echo ~$USER'
-end
-
-function __mfa.remote-tmp-path
-    set remote_path (string replace -a ' ' '\\ ' -- (__mfa.remote-home)/$MFA_CACHE_DIR/$argv[1])
-    echo {$MFA_USER_HOST}:"$remote_path"
 end
 
 function __mfa.upload
     if test -z $argv[2]
         # -p to preserve time
-        scp -p $argv[1] (__mfa.remote-tmp-path .)
+        scp -p $argv[1] $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")"
     else
-        scp -p $argv[1] (__mfa.remote-tmp-path $argv[2])
+        scp -p $argv[1] $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")/$argv[2]"
     end
 end
 
 function __mfa.download
     if test -z $argv[2]
-        scp -p (__mfa.remote-tmp-path $argv[1]) .
+        scp -p $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")/$argv[1]" .
     else
-        scp -p (__mfa.remote-tmp-path $argv[1]) $argv[2]
+        scp -p $MFA_USER_HOST:"$(__mfa.eval "echo \$MFA_CACHE_DIR")/$argv[1]" $argv[2]
+    end
+end
+
+function __mfa.echo-list-as-file
+    for i in $argv
+        echo $i
     end
 end
 
 function __mfa.upload-a-message
     if test -z $argv
+        # this will be a list
         set msg (__mfa.paste)
     else
         set msg $argv
     end
-    echo $msg
-    echo $msg > ~/$MFA_MESSAGE_FILE
-    scp -p ~/$MFA_MESSAGE_FILE {$MFA_USER_HOST}:(__mfa.remote-home)/{$MFA_MESSAGE_FILE}
+    __mfa.echo-list-as-file $msg
+    __mfa.echo-list-as-file $msg > $MFA_MESSAGE_FILE
+    scp -p $MFA_MESSAGE_FILE {$MFA_USER_HOST}:"$(__mfa.eval "echo \$MFA_MESSAGE_FILE")"
 end
 
 function __mfa.download-a-message
-    scp -p {$MFA_USER_HOST}:(__mfa.remote-home)/{$MFA_MESSAGE_FILE} ~/$MFA_MESSAGE_CMP_FILE
-     command mv ~/$MFA_MESSAGE_CMP_FILE ~/$MFA_MESSAGE_FILE
+    scp -p {$MFA_USER_HOST}:"$(__mfa.eval "echo \$MFA_MESSAGE_FILE")" $MFA_MESSAGE_CMP_FILE
+     command mv $MFA_MESSAGE_CMP_FILE $MFA_MESSAGE_FILE
      __mfa.copy-a-message
     # if test ! (__mfa.file-eq ~/{$MFA_MESSAGE_FILE} ~/$MFA_MESSAGE_CMP_FILE ) -eq 1
     #     command mv ~/$MFA_MESSAGE_CMP_FILE ~/$MFA_MESSAGE_FILE
@@ -201,8 +198,8 @@ function __mfa.download-a-message
 end
 
 function __mfa.copy-a-message
-    cat ~/$MFA_MESSAGE_FILE 
-    cat ~/$MFA_MESSAGE_FILE | __mfa.copy
+    cat $MFA_MESSAGE_FILE
+    cat $MFA_MESSAGE_FILE | __mfa.copy
 end
 
 
@@ -212,7 +209,7 @@ function __mfa.upload-screenshot
 end
 
 function __mfa.download-latest
-    set latest_file (__mfa.cmd '__mfa.get-latest-file ~/$MFA_CACHE_DIR')
+    set latest_file (__mfa.eval '__mfa.get-latest-file \$MFA_CACHE_DIR')
     __mfa.download $latest_file $argv[1]
 end
 
