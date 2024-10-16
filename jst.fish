@@ -4,6 +4,14 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.find2
+    set res (git ls-files)
+    for a in $argv
+        set res (__mfa.echo-list-as-file $res | grep $a)
+    end
+    __mfa.echo-list-as-file $res
+end
+
 function __jst.haya
     jps > $MFA_CACHE_HOME/__disk.bib
     hayagriva $MFA_CACHE_HOME/__disk.bib >> $argv
@@ -829,6 +837,10 @@ function __jst.title -d "Get a Stackoverflow-style title"
 end
 
 function __jst.comp -d "Compile a cpp file using c++17"
+    if string match -q "*.c" $argv
+        command gcc $argv -o 1 -Wall
+        return 0
+    end
     command g++ $argv -o 1 -std=c++17 -Wall
 end
 
