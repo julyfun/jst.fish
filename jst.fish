@@ -28,7 +28,7 @@ end
 # (-i --inter 1) (-O 2) (-r) # (*=*)
 function __jst.ltr
     # use tac to reverse
-    set ltr (ls -ltr | awk 'NR>1 {print substr($0, index($0,$9))}')
+    set ltr (ls -ltr | awk 'NR>1 {print substr($0, index($0,$9))}' | tail -$argv | tac)
     # no!
     __mfa.one-from-list $ltr
 end
