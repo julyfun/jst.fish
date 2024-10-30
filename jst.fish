@@ -214,6 +214,7 @@ function __jst.upgrade
     cd "$MFA_JST_PATH"
     __mfa.git-pull-check-ver
     set st $status
+    cd "$here"
     if test $st -eq 0
         exec fish
     else if test $st -eq 128
@@ -221,7 +222,6 @@ function __jst.upgrade
     else
         echo (__mfa.green)Congrats!(__mfa.off) "You're already on the latest version of Jst" (__mfa.dim)"(which is v$MFA_JST_VER)"(__mfa.off)
     end
-    cd "$here"
 end
 
 function __jst.git.rcn

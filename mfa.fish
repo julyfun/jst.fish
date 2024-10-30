@@ -157,17 +157,17 @@ end
 function __mfa.upload
     if test -z $argv[2]
         # -p to preserve time
-        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)"
+        scp -pr $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)"
     else
-        scp -p $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[2]"
+        scp -pr $argv[1] $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[2]"
     end
 end
 
 function __mfa.download
     if test -z $argv[2]
-        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[1]" .
+        scp -pr $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[1]" .
     else
-        scp -p $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[1]" $argv[2]
+        scp -pr $MFA_USER_HOST:"~/$(__mfa.user-rel $MFA_CACHE_HOME)/$argv[1]" $argv[2]
     end
 end
 
