@@ -4,6 +4,10 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 
 # [config end, func start]
+function __jst.last
+    __mfa.one-from-list (eval "$(history --max=1)") | xargs $argv
+end
+
 function __jst.find2
     set res (git ls-files)
     for a in $argv
@@ -216,11 +220,14 @@ function __jst.upgrade
     set st $status
     cd "$here"
     if test $st -eq 0
-        exec fish
     else if test $st -eq 128
         echo git pull failed
     else
         echo (__mfa.green)Congrats!(__mfa.off) "You're already on the latest version of Jst" (__mfa.dim)"(which is v$MFA_JST_VER)"(__mfa.off)
+    end
+
+    if test $st -eq 0
+        exec fish
     end
 end
 
