@@ -20,7 +20,7 @@ function __jst.find3
         return 1
     end
     set file (realpath (__mfa.one-from-list $res))
-    cd (dirname $file)
+    # cd (dirname $file)
     eval $EDITOR $file
 end
 
@@ -669,7 +669,7 @@ function __jst.dir -d "Jump to subdir or file (jd)"
     end
 end
 
-alias jd="jst dir"
+alias jd="jst find3"
 
 # cmake make test
 function __jst.crun -d 'cmake make run'
