@@ -2,10 +2,26 @@ source "$(status dirname)/mfa.fish"
 source "$(status dirname)/complete.fish"
 # Todo: jst configuration file in ~/.config
 alias alias_editor=nvim
+set -gx EDITOR nvim
 
 # [config end, func start]
 function __jst.last
     __mfa.one-from-list (eval "$(history --max=1)") | xargs $argv
+end
+
+function __jst.find3
+    # set matching_directories (command find . -type d -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    set res (command find . -type f -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    for a in $argv
+        set res (__mfa.echo-list-as-file $res | grep $a)
+    end
+    if test -z "$res"
+        echo (__mfa.err)No matching files.(__mfa.off)
+        return 1
+    end
+    set file (realpath (__mfa.one-from-list $res))
+    cd (dirname $file)
+    eval $EDITOR $file
 end
 
 function __jst.find2
@@ -593,7 +609,7 @@ function __jst.d
     __jst.d.$argv[1] $argv[2..-1]
 end
 
-function __jst.dir -d "Jump to subdir or fil (jd)"
+function __jst.dir -d "Jump to subdir or file (jd)"
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
