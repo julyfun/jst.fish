@@ -691,6 +691,12 @@ function __jst.i -d "Useful information of your system"
     __jst.battery
 end
 
+function __jst.get.omf
+    curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
+    omf install l
+    exec fish
+end
+
 function __jst.get.neovim
     set where $HOME/$MFA_DOWNLOADS_DIR/neovim
     set here (pwd)
