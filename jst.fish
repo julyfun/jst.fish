@@ -493,7 +493,7 @@ function __jst.commit -d "Atomic commit simple message (ja)"
     # if test $p -eq "y"
     # return
     if test -z "$argv"
-        set commit (string sub -e 100 (string join ' | ' (string trim (git status -s))))
+        set commit (string sub -e 100 (string join ' | ' (string trim (git status --porcelain))))
     else
         set commit "$argv"
     end
