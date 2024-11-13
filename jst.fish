@@ -11,7 +11,7 @@ end
 
 function __jst.find3
     # set matching_directories (command find . -type d -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
-    set res (command find . -type f -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    set res (command find . -iname "*" -not -path "*/.*" -not -name ".*" -printf "%P\n" 2>/dev/null)
     for a in $argv
         set res (__mfa.echo-list-as-file $res | grep $a)
     end
@@ -21,7 +21,11 @@ function __jst.find3
     end
     set file (realpath (__mfa.one-from-list $res))
     # cd (dirname $file)
-    eval $EDITOR $file
+    if test -f "$file"
+        eval $EDITOR $file
+    else
+        cd $file
+    end
 end
 
 function __jst.find2
