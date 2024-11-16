@@ -41,14 +41,6 @@ function __jst.haya
     hayagriva $MFA_CACHE_HOME/__disk.bib >> $argv
 end
 
-function __jst.ls.dl
-    __mfa.eval "ls \$HOME/"(__mfa.user-rel $MFA_CACHE_HOME)"/$argv"
-end
-
-function __jst.ls
-    __mfa.sub __jst.ls $argv
-end
-
 # (-i --inter 1) (-O 2) (-r) # (*=*)
 function __jst.ltr
     # use tac to reverse
@@ -82,7 +74,7 @@ function __jst.up
     __mfa.upload $argv
 end
 
-function __mfa.contains-options -d "(option, params..)"
+function __mfa.contains-options -d "(option_to_find, params..)"
     set option $argv[1]
     for p in $argv[2..-1]
         if test $p = -$option
@@ -93,9 +85,22 @@ function __mfa.contains-options -d "(option, params..)"
     echo 0
 end
 
+function __jst.dl.ls -d "(path, tailnum)"
+    set res (__mfa.eval "ls -ltr \$HOME/"(__mfa.user-rel $MFA_CACHE_HOME)"/$argv[1]")
+    if test -z $argv[2]
+        __mfa.echo-list-as-file $res | awk 'NR>1 {print substr($0, index($0,$9))}'
+    else
+        __mfa.echo-list-as-file $res | awk 'NR>1 {print substr($0, index($0,$9))}' | tail -$argv[2] | tac
+    end
+end
+
 function __jst.dl
+    __mfa.sub __jst.dl $argv
+    if test $status -eq 0
+        return 0
+    end
     if test (__mfa.contains-options i $argv) -eq 1
-        set yours (__mfa.one-from-list (jst ls dl))
+        set yours (__mfa.one-from-list (jst dl ls . 20))
         if test $status -eq 0
             jst dl $yours
         end
@@ -327,12 +332,15 @@ function __jst.fmt.cpp
     cp "$dst/.clang-format" "$dst/.clang-tidy" .
 end
 
-function __mfa.sub -d "(parent, sub)"
+function __mfa.sub -d "(parent, sub [, options])"
+    # [todo] options -q
     if test -z $argv[2]
         return 1
     end
     if not type -q $argv[1].$argv[2] # 该函数是否存在
+        # if test (__mfa.contains-options q $argv[3..-1]) -eq 0
         __mfa.no-subcommand $argv[2]
+        # end
         return 1
     end
     $argv[1].$argv[2] $argv[3..-1] # don't know whether return 0

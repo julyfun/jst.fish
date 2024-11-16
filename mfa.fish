@@ -154,6 +154,11 @@ function __mfa.eval
     ssh $MFA_USER_HOST "eval $argv"
 end
 
+function __mfa.fish
+    echo "$argv"
+    ssh $MFA_USER_HOST "fish -c \"$argv\""
+end
+
 function __mfa.upload
     if test -z $argv[2]
         # -p to preserve time
