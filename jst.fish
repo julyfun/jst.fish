@@ -103,7 +103,7 @@ function __jst.dl
         set yours (__mfa.one-from-list (jst dl ls . 20))
         if test $status -eq 0
             echo Downloading $yours...
-            jst dl $yours
+            __mfa.download $yours
             return
         end
     end
