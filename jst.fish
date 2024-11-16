@@ -95,14 +95,16 @@ function __jst.dl.ls -d "(path, tailnum)"
 end
 
 function __jst.dl
-    __mfa.sub __jst.dl $argv
+    __mfa.try-sub __jst.dl $argv
     if test $status -eq 0
         return 0
     end
     if test (__mfa.contains-options i $argv) -eq 1
         set yours (__mfa.one-from-list (jst dl ls . 20))
         if test $status -eq 0
+            echo Downloading $yours...
             jst dl $yours
+            return
         end
     end
     __mfa.download $argv
@@ -330,6 +332,16 @@ function __jst.fmt.cpp
         git clone --depth=1 git@github.com:SJTU-RoboMaster-Team/style-team.git "$dst"
     end
     cp "$dst/.clang-format" "$dst/.clang-tidy" .
+end
+
+function __mfa.try-sub
+    if test -z $argv[2]
+        return 1
+    end
+    if not type -q $argv[1].$argv[2] # 该函数是否存在
+        return 1
+    end
+    $argv[1].$argv[2] $argv[3..-1] # don't know whether return 0
 end
 
 function __mfa.sub -d "(parent, sub [, options])"
