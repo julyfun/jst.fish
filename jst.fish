@@ -16,7 +16,8 @@ end
 
 function __jst.find3
     # set matching_directories (command find . -type d -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
-    set res (command find . -iname "*" -not -path "*/.*" -not -name ".*" -printf "%P\n" 2>/dev/null)
+    # set res (command find . -iname "*" -not -path "*/.*" -not -name ".*" -printf "%P\n" 2>/dev/null)
+    set res (find . -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null | awk '{sub(/^\.\//, ""); print}')
     for a in $argv
         set res (__mfa.echo-list-as-file $res | grep $a)
     end
