@@ -17,7 +17,11 @@ end
 function __jst.find3
     # set matching_directories (command find . -type d -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
     # set res (command find . -iname "*" -not -path "*/.*" -not -name ".*" -printf "%P\n" 2>/dev/null)
-    set res (find . -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null | awk '{sub(/^\.\//, ""); print}')
+    set resd (find . -iname "*" -type d -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    # 检查开头的 ./ 并删除
+    # alter: | string replace -r "^\.\/" ""
+    set resf (find . -iname "*" -type f -not -path "*/.*" -not -name ".*" 2>/dev/null | awk '{sub(/^\.\//, ""); print}')
+    set res $resd $resf # 这里会正确合并列表，中间无空格
     for a in $argv
         set res (__mfa.echo-list-as-file $res | grep $a)
     end
