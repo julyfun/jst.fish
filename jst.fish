@@ -4,6 +4,11 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.bac
+    mkdir -p ~/bac
+    mv $argv ~/bac
+end
+
 # [config end, func start]
 function __jst.last
     __mfa.one-from-list (eval "$(history --max=1)") | xargs $argv
