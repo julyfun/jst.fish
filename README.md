@@ -71,11 +71,13 @@ no
 
 ## Todo
 
-- [ ] mfa upa 时自动 mfa init
+- [x] mfa upa 时自动 mfa init
 - [x] jst 系列命令整合
 - [ ] 用 toml 自定义短命令
 - [ ] 建立 jst dl 下载和配置的清单。需要考虑用什么形式实现。
 - [x] jst title 支持汉字
+- [ ] 跨平台粘贴板分组协议
+    - [ ] 跨平台粘贴文件或图片.
 - [ ] 统计为您节省多少时间，以及创作这个命令花了多久
 
 ## Principles
