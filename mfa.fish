@@ -241,11 +241,13 @@ end
 
 # [network]
 function __mfa.open-link
-    switch (uname)
+    switch (__mfa.os)
     case Darwin
         command open -a "Google Chrome" "$argv"
     case Linux
         command xdg-open "$argv"
+    case WSL
+        cmd.exe /c start $argv
     end
 end
 
