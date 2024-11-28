@@ -104,19 +104,36 @@ function __mfa.git-log-graph-merge-layer-char
 end
 
 # [utils function]
-function __mfa.copy
+function __mfa.os
     switch (uname)
     case Linux
+        if grep -qEi "(wsl|microsoft)" /proc/version
+            echo WSL
+        else
+            echo Linux
+        end
+    case Darwin
+        echo Darwin
+    end
+end
+
+function __mfa.copy
+    switch (__mfa.os)
+    case Linux
         xclip -selection clipboard
+    case WSL
+        powershell.exe -c '$input | Set-Clipboard'
     case Darwin
         pbcopy
     end
 end
 
 function __mfa.paste
-    switch (uname)
+    switch (__mfa.os)
     case Linux
         xclip -o
+    case WSL
+        powershell.exe -c Get-Clipboard
     case Darwin
         pbpaste
     end
