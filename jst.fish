@@ -797,7 +797,7 @@ function __jst.get.autojump
 end
 
 function __jst.get.pip
-    python3 "$MFA_JST_PATH/a/get-pip.py"
+    curl https://bootstrap.pypa.io/get-pip.py | python3
 end
 
 function __jst.get -d "Download and configure tools auto"
