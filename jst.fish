@@ -83,8 +83,16 @@ function __jst.hows -d "How-to website"
     __mfa.open-link "https://how-to.fun/$link"
 end
 
-function __jst.upa
-    __mfa.upload-a-message $argv
+function __jst.upa-if-diff
+    if test -z $argv
+        # this will be a list
+        set msg (__mfa.paste)
+    else
+        set msg $argv
+    end
+    __mfa.echo-list-as-file $msg
+    __mfa.echo-list-as-file $msg > $MFA_MESSAGE_FILE
+    scp -p $MFA_MESSAGE_FILE {$MFA_USER_HOST}:"~/$(__mfa.user-rel $MFA_MESSAGE_FILE)"
 end
 
 function __jst.dla
@@ -757,10 +765,18 @@ function __jst.get.neovim
     cd $where
     switch (uname)
     case Linux
-        jst git dl https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-        mv nvim.appimage nvim
-        chmod +x ./nvim
-        jst path
+        switch (uname -m)
+        case aarch64
+            jst git dl https://github.com/matsuu/neovim-aarch64-appimage/releases/download/v0.10.2/nvim-v0.10.2.aarch64.appimage
+            mv nvim.appimage nvim
+            chmod +x ./nvim
+            jst path
+        case x86_64
+            jst git dl https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+            mv nvim.appimage nvim
+            chmod +x ./nvim
+            jst path
+        end
     case Darwin
         if test -e $where/nvim-macos-arm64.tar.gz
             rm $where/nvim-macos-arm64.tar.gz
