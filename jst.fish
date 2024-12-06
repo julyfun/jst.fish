@@ -768,7 +768,7 @@ function __jst.get.neovim
         switch (uname -m)
         case aarch64
             jst git dl https://github.com/matsuu/neovim-aarch64-appimage/releases/download/v0.10.2/nvim-v0.10.2.aarch64.appimage
-            mv nvim.appimage nvim
+            mv nvim-v0.10.2.aarch64.appimage nvim
             chmod +x ./nvim
             jst path
         case x86_64
