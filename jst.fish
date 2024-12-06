@@ -4,6 +4,25 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.os.mem
+    switch (uname)
+    case Darwin
+        top -l 1 | grep -E "^CPU|^Phys" && sysctl vm.swapusage
+    case Linux
+    end
+end
+
+function __jst.os
+    __mfa.sub __jst.os $argv
+end
+
+function __jst.grep2
+    echo [matched]
+    grep $argv
+    echo [unmatched]
+    grep -v $argv
+end
+
 function __jst.bac
     mkdir -p ~/bac
     mv $argv ~/bac

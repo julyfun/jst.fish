@@ -243,7 +243,7 @@ end
 function __mfa.open-link
     switch (__mfa.os)
     case Darwin
-        command open -a "Google Chrome" "$argv"
+        command open -a "Microsoft Edge" "$argv"
     case Linux
         command xdg-open "$argv"
     case WSL
