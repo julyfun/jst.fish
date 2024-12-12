@@ -83,7 +83,7 @@ function __jst.hows -d "How-to website"
     __mfa.open-link "https://how-to.fun/$link"
 end
 
-function __jst.upa-if-diff
+function __jst.upa
     if test -z $argv
         # this will be a list
         set msg (__mfa.paste)
