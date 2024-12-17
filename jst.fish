@@ -4,6 +4,17 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.cancel-pl
+    functions -e __mfa.pl
+end
+
+function __jst.pl
+    function __mfa.pl --on-event fish_postexec
+        pwd
+        ls
+    end
+end
+
 function __jst.os.mem
     switch (uname)
     case Darwin
