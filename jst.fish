@@ -553,6 +553,10 @@ function __jst.e -d "Edit common config files"
     end
 end
 
+function __mfa.git.status.simple
+    string sub -e 100 (string join ' | ' (string trim (git status --porcelain $argv)))
+end
+
 function __jst.commit -d "Atomic commit simple message (ja)"
     # non-empty
     # show diff
@@ -561,7 +565,7 @@ function __jst.commit -d "Atomic commit simple message (ja)"
     # if test $p -eq "y"
     # return
     if test -z "$argv"
-        set commit (string sub -e 100 (string join ' | ' (string trim (git status --porcelain))))
+        set commit (__mfa.git.status.simple)
     else
         set commit "$argv"
     end
@@ -576,7 +580,7 @@ function __jst.commit-file -d "Simple commit message for file"
     # 不要和 autojump 发生冲突
     # https://github.com/wting/autojump
     git add $argv
-    git commit -m "$argv"
+    git commit -m "$(__mfa.git.status.simple $argv)"
 end
 
 alias jaf="jst commit-file"
