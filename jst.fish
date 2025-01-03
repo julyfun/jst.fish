@@ -575,7 +575,8 @@ alias ja="jst commit" # atomic commit
 function __jst.commit-file -d "Simple commit message for file"
     # 不要和 autojump 发生冲突
     # https://github.com/wting/autojump
-    ja (__mfa.git-rel-link "$argv")
+    git add $argv
+    git commit -m "$argv"
 end
 
 alias jaf="jst commit-file"
@@ -585,6 +586,7 @@ function __jst.push -d "Pull, simple commit and push"
     command git status --porcelain # show unstaged too.
     echo ---
     command git diff --stat
+
     if not command git pull
         return
     end
@@ -595,7 +597,8 @@ end
 alias jp="jst push"
 
 function __jst.push-file -d "Pull, simple commit and push file"
-    jp (__mfa.git-rel-link "$argv")
+    jaf $argv
+    git push -u
 end
 
 alias jpf="jst push-file"
