@@ -4,10 +4,19 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.today
+    set d (date +%y%m%d)
+    mkdir $d
+    cd $d
+    nvim note.md
+end
+
+# [only for test]
 function __jst.cancel-pl
     functions -e __mfa.pl
 end
 
+# [only for test]
 function __jst.pl
     function __mfa.pl --on-event fish_postexec
         pwd
