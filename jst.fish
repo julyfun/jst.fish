@@ -4,6 +4,15 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.open
+    switch (__mfa.os)
+    case WSL
+        powershell.exe -c 'explorer.exe \\\\wsl.localhost\\Ubuntu'(string replace -a '/' '\\' -- (realpath $argv))
+    case '*'
+        open $argv
+    end
+end
+
 function __jst.today
     set d (date +%y%m%d)
     mkdir $d
@@ -963,10 +972,10 @@ end
 
 function __jst.comp -d "Compile a cpp file using c++17"
     if string match -q "*.c" $argv
-        command gcc $argv -o 1 -Wall
+        command gcc $argv -o 1 -std=c11 -Wall
         return 0
     end
-    command g++ $argv -o 1 -std=c++17 -Wall
+    g++ $argv -o 1 -std=c++17 -Wall
 end
 
 function __jst.run -d "Comp & run a cpp file using c++17"
