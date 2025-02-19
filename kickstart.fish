@@ -6,3 +6,5 @@ end
 # Use ctrl + o to `cd ..`
 bind \co 'cd ..; commandline -f repaint'
 
+alias l='ls -ltr'
+
