@@ -605,12 +605,17 @@ alias jaf="jst commit-file"
 
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
-    command git status --porcelain # show unstaged too.
+    git status --porcelain # show unstaged too.
     echo ---
-    command git diff --stat
+    git diff --stat
 
-    if not command git pull
-        return
+    git stash
+    git pull
+    git stash pop
+    set conflicted (git diff --name-only --diff-filter=U)
+    for file in $conflicted
+        echo (__mfa.yellow)(__mfa.under)$file(__mfa.off) (__mfa.yellow)conflicted, simply merging insertion.(__mfa.off)
+        sed -i '/^<<<<<<</d; /^=======/d; /^>>>>>>>/d' $file
     end
     ja "$argv"
     command git push -u
