@@ -617,8 +617,11 @@ function __jst.push -d "Pull, simple commit and push"
     command git pull
     command git stash pop
     set conflicted (git diff --name-only --diff-filter=U)
+    if not test -z $conflicted
+        echo (__mfa.err)Conflicted files $conflicted. Will start merging insertion in 3s.(__mfa.off)
+        command sleep 3
+    end
     for file in $conflicted
-        echo (__mfa.yellow)(__mfa.under)$file(__mfa.off) (__mfa.yellow)conflicted, simply merging insertion.(__mfa.off)
         __mfa.remove-git-merge-conflict-markers $file
     end
     ja "$argv"
