@@ -603,19 +603,23 @@ end
 
 alias jaf="jst commit-file"
 
+function __mfa.remove-git-merge-conflict-markers -d "(filename)"
+    command grep -v '^\(<<<<<<<\|=======\|>>>>>>> \)' $argv > .jsttmp && command mv .jsttmp $argv
+end
+
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
-    git status --porcelain # show unstaged too.
+    command git status --porcelain # show unstaged too.
     echo ---
-    git diff --stat
+    command git diff --stat
 
-    git stash
-    git pull
-    git stash pop
+    command git stash
+    command git pull
+    command git stash pop
     set conflicted (git diff --name-only --diff-filter=U)
     for file in $conflicted
         echo (__mfa.yellow)(__mfa.under)$file(__mfa.off) (__mfa.yellow)conflicted, simply merging insertion.(__mfa.off)
-        sed -i '/^<<<<<<</d; /^=======/d; /^>>>>>>>/d' $file
+        __mfa.remove-git-merge-conflict-markers $file
     end
     ja "$argv"
     command git push -u
