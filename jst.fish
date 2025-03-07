@@ -4,6 +4,15 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.prompt.perplexity
+    echo "Search in English, answer in Chinese." | jcp
+end
+
+function __jst.prompt
+    __mfa.sub __jst.prompt $argv
+end
+
+
 function __jst.open
     switch (__mfa.os)
     case WSL
@@ -613,9 +622,13 @@ function __jst.push -d "Pull, simple commit and push"
     echo ---
     command git diff --stat
 
-    command git stash
     command git pull
-    command git stash pop
+    if test $status -ne 0
+        command git stash
+        command git pull
+        command git stash pop
+    end
+
     set conflicted (git diff --name-only --diff-filter=U)
     if not test -z $conflicted
         echo (__mfa.err)Conflicted files $conflicted. Will start merging insertion in 3s.(__mfa.off)
@@ -959,7 +972,7 @@ function __jst.gf -d "Search via title and contents"
     __jst.find "$argv"
 end
 
-function __jst.y -d "Return to git repo root"
+function __jst.r -d "Return to git repo root"
     # yield
     cd (command git rev-parse --show-toplevel)
 end
