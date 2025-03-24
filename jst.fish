@@ -13,6 +13,22 @@ function __jst.prompt
 end
 
 
+function __jst.bin
+    set -l bin
+    for dir in $PATH
+        set -a bin (find $dir -maxdepth 1 -executable -type f -name $argv[1] 2>/dev/null)
+    end
+    __mfa.echo-list-as-file $bin
+end
+
+function __mfa.is-git-diffable
+    if string match -rq "^text/|^inode/" (file -b --mime-type $argv[1])
+        echo 1
+    else
+        echo 0
+    end
+end
+
 function __jst.open
     switch (__mfa.os)
     case WSL
@@ -565,6 +581,8 @@ end
 
 function __jst.e -d "Edit common config files"
     switch $argv[1]
+    case jst
+        alias_editor $MFA_JST_PATH/jst.fish
     case fish
         alias_editor ~/.config/fish/config.fish
     case nvim
