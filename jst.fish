@@ -4,12 +4,20 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
-function __jst.prompt.perplexity
+function __jst.git.b
+    git branch $argv && git switch $argv[1]
+end
+
+function __jst.pm.mature
+    echo "保证代码简洁优雅，方案成熟，性能较优。" | jcp
+end
+
+function __jst.pm.perplexity
     echo "Search in English, answer in Chinese." | jcp
 end
 
-function __jst.prompt
-    __mfa.sub __jst.prompt $argv
+function __jst.pm
+    __mfa.sub __jst.pm $argv
 end
 
 
@@ -895,7 +903,7 @@ function __jst.new-c -d "Initialize an empty c project"
     touch CMakeLists.txt
 end
 
-function __jst.cmm -d "Git commit message help"
+function __jst.git.mes -d "Git commit message help"
     set commit \
 "<head>(, <options>): <content>\n"\
 "example: feat, run: 添加核心模块\n"\
