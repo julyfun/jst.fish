@@ -13,6 +13,31 @@ function __jst.pm.mature
 end
 
 function __jst.pm.perplexity
+function __jst.st
+    tmux start
+    tmux new-session -d -s $argv \
+    && tmux send-keys -t $argv[1]:0 "$argv[1]" C-m
+end
+
+function __jst.ed
+    tmux kill-session -t $argv
+end
+
+# Usage:
+# #!/usr/bin/fish
+# SUDO_ASKPASS=~/Desktop/pass.sh jst ubuntu bt
+
+function __jst.ubuntu.bt
+    sudo -A rmmod btusb
+    sleep 1
+    sudo -A modprobe btusb
+end
+
+function __jst.ubuntu
+    __mfa.sub __jst.ubuntu $argv
+end
+
+function __jst.prompt.perplexity
     echo "Search in English, answer in Chinese." | jcp
 end
 
