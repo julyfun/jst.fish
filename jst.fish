@@ -13,6 +13,9 @@ function __jst.pm.mature
 end
 
 function __jst.pm.perplexity
+    echo "Search in English, answer in Chinese." | jcp
+end
+
 function __jst.st
     tmux start
     tmux new-session -d -s $argv \
@@ -35,10 +38,6 @@ end
 
 function __jst.ubuntu
     __mfa.sub __jst.ubuntu $argv
-end
-
-function __jst.prompt.perplexity
-    echo "Search in English, answer in Chinese." | jcp
 end
 
 function __jst.pm
