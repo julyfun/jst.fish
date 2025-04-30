@@ -18,8 +18,8 @@ end
 
 function __jst.st
     tmux start
-    tmux new-session -d -s $argv \
-    && tmux send-keys -t $argv[1]:0 "$argv[1]" C-m
+    tmux new-session -d -s $argv[1] \
+    && tmux send-keys -t $argv[1]:0 "$argv" C-m
 end
 
 function __jst.ed
