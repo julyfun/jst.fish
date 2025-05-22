@@ -4,6 +4,21 @@ source "$(status dirname)/complete.fish"
 alias alias_editor=nvim
 set -gx EDITOR nvim
 
+function __jst.typ.slds
+    echo \
+"#slide["\n\
+"```cpp"\n\
+"```"\n\
+"]["\n\
+"```cpp"\n\
+"```"\n\
+"]" | jcp
+end
+
+function __jst.typ
+    __mfa.sub __jst.typ $argv
+end
+
 function __jst.git.b
     git branch $argv && git switch $argv[1]
 end
@@ -338,7 +353,11 @@ function __jst.f -d "Create file with standard title"
     set -l suf $argv[1]
     set -l name $argv[2..-1]
     echo $name | jcp
-    command touch (jst title "$name").$suf
+    if test $suf = dir
+        command mkdir (jst title "$name")
+    else
+        command touch (jst title "$name").$suf
+    end
 end
 
 function __jst.mi.pip
@@ -631,7 +650,7 @@ function __jst.e -d "Edit common config files"
 end
 
 function __mfa.git.status.simple
-    string sub -e 100 (string join ' | ' (string trim (git status --porcelain $argv)))
+    string sub -e 100 (string join ' | ' (string trim (git status -u --porcelain $argv)))
 end
 
 function __jst.commit -d "Atomic commit simple message (ja)"
@@ -668,7 +687,7 @@ end
 
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
-    command git status --porcelain # show unstaged too.
+    command git status -u --porcelain # show unstaged too.
     echo ---
     command git diff --stat
 
