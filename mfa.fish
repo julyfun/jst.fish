@@ -25,7 +25,7 @@ function __mfa.init-homes
     __mfa.try-mkdir $MFA_DATA_HOME
     __mfa.try-mkdir $MFA_CACHE_HOME
     __mfa.try-mkdir $MFA_CONFIG_HOME
-    __mfa.try-mkdir $HOME/$MFA_DOWNLOADS_DIR
+    __mfa.try-mkdir $MFA_DOWNLOADS_DIR
     if not test -e "$MFA_CONFIG_FILE"
         command touch "$MFA_CONFIG_FILE"
         echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $MFA_CONFIG_FILE
