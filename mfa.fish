@@ -29,7 +29,16 @@ function __mfa.init-homes
     if not test -e "$MFA_CONFIG_FILE"
         command touch "$MFA_CONFIG_FILE"
         echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $MFA_CONFIG_FILE
+        echo "set -g MFA_EDITORS nvim vim vi code cursor zed"
     end
+end
+
+function __mfa.get-editor
+    for x in $MFA_EDITORS
+        command -q $x
+        and echo $x && return
+    end
+    echo (__mfa.err)None of `$MFA_EDITORS` exists.(__mfa.off)
 end
 
 __mfa.init-homes

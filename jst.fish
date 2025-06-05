@@ -1,8 +1,7 @@
 source "$(status dirname)/mfa.fish"
 source "$(status dirname)/complete.fish"
 # Todo: jst configuration file in ~/.config
-alias alias_editor=nvim
-set -gx EDITOR nvim
+set -gx EDITOR (__mfa.get-editor)
 
 function __jst.typ.slds
     echo \
@@ -237,8 +236,13 @@ function __jst.dl
     if test $status -eq 0
         return 0
     end
-    if test (__mfa.contains-options i $argv) -eq 1
-        set yours (__mfa.one-from-list (jst dl ls . 20))
+    argparse 'i' -- $argv
+    # fzf
+    if set -ql _flag_i
+        command -q fzf
+        or echo (__mfa.err)Install fzf first.(__mfa.off) && return
+        # set yours (__mfa.one-from-list (jst dl ls . 20))
+        set yours (__mfa.echo-list-as-file (jst dl ls) | fzf --height=20 --preview 'echo {}')
         if test $status -eq 0
             echo Downloading $yours...
             __mfa.download $yours
@@ -332,7 +336,7 @@ function __jst.how -d "Create a how-to article"
 \# $title\n
     command touch $cut_title.md
     echo "$head" > $cut_title.md # command echo 不行
-    alias_editor $cut_title.md
+    $EDITOR $cut_title.md
 end
 
 function __jst.cprt -d "Copy root file (template) here"
@@ -633,19 +637,19 @@ end
 function __jst.e -d "Edit common config files"
     switch $argv[1]
     case jst
-        alias_editor $MFA_JST_PATH/jst.fish
+        $EDITOR $MFA_JST_PATH/jst.fish
     case fish
-        alias_editor ~/.config/fish/config.fish
+        $EDITOR ~/.config/fish/config.fish
     case nvim
-        alias_editor ~/.config/nvim/init.vim
+        $EDITOR ~/.config/nvim/init.vim
     case nvimlua
-        alias_editor ~/.config/nvim/init.lua
+        $EDITOR ~/.config/nvim/init.lua
     case bash
-        alias_editor ~/.bashrc
+        $EDITOR ~/.bashrc
     case ssh
-        alias_editor ~/.ssh/config
+        $EDITOR ~/.ssh/config
     case tmux
-        alias_editor ~/.tmux.conf
+        $EDITOR ~/.tmux.conf
     end
 end
 
@@ -823,7 +827,7 @@ function __jst.dir -d "Jump to subdir or file (jd)"
         end
         echo Matching file: $matching_files
         cd (command dirname $matching_files)
-        alias_editor (command basename $matching_files)
+        $EDITOR (command basename $matching_files)
         return
     end
     # If multiple matches, prompt the user to choose one
@@ -852,7 +856,7 @@ function __jst.dir -d "Jump to subdir or file (jd)"
         set -l idx (math $chosen_number - $dir_cnt)
         set -l file_name $matching_files[$idx]
         cd (command dirname $file_name)
-        alias_editor (command basename $file_name)
+        $EDITOR (command basename $file_name)
         return
     else
         echo (__mfa.err)Invalid selection.(__mfa.off)
