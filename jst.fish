@@ -133,13 +133,48 @@ function __jst.last
     __mfa.one-from-list (eval "$(history --max=1)") | xargs $argv
 end
 
+function __jst.find4
+    argparse f d -- $argv
+    if not set -ql _flag_f; and not set -ql _flag_d
+        set _flag_f
+        set _flag_d
+    end
+    set -l res
+    if set _flag_f
+        set -a res (command find * -type f)
+    end
+    if set _flag_d
+        set -a res (command find * -type d)
+    end
+    set -l file (__mfa.echo-list-as-file $res | fzf)
+    or return
+
+    if test -f "$file"
+        eval $EDITOR $file
+    else
+        cd $file
+    end
+end
+
 function __jst.find3
+    argparse f d -- $argv
+    if not set -ql _flag_f; and not set -ql _flag_d
+        set _flag_f
+        set _flag_d
+    end
     # set matching_directories (command find . -type d -iname "*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
     # set res (command find . -iname "*" -not -path "*/.*" -not -name ".*" -printf "%P\n" 2>/dev/null)
-    set resd (find . -iname "*" -type d -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    set -l resd
+    if set -ql _flag_d
+        set resd (find . -iname "*" -type d -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    end
     # 检查开头的 ./ 并删除
     # alter: | string replace -r "^\.\/" ""
-    set resf (find . -iname "*" -type f -not -path "*/.*" -not -name ".*" 2>/dev/null | awk '{sub(/^\.\//, ""); print}')
+    set -l resf
+    if set -ql _flag_f
+        set resf (find . -iname "*" -type f -not -path "*/.*" -not -name ".*" 2>/dev/null | awk '{sub(/^\.\//, ""); print}')
+    end
+
     set res $resd $resf # 这里会正确合并列表，中间无空格
     for a in $argv
         set res (__mfa.echo-list-as-file $res | grep $a)
@@ -805,14 +840,27 @@ function __jst.d
 end
 
 function __jst.dir -d "Jump to subdir or file (jd)"
+    argparse f d -- $argv
+    if not set -ql _flag_f; and not set -ql _flag_d
+        set -f _flag_f
+        set -f _flag_d
+    end
+
     set search_string $argv[1]
 
     # Use find to search for directories with similar names
-    set matching_directories (command find . -type d -iname "*$search_string*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
-    set matching_files (command find . -type f -iname "*$search_string*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
-    set dir_cnt (count $matching_directories)
-    set file_cnt (count $matching_files)
-    set tot_cnt (math $dir_cnt + $file_cnt)
+    set -l matching_directories
+    if set -ql _flag_d
+        set matching_directories (command find . -type d -iname "*$search_string*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    end
+    set -l matching_files
+    if set -ql _flag_f
+        set matching_files (command find . -type f -iname "*$search_string*" -not -path "*/.*" -not -name ".*" 2>/dev/null)
+    end
+
+    set -l dir_cnt (count $matching_directories)
+    set -l file_cnt (count $matching_files)
+    set -l tot_cnt (math $dir_cnt + $file_cnt)
 
     # Check if any matching directories were found
     if test $tot_cnt -eq 0
@@ -864,7 +912,7 @@ function __jst.dir -d "Jump to subdir or file (jd)"
     end
 end
 
-alias jd="jst find3"
+alias jd="jst find4"
 
 # cmake make test
 function __jst.crun -d 'cmake make run'
@@ -884,6 +932,15 @@ end
 function __jst.i -d "Useful information of your system"
     command date
     __jst.battery
+end
+
+function __jst.get.fzf
+    switch (__mfa.os)
+    case Darwin
+        brew install fzf
+    case Linux
+        sudo apt install fzf
+    end
 end
 
 function __jst.get.omf

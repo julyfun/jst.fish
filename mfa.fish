@@ -29,7 +29,7 @@ function __mfa.init-homes
     if not test -e "$MFA_CONFIG_FILE"
         command touch "$MFA_CONFIG_FILE"
         echo "set -g MFA_USER_HOST julyfun@47.103.61.134" >> $MFA_CONFIG_FILE
-        echo "set -g MFA_EDITORS nvim vim vi code cursor zed"
+        echo "set -g MFA_EDITORS nvim vim vi code cursor zed" >> $MFA_CONFIG_FILE
     end
 end
 
@@ -124,6 +124,9 @@ function __mfa.os
     case Darwin
         echo Darwin
     end
+end
+
+function __mfa.os-releases -d '[todo]'
 end
 
 function __mfa.copy
