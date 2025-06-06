@@ -67,7 +67,7 @@ function __jst.bin
     __mfa.echo-list-as-file $bin
 end
 
-function __mfa.is-git-diffable
+function __mfa.is-git-diffable -d "is not bin file"
     if string match -rq "^text/|^inode/" (file -b --mime-type $argv[1])
         echo 1
     else
@@ -140,13 +140,19 @@ function __jst.find4
         set _flag_d
     end
     set -l res
-    if set _flag_f
+    if set -ql _flag_f
         set -a res (command find * -type f)
     end
-    if set _flag_d
+    if set -ql _flag_d
         set -a res (command find * -type d)
     end
-    set -l file (__mfa.echo-list-as-file $res | fzf)
+    set preview_cmd \
+'if test -f {}'\n\
+    'if test (__mfa.is-git-diffable {}) -eq 1; head -n 100 {}; else; file {}; end'\n\
+'else'\n\
+    'tree -C {}'\n\
+'end'
+    set -l file (__mfa.echo-list-as-file $res | fzf --preview "$preview_cmd")
     or return
 
     if test -f "$file"
