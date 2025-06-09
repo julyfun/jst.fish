@@ -141,10 +141,10 @@ function __jst.find4
     end
     set -l res
     if set -ql _flag_f
-        set -a res (command find * -type f)
+        set -a res (command find $argv -type f -printf '%P\n')
     end
     if set -ql _flag_d
-        set -a res (command find * -type d)
+        set -a res (command find $argv -type d -printf '%P\n')
     end
     set preview_cmd \
 'if test -f {}'\n\
@@ -1114,7 +1114,7 @@ function __jst.r -d "Return to git repo root"
 end
 
 function __jst.repod -d "Subdir in the repo (jdr)"
-    jst y && jd $argv
+    jd (command git rev-parse --show-toplevel) $argv
 end
 
 alias jdr="jst repod"
