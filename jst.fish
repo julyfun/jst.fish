@@ -139,12 +139,15 @@ function __jst.find4
         set _flag_f
         set _flag_d
     end
+    if test -z "$argv"
+        set argv .
+    end
     set -l res
     if set -ql _flag_f
-        set -a res (command find $argv -type f -printf '%P\n')
+        set -a res (command find "$argv" -type f | awk -v prefix="$argv/" '{ sub(prefix, ""); print }')
     end
     if set -ql _flag_d
-        set -a res (command find $argv -type d -printf '%P\n')
+        set -a res (command find "$argv" -type d | awk -v prefix="$argv/" '{ sub(prefix, ""); print }')
     end
     set preview_cmd \
 'if test -f {}'\n\
