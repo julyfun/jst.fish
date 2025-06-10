@@ -255,7 +255,7 @@ end
 function __mfa.open-link
     switch (__mfa.os)
     case Darwin
-        command open -a "Microsoft Edge" "$argv"
+        command open "$argv"
     case Linux
         command xdg-open "$argv"
     case WSL

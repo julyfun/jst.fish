@@ -158,10 +158,10 @@ function __jst.find4
     set -l file (__mfa.echo-list-as-file $res | fzf --preview "$preview_cmd")
     or return
 
-    if test -f "$file"
-        eval $EDITOR $file
+    if test -f "$argv/$file"
+        eval $EDITOR "$argv/$file"
     else
-        cd $file
+        cd "$argv/$file"
     end
 end
 
