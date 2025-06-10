@@ -949,7 +949,15 @@ function __jst.get.fzf
     end
 end
 
-function __jst.get.omf
+function __jst.get.rustup
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+end
+
+function __jst.get.uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+end
+
+function __jst.get.omf -d "A fish plugin manager"
     curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
     omf install l
     exec fish
