@@ -19,6 +19,14 @@ function __jst.typ
     __mfa.sub __jst.typ $argv
 end
 
+function __jst.pm.f
+    echo -e "```$argv\n$(cat $argv)\n```" | jcp
+end
+
+function __mfa.file-ext
+    echo (string split . $argv)[-1]
+end
+
 function __jst.git.b
     git branch $argv && git switch $argv[1]
 end
