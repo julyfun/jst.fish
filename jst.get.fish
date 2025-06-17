@@ -1,8 +1,16 @@
+function __jst.get.zoxide
+    zoxide --version; and return
+end
+
 function __jst.get.zerotier
+    zerotier --version; and return
     curl -s https://install.zerotier.com/ | bash
 end
 
 function __jst.get.fzf
+    if type -q fzf
+        return
+    end
     switch (__mfa.os)
     case Darwin
         brew install fzf
@@ -12,21 +20,25 @@ function __jst.get.fzf
 end
 
 function __jst.get.rustup
+    rustup --version; and return
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 end
 
 function __jst.get.uv
+    uv --version; and return
     curl -LsSf https://astral.sh/uv/install.sh | sh
 end
 
 function __jst.get.omf -d "A fish plugin manager"
+    omf -v; and return
     curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
     omf install l
     exec fish
 end
 
 function __jst.get.neovim
-    set where $HOME/$MFA_DOWNLOADS_DIR/neovim
+    nvim --version; and return
+    set where "$HOME/$MFA_DOWNLOADS_DIR/neovim"
     set here (pwd)
     __mfa.try-mkdir $where
     cd $where
@@ -39,10 +51,13 @@ function __jst.get.neovim
             chmod +x ./nvim
             jst path
         case x86_64
-            jst git dl https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-            mv nvim.appimage nvim
-            chmod +x ./nvim
-            jst path
+            switch (lsb_release -cs)
+            case focal
+        curl -SL https://github.com/neovim/neovim-releases/releases/download/v0.11.2/nvim-linux-x86_64.appimage -o nvim
+                chmod +x ./nvim
+                jst path
+            case jammy
+            end
         end
     case Darwin
         if test -e $where/nvim-macos-arm64.tar.gz
@@ -64,11 +79,11 @@ function __jst.get.autojump
 end
 
 function __jst.get.pip
+    pip --version; and return
     curl https://bootstrap.pypa.io/get-pip.py | python3
 end
 
 function __jst.get -d "Download and configure tools auto"
     __jst.get.$argv[1] $argv[2..-1]
 end
-
 

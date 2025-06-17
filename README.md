@@ -83,3 +83,8 @@ no
 ## Principles
 
 - 避免敏感操作，如 `apt upgrade`
+
+## fish
+
+- command exists?
+    - `if type -q neovim`

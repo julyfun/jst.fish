@@ -49,7 +49,7 @@ function __mfa.complete -d "(cur_cmd_str, subcmds, desc)"
     end
 end
 
-# [automatically set jst subcommands completions]
+# [recursively set jst subcommands completions]
 # this has no subcommand
 # -r means rename, recursively, regex...
 function __mfa.complete-r

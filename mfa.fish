@@ -43,6 +43,9 @@ end
 
 __mfa.init-homes
 
+function __mfa.dist
+end
+
 function __mfa.try-load-config
     if test -e "$MFA_CONFIG_FILE"
         source "$MFA_CONFIG_FILE"

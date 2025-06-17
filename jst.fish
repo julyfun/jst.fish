@@ -573,8 +573,10 @@ function __jst.path -d "Add current dir to path"
         set where $argv[1]
     end
     set where (realpath $where) # can't be empty on linux
-    echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
-    echo "export PATH=\"\$PATH:$where\"" >> ~/.bashrc
+    if not contains "$where" $PATH
+        echo "set PATH \"\$PATH:$where\"" >> ~/.config/fish/config.fish
+        echo "export PATH=\"\$PATH:$where\"" >> ~/.bashrc
+    end
 end
 
 function __jst.sc -d  "Just source"
