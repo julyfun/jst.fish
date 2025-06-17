@@ -22,7 +22,13 @@ function cpit
     echo -n "$argv" | jcp
 end
 
-alias fn=functions
+function fn
+    if contains "$argv" (functions --all)
+        functions $argv
+        return
+    end
+    functions (string join . __$argv[1] $argv[2..-1])
+end
 
 alias ja="jst commit" # atomic commit
 alias jp="jst push"

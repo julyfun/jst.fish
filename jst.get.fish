@@ -1,3 +1,8 @@
+function __jst.get.tldr
+    if type -q tldr; tldr -v; return; end
+    python3 -m pip install tldr
+end
+
 function __jst.get.zoxide
     zoxide --version; and return
 end

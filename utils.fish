@@ -136,7 +136,7 @@ end
 function __jst.copy
     switch (__jst.os)
     case Linux
-        xclip -selection clipboard
+        xclip -se c
     case WSL
         powershell.exe -c '$input | Set-Clipboard'
     case Darwin
@@ -147,7 +147,7 @@ end
 function __jst.paste
     switch (__jst.os)
     case Linux
-        xclip -o
+        xclip -o -se c
     case WSL
         powershell.exe -c Get-Clipboard
     case Darwin
