@@ -2,6 +2,11 @@ function __jst.get.zoxide
     zoxide --version; and return
 end
 
+function __jst.get.zed
+    if type -q zed; return; end
+    curl -f https://zed.dev/install.sh | sh
+end
+
 function __jst.get.zerotier
     zerotier --version; and return
     curl -s https://install.zerotier.com/ | bash
