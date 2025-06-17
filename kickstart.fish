@@ -8,3 +8,6 @@ bind \co 'cd ..; commandline -f repaint'
 
 alias l='ls -ltr'
 
+function cp-file
+    cat $argv | __mfa.copy
+end

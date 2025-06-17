@@ -17,6 +17,10 @@ source <path_to_repo>/kickstart.fish # optional
 ssh-copy-id $MFA_USER_HOST
 ```
 
+## What is mfa
+
+Namespace for private symbols.
+
 ## Exapmle usage
 
 | Command example    | Result                                                   |
