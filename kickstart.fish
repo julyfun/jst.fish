@@ -9,5 +9,23 @@ bind \co 'cd ..; commandline -f repaint'
 alias l='ls -ltr'
 
 function cp-file
-    cat $argv | __mfa.copy
+    cat $argv | __jst.copy
 end
+
+function cpwd
+    set output (jst pwd-path $argv)
+    echo -n $output | __jst.copy
+    echo $output
+end
+
+function cpit
+    echo -n "$argv" | jcp
+end
+
+alias fn=functions
+
+alias ja="jst commit" # atomic commit
+alias jp="jst push"
+
+alias jcp="__jst.copy"
+alias jps="__jst.paste"

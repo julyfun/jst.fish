@@ -4,9 +4,9 @@ import sys
 import json  # 使用json而不是toml
 
 try:
-    data_home = os.environ['MFA_DATA_HOME']
+    data_home = os.environ['JST_DATA_HOME']
 except KeyError:
-    print("$MFA_DATA_HOME does not exist. Exiting.")
+    print("$JST_DATA_HOME does not exist. Exiting.")
     sys.exit(1)
 
 cmd = sys.argv[1:]

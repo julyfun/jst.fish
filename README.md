@@ -11,15 +11,11 @@ source <path_to_repo>/jst.fish
 source <path_to_repo>/kickstart.fish # optional
 ```
 
-**Extension:** If you want to setup your remote server, edit `$MFA_USER_HOST` in `~/.config/mfa/config.fish`, and then:
+**Extension:** If you want to setup your remote server, edit `$JST_USER_HOST` in `~/.config/jst/config.fish`, and then:
 
 ```
-ssh-copy-id $MFA_USER_HOST
+ssh-copy-id $JST_USER_HOST
 ```
-
-## What is mfa
-
-Namespace for private symbols.
 
 ## Exapmle usage
 
@@ -61,34 +57,22 @@ Namespace for private symbols.
 
 Some `jst` command would require these, but it's ok not to download them if you don't use the command:
 
-### Linux
-
-```
-sudo apt install xclip
-```
-
-### Macos
-
-```
-no
-```
-
 ## Todo
 
-- [x] mfa upa 时自动 mfa init
-- [x] jst 系列命令整合
 - [ ] 用 toml 自定义短命令
-- [ ] 建立 jst dl 下载和配置的清单。需要考虑用什么形式实现。
-- [x] jst title 支持汉字
+- [x] 建立 jst dl 下载和配置的清单。需要考虑用什么形式实现。
 - [ ] 跨平台粘贴板分组协议
-    - [ ] 跨平台粘贴文件或图片.
+  - [ ] 跨平台粘贴文件或图片.
 - [ ] 统计为您节省多少时间，以及创作这个命令花了多久
 
 ## Principles
 
 - 避免敏感操作，如 `apt upgrade`
+- Follow XDG_HOME rules.
 
 ## fish
 
 - command exists?
-    - `if type -q neovim`
+  - `if type -q neovim`
+- string contained in a list?
+  - `if contains` / `if not contains`

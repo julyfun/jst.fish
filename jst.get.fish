@@ -3,7 +3,7 @@ function __jst.get.zoxide
 end
 
 function __jst.get.zed
-    if type -q zed; return; end
+    if type -q zed; zed --version; return; end
     curl -f https://zed.dev/install.sh | sh
 end
 
@@ -16,7 +16,7 @@ function __jst.get.fzf
     if type -q fzf
         return
     end
-    switch (__mfa.os)
+    switch (__jst.os)
     case Darwin
         brew install fzf
     case Linux
@@ -43,9 +43,9 @@ end
 
 function __jst.get.neovim
     nvim --version; and return
-    set where "$HOME/$MFA_DOWNLOADS_DIR/neovim"
+    set where "$HOME/$JST_DOWNLOADS_DIR/neovim"
     set here (pwd)
-    __mfa.try-mkdir $where
+    __jst.try-mkdir $where
     cd $where
     switch (uname)
     case Linux
@@ -79,8 +79,8 @@ function __jst.get.neovim
 end
 
 function __jst.get.autojump
-    command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$MFA_DOWNLOADS_DIR/autojump
-    command echo "source $HOME/$MFA_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $MFA_FISH_CONFIG_PATH
+    command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$JST_DOWNLOADS_DIR/autojump
+    command echo "source $HOME/$JST_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $JST_FISH_CONFIG_FILE
 end
 
 function __jst.get.pip
@@ -91,4 +91,3 @@ end
 function __jst.get -d "Download and configure tools auto"
     __jst.get.$argv[1] $argv[2..-1]
 end
-
