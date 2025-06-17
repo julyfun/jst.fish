@@ -4,6 +4,10 @@ source "$(status dirname)/jst.get.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__mfa.get-editor)
 
+function __jst.source
+    echo "source $(jst pwd-path $argv)" >> $MFA_FISH_CONFIG_PATH
+end
+
 function __jst.typ.slds
     echo \
 "#slide["\n\
@@ -778,13 +782,17 @@ end
 
 alias jpf="jst push-file"
 
-function cpwd
+function __jst.pwd-path
     if test -z "$argv"
         set slash ""
     else
         set slash "/"
     end
-    set output (string join '' (pwd) $slash "$argv")
+    string join '' (pwd) $slash "$argv"
+end
+
+function cpwd
+    set output (jst pwd-path $argv)
     echo -n $output | __mfa.copy
     echo $output
 end
