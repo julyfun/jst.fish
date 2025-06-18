@@ -12,6 +12,22 @@ function __jst.get.zed
     curl -f https://zed.dev/install.sh | sh
 end
 
+function __jst.get.zigup
+    switch (__mfa.os)
+    case Darwin
+    case Linux
+        curl -L https://github.com/marler8997/zigup/releases/latest/download/zigup-x86_64-linux.tar.gz | tar xz
+    end
+end
+
+function __jst.get.zls
+    switch (__mfa.os)
+    case Darwin
+    case Linux
+        curl -L https://builds.zigtools.org/zls-linux-x86_64-0.14.0.tar.xz | tar xz
+    end
+end
+
 function __jst.get.zerotier
     zerotier --version; and return
     curl -s https://install.zerotier.com/ | bash
