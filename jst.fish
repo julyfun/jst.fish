@@ -168,7 +168,7 @@ function __jst.find4
 'else'\n\
     'tree -C {}'\n\
 'end'
-    set -l file (__jst.echo-list-as-file $res | fzf --preview "$preview_cmd")
+    set -l file (__jst.echo-list-as-file $res | fzf --preview "fish -c \"$preview_cmd\"")
     or return
 
     if test -f "$argv/$file"

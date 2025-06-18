@@ -47,8 +47,8 @@ function __jst.get.omf -d "A fish plugin manager"
 end
 
 function __jst.get.neovim
-    nvim --version; and return
-    set where "$HOME/$JST_DOWNLOADS_DIR/neovim"
+    if type -q nvim; nvim --version; return; end
+    set where "$JST_DOWNLOADS_DIR/neovim"
     set here (pwd)
     __jst.try-mkdir $where
     cd $where
