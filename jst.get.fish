@@ -13,15 +13,19 @@ function __jst.get.zed
 end
 
 function __jst.get.zigup
-    switch (__mfa.os)
+    set dir "$JST_DOWNLOADS_DIR/zigup"
+    jst try-mkdir "$dir"
+    switch (__jst.os)
     case Darwin
+        curl -L https://github.com/marler8997/zigup/releases/download/v2025_05_24/zigup-aarch64-macos.tar.gz | tar xz -C "$dir"
     case Linux
-        curl -L https://github.com/marler8997/zigup/releases/latest/download/zigup-x86_64-linux.tar.gz | tar xz
+        curl -L https://github.com/marler8997/zigup/releases/latest/download/zigup-x86_64-linux.tar.gz | tar xz -C "$dir"
     end
+    jst path "$dir"
 end
 
 function __jst.get.zls
-    switch (__mfa.os)
+    switch (__jst.os)
     case Darwin
     case Linux
         curl -L https://builds.zigtools.org/zls-linux-x86_64-0.14.0.tar.xz | tar xz
