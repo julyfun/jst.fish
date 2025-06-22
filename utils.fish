@@ -192,11 +192,12 @@ function __jst.fish
 end
 
 function __jst.upload
-    if test -z $argv[2]
-        # -p to preserve time
-        scp -pr $argv[1] $JST_USER_HOST:"~/$(__jst.user-rel $JST_CACHE_HOME)"
+    argparse 'd/dst=?' -- $argv
+    if not set -ql _flag_d
+        # Here -p to preserve time
+        scp -pr $argv $JST_USER_HOST:"~/$(__jst.user-rel $JST_CACHE_HOME)"
     else
-        scp -pr $argv[1] $JST_USER_HOST:"~/$(__jst.user-rel $JST_CACHE_HOME)/$argv[2]"
+        scp -pr $argv $JST_USER_HOST:"~/$(__jst.user-rel $JST_CACHE_HOME)/$_flag_d"
     end
 end
 

@@ -1,6 +1,7 @@
 source "$(status dirname)/utils.fish"
 source "$(status dirname)/complete.fish"
 source "$(status dirname)/jst.get.fish"
+source "$(status dirname)/jst.w.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
@@ -147,7 +148,7 @@ function __jst.last
 end
 
 function __jst.find4
-    argparse f d -- $argv
+    argparse f d o -- $argv
     if not set -ql _flag_f; and not set -ql _flag_d
         set _flag_f
         set _flag_d
@@ -170,6 +171,11 @@ function __jst.find4
 'end'
     set -l file (__jst.echo-list-as-file $res | fzf --preview "fish -c \"$preview_cmd\"")
     or return
+    
+    if set -ql _flag_o
+        open "$argv/$file"
+        return
+    end
 
     if test -f "$argv/$file"
         eval $EDITOR "$argv/$file"
