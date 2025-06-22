@@ -285,27 +285,23 @@ function __jst.contains-options -d "(option_to_find, params..)"
     echo 0
 end
 
-function __jst.dl.ls -d "(path, tailnum)"
-    set res (__jst.eval "ls -ltr \$HOME/"(__jst.user-rel $JST_CACHE_HOME)"/$argv[1]")
-    if test -z $argv[2]
-        __jst.echo-list-as-file $res | awk 'NR>1 {print substr($0, index($0,$9))}'
-    else
-        __jst.echo-list-as-file $res | awk 'NR>1 {print substr($0, index($0,$9))}' | tail -$argv[2] | tac
-    end
-end
-
 function __jst.dl
-    __jst.try-sub __jst.dl $argv
-    if test $status -eq 0
-        return 0
-    end
-    argparse 'i' -- $argv
+    argparse 'i' 'l/list=?' -- $argv
     # fzf
+    if set -ql _flag_l
+        set res (__jst.eval "ls -ltr \$HOME/"(__jst.user-rel $JST_CACHE_HOME)"/$argv[1]")
+        if test -z $argv[2]
+            __jst.echo-list-as-file $res | awk 'NR>1 {print substr($0, index($0,$9))}'
+        else
+            __jst.echo-list-as-file $res | awk 'NR>1 {print substr($0, index($0,$9))}' | tail -$argv[2] | tac
+        end
+        return
+    end
     if set -ql _flag_i
         command -q fzf
         or echo (__jst.err)Install fzf first.(__jst.off) && return
         # set yours (__jst.one-from-list (jst dl ls . 20))
-        set yours (__jst.echo-list-as-file (jst dl ls) | fzf --height=20 --preview 'echo {}')
+        set yours (__jst.echo-list-as-file (jst dl -l) | fzf --height=20 --preview 'echo {}')
         if test $status -eq 0
             echo Downloading $yours...
             __jst.download $yours

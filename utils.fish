@@ -183,7 +183,7 @@ function __jst.default-pic-dir
 end
 
 function __jst.eval
-    ssh $JST_USER_HOST "eval $argv"
+    ssh $JST_USER_HOST "fish -c '$argv'"
 end
 
 function __jst.fish
