@@ -1,3 +1,8 @@
+function __jst.get.bun
+    type -q bun; and bun --version; and return
+    curl -fsSL https://bun.sh/install | bash
+end
+
 function __jst.get.tldr
     if type -q tldr; tldr -v; return; end
     python3 -m pip install tldr

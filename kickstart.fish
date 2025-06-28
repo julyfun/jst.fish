@@ -30,8 +30,13 @@ function fn
     functions (string join . __$argv[1] $argv[2..-1])
 end
 
+function jwhich
+    cd (dirname (which $argv))
+end
+
 alias ja="jst commit" # atomic commit
 alias jp="jst push"
 
 alias jcp="__jst.copy"
 alias jps="__jst.paste"
+
