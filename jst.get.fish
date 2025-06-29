@@ -10,6 +10,11 @@ end
 
 function __jst.get.zoxide
     zoxide --version; and return
+    set here (pwd)
+    cd $JST_CACHE_DIR
+    curl -LO https://github.com/ajeetdsouza/zoxide/releases/download/v0.9.8/zoxide_0.9.8-1_amd64.deb
+    sudo dpkg -i zoxide_0.9.8-1_amd64.deb
+    cd $here
 end
 
 function __jst.get.zed
@@ -88,10 +93,13 @@ function __jst.get.neovim
         case x86_64
             switch (lsb_release -cs)
             case focal
-        curl -SL https://github.com/neovim/neovim-releases/releases/download/v0.11.2/nvim-linux-x86_64.appimage -o nvim
+            curl -SL https://github.com/neovim/neovim-releases/releases/download/v0.11.2/nvim-linux-x86_64.appimage -o nvim
                 chmod +x ./nvim
                 jst path
             case jammy
+            curl -SL https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.appimage -o nvim
+                chmod +x ./nvim
+                jst path
             end
         end
     case Darwin
