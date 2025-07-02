@@ -171,7 +171,7 @@ function __jst.find4
 'end'
     set -l file (__jst.echo-list-as-file $res | fzf --preview "fish -c \"$preview_cmd\"")
     or return
-    
+
     if set -ql _flag_o
         open "$argv/$file"
         return
@@ -375,18 +375,22 @@ function __jst.how -d "Create a how-to article"
         echo "Please provide a valid title for the article."
         return 1
     end
-    set date (date "+%Y-%m-%d")
+    set tags_str (string join ", " (string split "/" (jst git-rel-link)))
+    set date (date "+%Y-%m-%d %H:%M:%S")
     set language zh-hans
     set os (uname -a)
     set git_config_user_name (command git config user.name)
     set reliability "20% (author)"
-    # yml format
+    # Front matter (yaml format)
     set head \
-- reliability: \"$reliability\"\n\
+---\n\
+- title: $title\n\
 - date: $date\n\
-- os: \"$os\"\n\
+- tags: [$tags_str]\n\
 - author: \"$git_config_user_name\"\n\
+- os: \"$os\"\n\
 - assume-you-know: [computer]\n\
+---\n\
 \n\
 \# $title\n
     command touch $cut_title.md
@@ -443,7 +447,7 @@ end
 
 function __jst.upgrade
     set -l here (pwd)
-    cd "$JST_PATH"
+    cd "$JST_DIR"
     __jst.git-pull-check-ver
     set st $status
     cd "$here"
@@ -488,7 +492,7 @@ function __jst.tp -d "Personalized templates"
 end
 
 function __jst.t -d "Template files"
-    if not test -e "$JST_PATH/t/$argv[1]"
+    if not test -e "$JST_DIR/t/$argv[1]"
         echo "No template called `$argv[1]`"
         return 1
     end
@@ -501,7 +505,7 @@ function __jst.t -d "Template files"
         echo "Error! `$name` already exists"
         return 1
     end
-    cp -r "$JST_PATH/t/$argv[1]" "./$name"
+    cp -r "$JST_DIR/t/$argv[1]" "./$name"
 end
 
 function __jst.cargo-run-compiling
@@ -682,6 +686,8 @@ function __jst.cd -d "cd to common dir like .ssh"
     switch $argv[1]
     case fish
         cd ~/.config/fish
+    case jst
+        cd $JST_DIR
     case nvim
         cd ~/.config/nvim
     case ssh
@@ -692,7 +698,7 @@ end
 function __jst.e -d "Edit common config files"
     switch $argv[1]
     case jst
-        $EDITOR $JST_PATH/jst.fish
+        $EDITOR $JST_DIR/jst.fish
     case fish
         $EDITOR ~/.config/fish/config.fish
     case nvim
@@ -1116,9 +1122,9 @@ function jst -d "Just do something"
     __jst.sub __jst $argv # this should be in comptime, in fact
     # count the time it is used
     if test $status -eq 0
-        /usr/bin/env python3 "$JST_PATH/usage_count.py" (__jst.get-hide-chain-from-cmd jst $argv)
+        /usr/bin/env python3 "$JST_DIR/usage_count.py" (__jst.get-hide-chain-from-cmd jst $argv)
     end
 end
 
 __jst.complete-r __jst jst
-__jst.complete-d "jst t" "$JST_PATH/t"
+__jst.complete-d "jst t" "$JST_DIR/t"

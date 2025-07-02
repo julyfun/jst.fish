@@ -11,7 +11,7 @@ set -gx JST_CONFIG_FILE "$HOME/.config/jst/config.fish"
 set -g JST_DOWNLOADS_DIR "$JST_DATA_HOME/dl"
 
 set -g JST_VER "0.2.0"
-set -g JST_PATH "$(status dirname)"
+set -g JST_DIR "$(status dirname)"
 set -g JST_FISH_CONFIG_FILE "$HOME/.config/fish/config.fish"
 
 function __jst.user-rel
@@ -271,7 +271,7 @@ function __jst.git-branch
     echo (command git rev-parse --abbrev-ref HEAD)
 end
 
-function __jst.git-rel-link
+function __jst.git-rel-link -d "print current path from repo root"
     set pwd (pwd)
     set root (command git rev-parse --show-toplevel)
     set branch (__jst.git-branch)
