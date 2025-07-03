@@ -383,12 +383,12 @@ function __jst.how -d "Create a how-to article"
     # Front matter (yaml format)
     set head \
 ---\n\
-- title: \"$title\"\n\
-- date: $date\n\
-- tags: [$tags_str]\n\
-- author: \"$git_config_user_name\"\n\
-- os: \"$os\"\n\
-- assume-you-know: [computer]\n\
+title: \"$title\"\n\
+date: $date\n\
+tags: [$tags_str]\n\
+author: \"$git_config_user_name\"\n\
+os: \"$os\"\n\
+assume-you-know: [computer]\n\
 ---\n\
 \n
     command touch $link_title
