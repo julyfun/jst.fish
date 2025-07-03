@@ -390,8 +390,7 @@ function __jst.how -d "Create a how-to article"
 - os: \"$os\"\n\
 - assume-you-know: [computer]\n\
 ---\n\
-\n\
-\# $title\n
+\n
     command touch $link_title
     echo "$head" > $link_title.md # command echo 不行
     $EDITOR $link_title.md
