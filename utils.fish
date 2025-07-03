@@ -55,6 +55,7 @@ end
 
 __jst.try-load-config
 
+# [format]
 # usage: echo (__jst.err)"error:"(__jst.off)
 function __jst.ok
     set_color green --bold 2> /dev/null
@@ -88,6 +89,7 @@ function __jst.dim
     set_color -d 2> /dev/null
 end
 
+# [subcommand]
 function __jst.no-subcommand
     echo (__jst.err)"error:"(__jst.off)\
         unrecognized subcommand \'(__jst.yellow)$argv[1](__jst.off)\'

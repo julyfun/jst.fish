@@ -370,7 +370,6 @@ end
 function __jst.how -d "Create a how-to article"
     set title "$argv" # 不加引号则带分隔符（echo 之就是 \n）
     set link_title (jst title "$title")
-    set cut_title (string trim (string sub --end=80 "$link_title") --chars='-')
     if test -z "$link_title"
         echo "Please provide a valid title for the article."
         return 1
@@ -384,7 +383,7 @@ function __jst.how -d "Create a how-to article"
     # Front matter (yaml format)
     set head \
 ---\n\
-- title: $title\n\
+- title: \"$title\"\n\
 - date: $date\n\
 - tags: [$tags_str]\n\
 - author: \"$git_config_user_name\"\n\
@@ -393,9 +392,9 @@ function __jst.how -d "Create a how-to article"
 ---\n\
 \n\
 \# $title\n
-    command touch $cut_title.md
-    echo "$head" > $cut_title.md # command echo 不行
-    $EDITOR $cut_title.md
+    command touch $link_title
+    echo "$head" > $link_title.md # command echo 不行
+    $EDITOR $link_title.md
 end
 
 function __jst.cprt -d "Copy root file (template) here"
@@ -1017,14 +1016,18 @@ function __jst.git.log2
 end
 
 function __jst.git.ig
-    command touch .gitignore
+    if test -e .gitignore; and echo \
+        (__jst.err)(__jst.under).gitignore(__jst.off)(__jst.err) already exists.\
+        (__jst.off); and return 1; end
+    touch .gitignore
     set content \
 .vscode\n\
 .DS_Store\n\
 .nvimlog\n\
 "*.swp"\n\
 .zed\n\
-__pycache__
+__pycache__\n\
+"ignore*"
     echo -e "$content" > .gitignore
 end
 
@@ -1065,7 +1068,7 @@ function __jst.title -d "Get a Stackoverflow-style title"
     # set sub (command echo $no_single_quote | command tr -c '[:alnum:]' '-' | string sub -e -1) # 将所有符号换为 -
     set sub (string replace -r -a -- '[\x00-\x2F\x3A-\x40\x5B-\x60\x7B-\x7F]' '-' $no_single_quote)
     set rep (string replace -r -a -- '(-)+' '-' $sub) # 处理重复 -
-    set tri (string trim --chars='-' $rep) # 删两边
+    set tri (string trim --chars='-' -- $rep) # 删两边
     echo -n $tri
     # echo $tri | __jst.copy
     # -c is complement 补集
