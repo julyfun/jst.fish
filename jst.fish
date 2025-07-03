@@ -391,7 +391,7 @@ os: \"$os\"\n\
 assume-you-know: [computer]\n\
 ---\n\
 \n
-    command touch $link_title
+    # 不用 touch
     echo "$head" > $link_title.md # command echo 不行
     $EDITOR $link_title.md
 end
