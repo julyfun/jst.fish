@@ -147,22 +147,19 @@ function __jst.last
     __jst.one-from-list (eval "$(history --max=1)") | xargs $argv
 end
 
-function __jst.find4
-    argparse f d o -- $argv
-    if not set -ql _flag_f; and not set -ql _flag_d
-        set _flag_f
-        set _flag_d
+function __jst.find4 -d "fd: type, b: dirname, o: open, r: relative"
+    argparse f d o b r -- $argv
+    set -l t ""
+    if not set -ql _flag_d; and not set -ql _flag_f
+        set t fd
     end
+    if set -ql _flag_f; and set t $t"f"; end
+    if set -ql _flag_d; and set t $t"d"; end
     if test -z "$argv"
         set argv .
     end
-    set -l res
-    if set -ql _flag_f
-        set -a res (command find "$argv" -type f | awk -v prefix="$argv/" '{ sub(prefix, ""); print }')
-    end
-    if set -ql _flag_d
-        set -a res (command find "$argv" -type d | awk -v prefix="$argv/" '{ sub(prefix, ""); print }')
-    end
+    
+    set res (python3 "$JST_DIR/py/recursive-files.py" $argv -i .git -o n -s dr -t $t)
     set preview_cmd \
 'if test -f {}'\n\
     'if test (__jst.is-git-diffable {}) -eq 1; head -n 100 {}; else; file {}; end'\n\
@@ -176,9 +173,12 @@ function __jst.find4
         open "$argv/$file"
         return
     end
-
     if test -f "$argv/$file"
-        eval $EDITOR "$argv/$file"
+        if set -ql _flag_b
+            cd (dirname "$argv/$file")
+        else
+            $EDITOR "$argv/$file"
+        end
     else
         cd "$argv/$file"
     end
@@ -374,7 +374,7 @@ function __jst.how -d "Create a how-to article"
         echo "Please provide a valid title for the article."
         return 1
     end
-    set tags_str (string join ", " (string split "/" (jst git-rel-link)))
+    set tags_str (string join ", " \"(string split "/" (jst git-rel-link))\")
     set date (date "+%Y-%m-%d %H:%M:%S")
     set language zh-hans
     set os (uname -a)

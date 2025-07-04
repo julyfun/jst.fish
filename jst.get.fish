@@ -1,3 +1,10 @@
+function __jst.get.picgo
+    switch (__jst.os)
+    case Darwin
+        brew install picgo --cask
+    end
+end
+
 function __jst.get.bun
     type -q bun; and bun --version; and return
     curl -fsSL https://bun.sh/install | bash
