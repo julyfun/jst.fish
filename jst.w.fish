@@ -1,4 +1,4 @@
-function __jst.w
+function __jst.w -d "Web apps"
     __jst.sub __jst.w $argv
 end
 
