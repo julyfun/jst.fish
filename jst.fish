@@ -415,10 +415,12 @@ function __jst.f -d "Create file with standard title"
     set -l suf $argv[1]
     set -l name $argv[2..-1]
     echo $name | __jst.copy
-    if test $suf = dir
-        command mkdir (jst title "$name")
+    if test $suf = d
+        set -g on (jst title "$name")
+        command mkdir $on
     else
-        command touch (jst title "$name").$suf
+        set -g on (jst title "$name").$suf
+        command touch $on
     end
 end
 
