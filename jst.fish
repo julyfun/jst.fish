@@ -768,6 +768,11 @@ function __jst.push -d "Pull, simple commit and push"
     for file in $conflicted
         __jst.remove-git-merge-conflict-markers $file
     end
+    set conflicted (git diff --name-only --diff-filter=U)
+    if not test -z $confliected
+        echo (__jst.err)This should NOT happen! Check jst.fish.(__jst.off)
+        return 1
+    end
     ja "$argv"
     command git push -u
 end
