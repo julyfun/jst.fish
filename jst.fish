@@ -2,6 +2,7 @@ source "$(status dirname)/utils.fish"
 source "$(status dirname)/complete.fish"
 source "$(status dirname)/jst.get.fish"
 source "$(status dirname)/jst.w.fish"
+source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
