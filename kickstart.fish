@@ -40,3 +40,8 @@ alias jp="jst push"
 alias jcp="__jst.copy"
 alias jps="__jst.paste"
 
+function jlast
+    set res (ls -tr)
+    echo $res[-1]
+end
+
