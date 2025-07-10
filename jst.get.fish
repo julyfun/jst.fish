@@ -1,3 +1,11 @@
+function __jst.get.btop
+    type -q btop; and btop -v; and return
+    switch (__jst.os)
+    case Darwin
+        brew install btop
+    end
+end
+
 function __jst.get.picgo
     switch (__jst.os)
     case Darwin

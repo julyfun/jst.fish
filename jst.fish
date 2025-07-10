@@ -138,6 +138,14 @@ function __jst.grep2
     grep -v $argv
 end
 
+function __jst.grep3
+    set key $argv[1]
+    set filereg $argv[2]
+    for f in (jst find $filereg)
+        grep --with-filename --line-number --color=always "$key" $f
+    end
+end
+
 function __jst.bac
     mkdir -p ~/bac
     mv $argv ~/bac
