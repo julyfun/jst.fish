@@ -747,19 +747,15 @@ function __jst.remove-git-merge-conflict-markers -d "(filename)"
     command grep -v '^\(<<<<<<<\|=======\|>>>>>>> \)' $argv > .jsttmp && command mv .jsttmp $argv
 end
 
-function __jst.push -d "Pull, simple commit and push"
-    # 远程修改是不可逆的
-    command git status -u --porcelain # show unstaged too.
-    echo ---
-    command git diff --stat
-
-    command git pull
-    if test $status -ne 0
-        command git stash
-        command git pull
-        command git stash pop
+function __jst.there-are-git-conflicts
+    set conflicted (git diff --name-only --diff-filter=U)
+    if not test -z $conflicted
+        echo 1
     end
+    echo 0
+end
 
+function __jst.remove-git-conflict-markers-in-repo
     set conflicted (git diff --name-only --diff-filter=U)
     if not test -z $conflicted
         echo (__jst.err)Conflicted files $conflicted. Will start merging insertion in 3s.(__jst.off)
@@ -768,11 +764,23 @@ function __jst.push -d "Pull, simple commit and push"
     for file in $conflicted
         __jst.remove-git-merge-conflict-markers $file
     end
-    set conflicted (git diff --name-only --diff-filter=U)
-    if not test -z $confliected
-        echo (__jst.err)This should NOT happen! Check jst.fish.(__jst.off)
-        return 1
+end
+
+function __jst.push -d "Pull, simple commit and push"
+    # 远程修改是不可逆的
+    command git status -u --porcelain # show unstaged too.
+    echo ---
+    command git diff --stat
+
+    command git pull
+    if test $status -ne 0
+        __jst.remove-git-conflict-markers-in-repo
+        command git stash
+        command git pull
+        command git stash pop
     end
+
+    __jst.remove-git-conflict-markers-in-repo
     ja "$argv"
     command git push -u
 end
