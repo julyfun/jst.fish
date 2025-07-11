@@ -7,7 +7,7 @@ source "$(status dirname)/jst.h.fish"
 set -gx EDITOR (__jst.get-editor)
 
 function __jst.source
-    echo "source $(jst pwd-path $argv)" >> $JST_FISH_CONFIG_FILE
+    echo "$(jst pwd-path $argv)" >> $JST_FISH_CONFIG_FILE
 end
 
 function __jst.typ.slds
