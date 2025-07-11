@@ -10,6 +10,10 @@ function __jst.source
     echo "$(jst pwd-path $argv)" >> $JST_FISH_CONFIG_FILE
 end
 
+function __jst.config
+    echo "$argv" >> $JST_FISH_CONFIG_FILE
+end
+
 function __jst.typ.slds
     echo \
 "#slide["\n\
