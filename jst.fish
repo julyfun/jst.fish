@@ -392,7 +392,7 @@ function __jst.how -d "Create a how-to article"
     set language zh-hans
     set os (uname -a)
     set git_config_user_name (command git config user.name)
-    set reliability "20% (author)"
+    set confidence 2
     # Front matter (yaml format)
     set head \
 ---\n\
@@ -402,6 +402,7 @@ tags: [$tags_str]\n\
 author: \"$git_config_user_name\"\n\
 os: \"$os\"\n\
 assume-you-know: [computer]\n\
+confidence: $confidence\n\
 ---\n\
 \n
     # 不用 touch
