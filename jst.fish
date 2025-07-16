@@ -6,6 +6,19 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+function __jst.touch
+    set sp (string split -r -m1 / "$argv")
+    set -g on "$argv"
+    if test (count $sp) -ge 2
+        if not test -e $sp[1]
+            mkdir -p $sp[1]
+        end
+        touch $argv
+        return
+    end
+    touch $argv
+end
+
 function __jst.source
     echo "$(jst pwd-path $argv)" >> $JST_FISH_CONFIG_FILE
 end
