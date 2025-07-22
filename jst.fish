@@ -20,7 +20,7 @@ function __jst.touch
 end
 
 function __jst.source
-    echo "$(jst pwd-path $argv)" >> $JST_FISH_CONFIG_FILE
+    echo "source $(jst pwd-path $argv)" >> $JST_FISH_CONFIG_FILE
 end
 
 function __jst.config
