@@ -741,8 +741,18 @@ function __jst.e -d "Edit common config files"
     end
 end
 
+function __jst.git.diff
+    git diff --stat
+    echo [untracked]
+    git ls-files --others --exclude-standard | xargs wc -l
+end
+
 function __jst.git.status.simple
     string sub -e 100 (string join ' | ' (string trim (git status -u --porcelain $argv)))
+end
+
+function __jst.git.status
+    __jst.sub __jst.git.status $argv 
 end
 
 function __jst.commit -d "Atomic commit simple message (ja)"
@@ -794,7 +804,8 @@ end
 
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
-    command git status -u --porcelain # show unstaged too.
+    # command git status -u --porcelain # show unstaged too.
+    jst git diff
     echo ---
     command git diff --stat
 
