@@ -742,6 +742,7 @@ function __jst.e -d "Edit common config files"
 end
 
 function __jst.git.diff
+    echo [tracked]
     git diff --stat
     echo [untracked]
     git ls-files --others --exclude-standard | xargs wc -l
@@ -800,6 +801,21 @@ function __jst.remove-git-conflict-markers-in-repo
     for file in $conflicted
         __jst.remove-git-merge-conflict-markers $file
     end
+end
+
+function __jst.push2 -d "Pull, commit, push v2"
+    # 远程修改是不可逆的
+    git config pull.rebase true
+    and jst git diff
+    and echo ---
+    and sleep 3
+    and ja "$argv"
+    and command git pull
+    if test $status -ne 0
+        __jst.remove-git-conflict-markers-in-repo
+        and ja "$argv"
+    end
+    and command git push -u
 end
 
 function __jst.push -d "Pull, simple commit and push"
