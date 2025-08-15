@@ -820,10 +820,8 @@ end
 
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
+    git config pull.rebase false
     jst git diff
-    and echo ---
-    and command git diff --stat
-
     and command git pull -q
     if test $status -ne 0
         __jst.remove-git-conflict-markers-in-repo
