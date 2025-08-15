@@ -824,7 +824,7 @@ function __jst.push -d "Pull, simple commit and push"
     and echo ---
     and command git diff --stat
 
-    and command git pull
+    and command git pull -q
     if test $status -ne 0
         __jst.remove-git-conflict-markers-in-repo
         and command git stash
