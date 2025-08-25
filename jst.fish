@@ -805,7 +805,7 @@ end
 
 function __jst.push2 -d "Pull, commit, push v2"
     # 远程修改是不可逆的
-    git config pull.rebase true
+    git config pull.rebase false
     and jst git diff
     and echo ---
     and sleep 3
