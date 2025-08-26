@@ -90,7 +90,6 @@ function __jst.pm
     __jst.sub __jst.pm $argv
 end
 
-
 function __jst.bin
     set -l bin
     for dir in $PATH
@@ -708,7 +707,6 @@ function __jst.rn -d "Replace newline, for PDF copy"
     echo (__jst.paste) | tr '\n' ' ' | __jst.copy
 end
 
-
 function __jst.cd -d "cd to common dir like .ssh"
     switch $argv[1]
     case fish
@@ -822,7 +820,7 @@ function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
     git config pull.rebase false
     jst git diff
-    and command git pull -q
+    and command git pull
     if test $status -ne 0
         command git stash
         and command git pull
@@ -849,7 +847,6 @@ function __jst.pwd-path
     end
     string join '' (pwd) $slash "$argv"
 end
-
 
 # function hp.vim
 #     __jst.open-link 'https://www.runoob.com/w3cnote/all-vim-cheatsheat.html'
