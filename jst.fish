@@ -781,7 +781,7 @@ function __jst.commit-file -d "Simple commit message for file"
 end
 
 function __jst.remove-git-merge-conflict-markers -d "(filename)"
-    command grep -v '^\(<<<<<<<\|=======\|>>>>>>> \)' $argv > .jsttmp && command mv .jsttmp $argv
+    command grep -v '^\(<<<<<<<\|=======\|>>>>>>> \)' $argv > ~/.jsttmp && command mv ~/.jsttmp $argv
 end
 
 function __jst.there-are-git-conflicts
@@ -824,13 +824,14 @@ function __jst.push -d "Pull, simple commit and push"
     jst git diff
     and command git pull -q
     if test $status -ne 0
-        __jst.remove-git-conflict-markers-in-repo
-        and command git stash
+        command git stash
         and command git pull
         and command git stash pop
     end
 
-    and __jst.remove-git-conflict-markers-in-repo
+    if test $status -ne 0
+        __jst.remove-git-conflict-markers-in-repo
+    end
     and ja "$argv"
     and command git push -u
 end
