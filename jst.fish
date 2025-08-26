@@ -820,7 +820,7 @@ function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
     git config pull.rebase false
     jst git diff
-    and command git pull -q
+    and command git pull -q # avoid interactive
     if test $status -ne 0
         command git stash
         and command git pull
