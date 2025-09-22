@@ -792,7 +792,7 @@ end
 
 function __jst.remove-git-conflict-markers-in-repo
     set conflicted (git diff --name-only --diff-filter=U)
-    if not test -z $conflicted
+    if not test -z "$conflicted"
         echo (__jst.err)Conflicted files $conflicted. Will start merging insertion in 3s.(__jst.off)
         command sleep 3
     end
