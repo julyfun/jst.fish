@@ -6,7 +6,7 @@ end
 # Use ctrl + o to `cd ..`
 bind \co 'cd ..; commandline -f repaint'
 
-alias l='ls -ltr'
+alias l='ls -lhtr'
 
 function cp-file
     cat $argv | __jst.copy
