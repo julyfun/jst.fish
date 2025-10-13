@@ -186,10 +186,10 @@ function __jst.find4 -d "fd: type, b: dirname, o: open, r: relative"
     
     set res (python3 "$JST_DIR/py/recursive-files.py" $argv -i .git -o n -s dr -t $t)
     set preview_cmd \
-'if test -f {}'\n\
-    'if test (__jst.is-git-diffable {}) -eq 1; head -n 100 {}; else; file {}; end'\n\
+'if test -f '"$argv"'/{}'\n\
+    'if test (__jst.is-git-diffable '"$argv"'/{}) -eq 1; head -n 100 '"$argv"'/{}; else; file '"$argv"'/{}; end'\n\
 'else'\n\
-    'tree -C {}'\n\
+    'tree -C '"$argv"'/{}'\n\
 'end'
     set -l file (__jst.echo-list-as-file $res | fzf --preview "fish -c \"$preview_cmd\"")
     or return
