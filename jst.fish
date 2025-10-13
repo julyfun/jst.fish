@@ -6,6 +6,36 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+# paste clipboard file and 
+function __jst.pjpg
+    # [todo]
+    type -q pngpaste; or echo "pngpaste not found"; and return
+    pngpaste "$JST_CACHE_HOME/__disk.png"
+    jst jpg "$JST_CACHE_HOME/__disk.png"
+    pngpaste -i "$JST_CACHE_HOME/__disk.jpg"
+    rm "$JST_CACHE_HOME/__disk.jpg"
+end
+
+function __jst.jpg
+    # to jpg
+    if test (count $argv) -ne 1
+        for a in $argv
+            __jst.jpg $a
+        end
+    else
+        convert "$argv" (string replace -r '\.[^.]+$' '.jpg' $argv)
+        rm $argv
+    end
+end
+
+function __jst.im.800
+    convert "$argv" -resize "800x800>" "$argv"
+end
+
+function __jst.im
+    __jst.sub __jst.im $argv
+end
+
 function __jst.touch
     set sp (string split -r -m1 / "$argv")
     set -g on "$argv"
