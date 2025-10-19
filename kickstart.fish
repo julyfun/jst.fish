@@ -8,6 +8,10 @@ bind \co 'cd ..; commandline -f repaint'
 
 alias l='ls -lhtr'
 
+function je
+    $EDITOR (jlast)
+end
+
 function cp-file
     cat $argv | __jst.copy
 end
