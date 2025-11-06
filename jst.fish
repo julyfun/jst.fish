@@ -833,12 +833,11 @@ end
 
 function __jst.push2 -d "Pull, commit, push v2"
     # 远程修改是不可逆的
-    git config pull.rebase false
     and jst git diff
     and echo ---
     and sleep 3
     and ja "$argv"
-    and command git pull
+    and command git pull --rebase=false
     if test $status -ne 0
         __jst.remove-git-conflict-markers-in-repo
         and ja "$argv"
@@ -848,12 +847,11 @@ end
 
 function __jst.push -d "Pull, simple commit and push"
     # 远程修改是不可逆的
-    git config pull.rebase false
     jst git diff
-    and command git pull -q # avoid interactive
+    and command git pull --rebase=false -q # avoid interactive
     if test $status -ne 0
         command git stash
-        and command git pull
+        and command git pull --rebase=false
         and command git stash pop
     end
 
