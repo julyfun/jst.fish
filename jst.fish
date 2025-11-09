@@ -80,10 +80,6 @@ function __jst.file-ext
     echo (string split . $argv)[-1]
 end
 
-function __jst.git.b
-    git branch $argv && git switch $argv[1]
-end
-
 function __jst.pm.mature
     echo "保证代码简洁优雅，方案成熟，性能较优。" | __jst.copy
 end
@@ -767,6 +763,15 @@ function __jst.e -d "Edit common config files"
     case tmux
         $EDITOR ~/.tmux.conf
     end
+end
+
+# [jst.git]
+function __jst.git.tracked -d "show tracked files"
+    git ls-tree --name-only -r HEAD $argv
+end
+
+function __jst.git.b -d "create & switch"
+    git branch $argv && git switch $argv[1]
 end
 
 function __jst.git.diff
