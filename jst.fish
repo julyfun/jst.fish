@@ -6,6 +6,12 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+function __jst.uvv
+    uv venv --python 3.10
+    source .venv/bin/activate.fish
+    uv pip install -r requirements.txt
+end
+
 # paste clipboard file and 
 function __jst.pjpg
     # [todo]
