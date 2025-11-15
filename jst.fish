@@ -620,7 +620,7 @@ function __jst.fmt -d "Add fmt file here"
 end
 
 function __jst.m -d "mkdir and cd"
-    mkdir $argv
+    mkdir -p $argv
     cd $argv
 end
 
