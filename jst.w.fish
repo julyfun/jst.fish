@@ -3,7 +3,7 @@ function __jst.w -d "Web apps"
 end
 
 function __jst.w.paint
-    jst open-link https://paint.js.org/
+    jst open-link https://kleki.com/
 end
 
 function __jst.w.dida
