@@ -12,7 +12,7 @@ from operator import abs
 class FileInfo:
     """Class for storing file information."""
     filename: str # relative from args.path
-    modified_date: datetime.datetime
+    mdate: datetime.datetime
     size: int
     type: str  # 'f' for file, 'd' for directory
 
@@ -47,7 +47,7 @@ def get_all_files(path: str, ignore_paths: Optional[Set[str]] = None, file_types
                     stats = os.stat(dir_path)
                     dir_info = FileInfo(
                         filename=os.path.join(relroot, dir_name),
-                        modified_date=datetime.datetime.fromtimestamp(stats.st_mtime),
+                        mdate=datetime.datetime.fromtimestamp(stats.st_mtime),
                         size=0,  # Directories have size 0
                         type='d'
                     )
@@ -58,7 +58,7 @@ def get_all_files(path: str, ignore_paths: Optional[Set[str]] = None, file_types
         # Process files if requested
         if include_files:
             for file in files:
-                file_path = os.path.join(root)
+                file_path = os.path.join(root, file)
                 # Skip ignored files
                 if any(file_path.startswith(ignore) for ignore in ignore_paths):
                     continue
@@ -67,7 +67,7 @@ def get_all_files(path: str, ignore_paths: Optional[Set[str]] = None, file_types
                     stats = os.stat(file_path)
                     file_info = FileInfo(
                         filename=os.path.join(relroot, file),
-                        modified_date=datetime.datetime.fromtimestamp(stats.st_mtime),
+                        mdate=datetime.datetime.fromtimestamp(stats.st_mtime),
                         size=stats.st_size,
                         type='f'
                     )
@@ -91,11 +91,10 @@ def sort_files(file_list: List[FileInfo], sort_criteria: str) -> List[FileInfo]:
         tup.append(x.type == 'f' if 'r' in sort_criteria else x.type == 'd')
         for criterion in sort_criteria:
             if criterion == 'd':
-                tup.append(x.modified_date)
+                tup.append(x.mdate.timestamp())
             elif criterion == 's':
                 tup.append(x.size)
         return tuple(tup)
-
 
     return sorted(file_list, key=key, reverse='r' in sort_criteria)
 
@@ -111,7 +110,7 @@ def format_output(file_list: List[FileInfo], output_format: Optional[str]) -> No
         for file in file_list:
             print(f"Filename: {file.filename}")
             print(f"Type: {'Directory' if file.type == 'd' else 'File'}")
-            print(f"Modified: {file.modified_date}")
+            print(f"Modified: {file.mdate}")
             print(f"Size: {file.size} bytes")
             print("-" * 40)
         return
@@ -125,7 +124,7 @@ def format_output(file_list: List[FileInfo], output_format: Optional[str]) -> No
             elif field == 's':
                 parts.append(f"{file.size}")
             elif field == 'd':
-                parts.append(str(file.modified_date))
+                parts.append(str(file.mdate))
             elif field == 't':
                 parts.append(file.type)
         print("\t".join(parts))
