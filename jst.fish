@@ -517,7 +517,7 @@ function __jst.upgrade
     end
 
     if test $st -eq 0
-        exec fish
+        source $JST_DIR/jst.fish
     end
 end
 
