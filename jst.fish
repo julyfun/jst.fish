@@ -735,6 +735,10 @@ function __jst.pyc -d "Quick python code"
     __jst.sub __jst.pyc $argv
 end
 
+function __jst.rcomma
+    jst paste | tr '\n,' '  ' | jst copy
+end
+
 function __jst.rn -d "Replace newline, for PDF copy"
     echo (__jst.paste) | tr '\n' ' ' | __jst.copy
 end
