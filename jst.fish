@@ -6,6 +6,12 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+function __jst.rdport
+    # 49152–65535
+    set a (math 0x(echo $argv | sha256sum | cut -c1-8 ))
+    echo (math 49152 + $a % "(65535 - 49152)")
+end
+
 function __jst.uvv
     uv venv --python 3.10
     source .venv/bin/activate.fish
