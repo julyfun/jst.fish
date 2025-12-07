@@ -21,6 +21,9 @@ function __jst.rdport -d "Get port from given abspath"
     # 49152–65535
     set a (math 0x(echo $argv | sha256sum | cut -c1-8 ))
     echo (math 49152 + $a % "(65535 - 49152)")
+function __jst.uva
+    source .venv/bin/activate.fish
+    uv pip install -r requirements.txt
 end
 
 function __jst.uvv
