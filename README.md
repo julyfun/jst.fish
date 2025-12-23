@@ -76,3 +76,10 @@ Some `jst` command would require these, but it's ok not to download them if you 
   - `if type -q neovim`
 - string contained in a list?
   - `if contains` / `if not contains`
+
+## Deps
+
+```
+pacman -S wl-clipboard
+```
+

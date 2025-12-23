@@ -138,6 +138,7 @@ end
 function __jst.copy
     switch (__jst.os)
     case Linux
+        type -q wl-copy; and wl-copy; and return
         xclip -se c
     case WSL
         powershell.exe -c '$input | Set-Clipboard'
@@ -149,6 +150,7 @@ end
 function __jst.paste
     switch (__jst.os)
     case Linux
+        type -q wl-paste; and wl-paste; and return
         xclip -o -se c
     case WSL
         powershell.exe -c Get-Clipboard

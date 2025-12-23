@@ -75,7 +75,7 @@ function __jst.get.fzf
 end
 
 function __jst.get.rustup
-    rustup --version; and return
+    type -q rustup; and rustup -V; and return
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 end
 
