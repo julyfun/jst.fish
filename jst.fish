@@ -511,6 +511,15 @@ function __jst.f -d "Create file with standard title"
     end
 end
 
+function __jst.mi.uv
+    if test -e ~/.config/uv/uv.toml
+        echo (jst err) uv.toml Exists.(jst off)
+        return 1
+    end
+    mkdir -p ~/.config/uv
+    echo 'index-url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"' >> ~/.config/uv/uv.toml
+end
+
 function __jst.mi.pip
     echo "-i https://pypi.tuna.tsinghua.edu.cn/simple" | jcp
 end
