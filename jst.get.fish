@@ -37,6 +37,17 @@ function __jst.get.zed
     curl -f https://zed.dev/install.sh | sh
 end
 
+function __jst.get.zig
+    set url (curl -s https://ziglang.org/download/index.json | jq -r '.master["aarch64-macos"].tarball')
+    set dir "$JST_DOWNLOADS_DIR/zig"
+    jst try-mkdir "$dir"
+    set here (pwd)
+    cd $dir
+    curl -L $url | tar xz
+    fish_add_path "$JST_DOWNLOADS_DIR/zig"
+    cd $here
+end
+
 function __jst.get.zigup
     set dir "$JST_DOWNLOADS_DIR/zigup"
     jst try-mkdir "$dir"
@@ -129,11 +140,6 @@ function __jst.get.neovim
     end
     cd $here
     exec fish
-end
-
-function __jst.get.autojump
-    command git clone git@github.com:wting/autojump.git --depth=1 $HOME/$JST_DOWNLOADS_DIR/autojump
-    command echo "source $HOME/$JST_DOWNLOADS_DIR/autojump/bin/autojump.fish" >> $JST_FISH_CONFIG_FILE
 end
 
 function __jst.get.pip
