@@ -19,7 +19,7 @@ function __jst.alp -d "get alphaxiv link"
     jst paste | string replace arxiv alphaxiv | jst copy
 end
 
-function __jst.alpo -d "open alphaxiv"
+function __jst.oal -d "open alphaxiv"
     set res (jst paste | string replace arxiv alphaxiv)
     echo $res
     jst open-link $res
