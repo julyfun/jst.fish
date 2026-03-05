@@ -6,6 +6,10 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+function __jst.rg
+    rg "\[.*$argv"
+end
+
 function __jst.fs.loc -d "Show files sorted by loc"
     git ls-files | xargs -I {} sh -c 'wc -l "{}" | awk "{print \$1, \"{}\"}"' | sort -nr
 end
