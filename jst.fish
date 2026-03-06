@@ -6,6 +6,21 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+# bug here
+function __jst.fswatch
+    touch /tmp/.watch_marker
+
+    while true
+        set curr (find . -newer /tmp/.watch_marker -not -path '*/.git/*' 2>/dev/null | head -1)
+        if test -n "$curr"
+            echo "File changed: $curr"
+            touch /tmp/.watch_marker
+            eval $argv
+        end
+        sleep 1
+    end
+end
+
 function __jst.rg
     rg "\[.*$argv"
 end
