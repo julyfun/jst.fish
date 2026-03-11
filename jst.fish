@@ -33,6 +33,10 @@ function __jst.fs
     __jst.sub __jst.fs $argv
 end
 
+function __jst.ar -d "arxiv"
+    jst open-link https://arxiv.org/abs/(jst paste)
+end
+
 function __jst.alp -d "get alphaxiv link"
     # https://arxiv.org/abs/1802.01744
     jst paste | string replace arxiv alphaxiv | jst copy

@@ -12,7 +12,7 @@ function je
     $EDITOR (jlast)
 end
 
-function cp-file
+function cpf
     cat $argv | __jst.copy
 end
 
@@ -47,5 +47,10 @@ alias jps="__jst.paste"
 function jlast
     set res (ls -tr)
     echo $res[-1]
+end
+
+function jcpp
+    jps | clang-format > 1.cpp
+    jps | clang-format > 2.cpp
 end
 
