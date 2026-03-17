@@ -6,6 +6,48 @@ source "$(status dirname)/jst.h.fish"
 # Todo: jst configuration file in ~/.config
 set -gx EDITOR (__jst.get-editor)
 
+function __jst.git.show-contrib
+    if not git rev-parse --git-dir >/dev/null 2>&1
+        echo "Not a git repository."
+        return 1
+    end
+
+    git log --numstat --pretty=format:'%an' |
+    awk '
+        /^[^\t]+$/ { author=$0; next }
+        NF==3 { adds[author]+=$1; subs[author]+=$2 }
+        END {
+            # Collect authors and compute totals
+            n = 0
+            for (a in adds) {
+                authors[n++] = a
+                total[a] = adds[a] + subs[a]
+            }
+
+            # Sort authors by total contributions descending
+            for (i=0; i<n; i++) {
+                for (j=i+1; j<n; j++) {
+                    if (total[authors[i]] < total[authors[j]]) {
+                        tmp = authors[i]
+                        authors[i] = authors[j]
+                        authors[j] = tmp
+                    }
+                }
+            }
+
+            # Print table header
+            printf "%-25s | %7s | %7s | %7s\n", "Author", "Added", "Removed", "Total"
+            printf "%s\n", "---------------------------+---------+---------+---------"
+
+            # Print each author contribution
+            for (i=0; i<n; i++) {
+                a = authors[i]
+                printf "%-25s | %7d | %7d | %7d\n", a, adds[a], subs[a], total[a]
+            }
+        }
+    '
+end
+
 # bug here
 function __jst.fswatch
     touch /tmp/.watch_marker
@@ -202,8 +244,8 @@ end
 
 function __jst.today
     set d (date +%y%m%d)
-    mkdir $d
-    cd $d
+    mkdir -p ~/Documents/tmp/$d
+    cd ~/Documents/tmp/$d
     nvim note.md
 end
 
