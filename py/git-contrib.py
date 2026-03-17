@@ -44,8 +44,8 @@ sorted_stats = sorted(
 )
 
 # Print results
-print(f"{'Email':40} {'Added':>6} {'Deleted':>6} {'Total':>6}")
+print(f"{'Email':40} {'Added':>8} {'Deleted':>8}")
 print("-" * 60)
 for email, data in sorted_stats:
     total = data["add"] + data["del"]
-    print(f"{email:40} {data['add']:6} {data['del']:6} {total:6}")
+    print(f"{email:40} {'+' + str(data['add']):>8} {'-' + str(data['del']):>8}")
