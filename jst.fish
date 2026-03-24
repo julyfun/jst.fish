@@ -206,8 +206,8 @@ end
 
 function __jst.today
     set d (date +%y%m%d)
-    mkdir -p ~/Documents/tmp/$d
-    cd ~/Documents/tmp/$d
+    mkdir -p ~/tmp/$d
+    cd ~/tmp/$d
     nvim note.md
 end
 
