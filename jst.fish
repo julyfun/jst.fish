@@ -205,10 +205,14 @@ function __jst.open
 end
 
 function __jst.today
+    if test -z $argv[1]
+        set f 1
+    else
+        set f $argv[1]
+    end
     set d (date +%y%m%d)
-    mkdir -p ~/tmp/$d
-    cd ~/tmp/$d
-    nvim note.md
+    mkdir -p ~/Desktop/$d
+    nvim ~/Desktop/$d/$f.md
 end
 
 # [only for test]
