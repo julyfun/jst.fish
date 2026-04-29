@@ -488,6 +488,10 @@ function __jst.how -d "Create a how-to article"
         echo "Please provide a valid title for the article."
         return 1
     end
+    if test -e $link_title.md
+        echo "File exists."
+        return 1
+    end
     set tags_str (string join ", " \"(string split "/" (jst git-rel-link))\")
     set date (date "+%Y-%m-%d %H:%M:%S")
     set language zh-hans
@@ -506,8 +510,6 @@ assume-you-know: [computer]\n\
 confidence: $confidence\n\
 ---\n\
 \n
-    # 不用 touch
-    echo "$head" > $link_title.md # command echo 不行
     $EDITOR $link_title.md
 end
 
