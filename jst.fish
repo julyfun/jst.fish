@@ -514,7 +514,7 @@ assume-you-know: [computer]\n\
 confidence: $confidence\n\
 ---\n\
 \n
-    echo head >> $link_title.md
+    echo $head >> $link_title.md
     $EDITOR $link_title.md
 end
 
