@@ -46,10 +46,15 @@ function __jst.alp -d "get alphaxiv link"
     jst paste | string replace arxiv alphaxiv | jst copy
 end
 
-function __jst.oal -d "open alphaxiv"
-    set res (jst paste | string replace arxiv alphaxiv)
-    echo $res
-    jst open-link $res
+function __jst.read -d "open alphaxiv and hjfy"
+    set ori (jst paste)
+    if test (echo $ori | string match "https://*")
+        echo "ok"
+        set ori (echo $ori | string split / | tail -n 1)
+    end
+    echo ori: $ori
+    jst open-link https://hjfy.top/arxiv/$ori
+    jst open-link https://alphaxiv/abs/$ori
 end
 
 function __jst.rdport -d "Get port from given abspath"
