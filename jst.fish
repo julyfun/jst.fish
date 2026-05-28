@@ -48,8 +48,7 @@ end
 
 function __jst.read -d "open alphaxiv and hjfy"
     set ori (jst paste)
-    if string match -q "https://*" "$ori"
-        echo "ok"
+    if string match -q -- "https://*" "$ori"
         set ori (echo $ori | string split / | tail -n 1)
     end
     echo ori: $ori
