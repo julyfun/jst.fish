@@ -48,13 +48,13 @@ end
 
 function __jst.read -d "open alphaxiv and hjfy"
     set ori (jst paste)
-    if test (echo $ori | string match "https://*")
+    if string match -q "https://*" "$ori"
         echo "ok"
         set ori (echo $ori | string split / | tail -n 1)
     end
     echo ori: $ori
     jst open-link https://hjfy.top/arxiv/$ori
-    jst open-link https://alphaxiv/abs/$ori
+    jst open-link https://alphaxiv.org/abs/$ori
 end
 
 function __jst.rdport -d "Get port from given abspath"
